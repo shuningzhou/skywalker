@@ -1,0 +1,17 @@
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/obj/Debug/Assembly-CSharp.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/UnityEngine.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/UnityEditor.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Mono.Cecil.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Unity.DataContract.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/shuningzhou/Desktop/skywalk/skywalk/Temp/bin/Debug/Mono.Cecil.Mdb.dll
