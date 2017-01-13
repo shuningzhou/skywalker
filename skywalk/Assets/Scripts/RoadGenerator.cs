@@ -3,11 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RoadGenerator : MonoBehaviour {
-	public GameObject roadSection;
+	public RoadSection roadSection;
 	public GameObject player;
+
+	public Vector3 startPostion = new Vector3 (0f, 49.5f, 0f);
+	public Vector3 startDirection = Vector3.forward;
+
+	public float maxRad = Mathf.PI * 3 / 4;
+	public float minRad = Mathf.PI / 10;
+	public int maxRadius = 3;
+	public int minRadius = 2;
+
+	public bool turnRight = false;
+
+	private RoadSection lastRoadSection;
+	public Vector3 currentStartPostion;
+	public Vector3 currentStartDirection;
+	private bool currentTurnRight;
+	private Vector3 totalCircleCenter = Vector3.zero;
+	private float totalCircleRadius = 0;
 	// Use this for initialization
 	void Start () {
-		
+
+		for (int i = 0; i < 200; i++) {
+
+			Debug.Log ("Drawing..." + i);
+
+			if (i == 0) {
+				currentStartPostion = startPostion;
+				currentStartDirection = startDirection;
+				currentTurnRight = turnRight;
+			} else {
+				currentStartPostion = lastRoadSection.tailPostion ();
+				currentStartDirection = lastRoadSection.tailDirection ();
+				currentTurnRight = !lastRoadSection.turnRight;
+				totalCircleCenter = lastRoadSection.newTotalCircleCenter;
+				totalCircleRadius = lastRoadSection.newTotalCircleRadius;
+			}
+
+			var newRoadSection = Instantiate (roadSection, Vector3.zero, Quaternion.identity);
+			newRoadSection.maxRad = maxRad;
+			newRoadSection.minRad = minRad;
+			newRoadSection.maxRadius = maxRadius;
+			newRoadSection.minRadius = minRadius;
+			newRoadSection.startPostion = currentStartPostion;
+			newRoadSection.startDirectrion = currentStartDirection;
+			newRoadSection.turnRight = currentTurnRight;
+			newRoadSection.totalCircleCenter = totalCircleCenter;
+			newRoadSection.totalCircleRadius = totalCircleRadius;
+
+			newRoadSection.drawRoad ();
+
+			lastRoadSection = newRoadSection;
+		}
 	}
 	
 	// Update is called once per frame

@@ -59,6 +59,7 @@ public class CharacterMovement : MonoBehaviour {
 				else {
 					Rigidbody body = GetComponent<Rigidbody> ();
 					body.useGravity = true;
+					body.isKinematic = false;
 					failed = true;
 					if (rightInFront) {
 						body.AddRelativeTorque (Vector3.forward * 200);
@@ -84,7 +85,9 @@ public class CharacterMovement : MonoBehaviour {
 					transform.RotateAround (leftFoot.transform.position, Vector3.up, rotateSpeed * Time.deltaTime);
 
 				}
-			}
+
+//				transform.position = new Vector3(transform.position.x, 52f, transform.position.z);
+			} 
 		}
 	}
 
