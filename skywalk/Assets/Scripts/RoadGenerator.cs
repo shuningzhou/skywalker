@@ -14,7 +14,7 @@ public class RoadGenerator : MonoBehaviour {
 	public int maxRadius = 3;
 	public int minRadius = 2;
 
-	public bool turnRight = false;
+	public bool turnRight = true;
 
 	private RoadSection lastRoadSection;
 	public Vector3 currentStartPostion;
@@ -25,7 +25,7 @@ public class RoadGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 2; i++) {
 
 			Debug.Log ("Drawing..." + i);
 
@@ -51,6 +51,8 @@ public class RoadGenerator : MonoBehaviour {
 			newRoadSection.turnRight = currentTurnRight;
 			newRoadSection.totalCircleCenter = totalCircleCenter;
 			newRoadSection.totalCircleRadius = totalCircleRadius;
+			newRoadSection.width = 2f;
+			newRoadSection.thickness = 1f;
 
 			newRoadSection.drawRoad ();
 
