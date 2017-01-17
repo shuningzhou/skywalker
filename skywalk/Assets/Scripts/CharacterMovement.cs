@@ -5,7 +5,6 @@ public class CharacterMovement : MonoBehaviour {
 	public float rotateSpeed = 250.0f;
 	public GameObject leftFoot;
 	public GameObject rightFoot;
-	public GameObject footprint;
 
 	bool rightInFront = false;
 	bool failed = false;
@@ -56,7 +55,6 @@ public class CharacterMovement : MonoBehaviour {
 				if (Physics.Raycast (getMovingPosition(), Vector3.down, out hit, rayReach) && (hit.transform.tag == "road"))
 				{
 					doTurn ();
-					Instantiate(footprint, getMovingPosition(), Quaternion.identity);
 				} 
 				else {
 					Rigidbody body = GetComponent<Rigidbody> ();

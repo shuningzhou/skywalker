@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoadGenerator : MonoBehaviour {
 	public RoadSection roadSection;
 	public GameObject player;
+	public CollectableManager collectableManager;
 
 	public Vector3 startPostion = new Vector3 (0f, 49.5f, 0f);
 	public Vector3 startDirection = Vector3.forward;
@@ -25,7 +26,7 @@ public class RoadGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 6; i++) {
 
 			Debug.Log ("Drawing..." + i);
 
@@ -42,6 +43,7 @@ public class RoadGenerator : MonoBehaviour {
 			}
 
 			var newRoadSection = Instantiate (roadSection, Vector3.zero, Quaternion.identity);
+			newRoadSection.collectableManager = collectableManager;
 			newRoadSection.maxRad = maxRad;
 			newRoadSection.minRad = minRad;
 			newRoadSection.maxRadius = maxRadius;
@@ -52,7 +54,8 @@ public class RoadGenerator : MonoBehaviour {
 			newRoadSection.totalCircleCenter = totalCircleCenter;
 			newRoadSection.totalCircleRadius = totalCircleRadius;
 			newRoadSection.width = 2f;
-			newRoadSection.thickness = 1f;
+			newRoadSection.thickness = 2f;
+			newRoadSection.stepLength = 0.2f;
 
 			newRoadSection.drawRoad ();
 

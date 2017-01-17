@@ -18,6 +18,10 @@ public class RoadSection : MonoBehaviour {
 	public Vector3 newTotalCircleCenter;
 	public float newTotalCircleRadius;
 
+	public float stepLength;
+
+	public CollectableManager collectableManager;
+
 	private int length;
 	private int radius;
 	private Vector3 startNormal;
@@ -55,7 +59,7 @@ public class RoadSection : MonoBehaviour {
 		mesh.Clear ();
 
 
-		for (float i = 0f; i < length; i = i + 0.2f)
+		for (float i = 0f; i < length; i = i + stepLength)
 		{
 			currentPoint = calculateRoadPoint(i);
 
@@ -65,6 +69,8 @@ public class RoadSection : MonoBehaviour {
 			} else {
 				currentDirection = Quaternion.AngleAxis (-360 * i / perimeter, Vector3.up) * startDirectrion;
 			}
+
+			collectableManager.moved (stepLength, currentPoint);
 
 			addRoadPoint (currentPoint, currentDirection);
 
@@ -94,8 +100,6 @@ public class RoadSection : MonoBehaviour {
 
 	void addRoadPoint(Vector3 point, Vector3 direction)
 	{
-		Debug.Log ("Adding: " + point + " " + direction);
-
 		float halfWidth = width / 2;
 
 		Vector3 rightNormal = getRightNormal (direction, true);
@@ -122,7 +126,6 @@ public class RoadSection : MonoBehaviour {
 		{
 			int start = points.Count - 8;
 			int cubeCount = points.Count / 4 - 1 - 1;
-			Debug.Log ("Start = " + start);
 
 			Vector3 p0 = points [start + 0];
 			Vector3 p1 = points [start + 1];
@@ -241,9 +244,9 @@ public class RoadSection : MonoBehaviour {
 
 		//		GameObject c = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		//		c.transform.position = center;
-		Debug.Log (center);
-		Debug.Log ("Radius = " + radius);
-		Debug.Log ("Length = " + length);
+//		Debug.Log (center);
+//		Debug.Log ("Radius = " + radius);
+//		Debug.Log ("Length = " + length);
 		//		c.transform.localScale = new Vector3 (2, 2, 2);
 
 
@@ -286,9 +289,6 @@ public class RoadSection : MonoBehaviour {
 			Vector3 centerMoveTimesRatio = centerMove * moveRatio;
 			newTotalCircleCenter = totalCircleCenter + centerMoveTimesRatio;
 		}
-
-		Debug.Log (td);
-		Debug.Log (tp);
 		Debug.DrawRay (tp, td * 10, Color.cyan, 100);
 	}
 
@@ -327,8 +327,6 @@ public class RoadSection : MonoBehaviour {
 	void randomValues()
 	{
 		float rad = Random.Range (minRad, maxRad);
-		Debug.Log("MaxRadius = "+ maxRadius);
-		Debug.Log("MinRadius = "+ minRadius);
 		radius = Random.Range (minRadius, maxRadius);
 		length = (int)(radius * rad);
 	}
