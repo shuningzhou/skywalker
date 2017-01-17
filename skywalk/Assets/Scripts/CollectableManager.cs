@@ -36,7 +36,8 @@ public class CollectableManager : MonoBehaviour {
 		{
 			Vector3 collectablePosition = new Vector3 (position.x, position.y + floatDistance, position.z);
 			createCollectableAt (collectablePosition);
-			space = Random.Range (40, 200);
+			distance = 0;
+			space = Random.Range (20, 200);
 		}
 	}
 
