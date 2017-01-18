@@ -57,13 +57,15 @@ public class RoadPoint : MonoBehaviour {
 
 	IEnumerator doDrop()
 	{
-		yield return new WaitForSeconds(0.4f);
+		yield return new WaitForSeconds(dropDelay);
 		dropped = true;
 		Rigidbody body = GetComponent<Rigidbody> ();
 		body.useGravity = true;
 		body.isKinematic = false;
-		nextRoadPoint.drop ();
 
+		if (nextRoadPoint) {
+			nextRoadPoint.drop ();
+		}
 	}
 
 	IEnumerator doDestroy()

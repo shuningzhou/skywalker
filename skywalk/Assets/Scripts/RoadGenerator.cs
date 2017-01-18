@@ -17,7 +17,6 @@ public class RoadGenerator : MonoBehaviour {
 	public float width;
 	public float thickness;
 	public int initalRoadSectionCount;
-	public int roadSectionThreshHold;
 
 	public bool turnRight = true;
 
@@ -73,7 +72,7 @@ public class RoadGenerator : MonoBehaviour {
 		currentStartDirection = startDirection;
 		currentTurnRight = turnRight;
 
-		generateRoadSection (initalRoadSectionCount);
+		generateRoadSections (initalRoadSectionCount);
 	}
 	
 	// Update is called once per frame
@@ -85,7 +84,12 @@ public class RoadGenerator : MonoBehaviour {
 		}
 	}
 
-	void generateRoadSection(int count)
+	public void generateNextRoadSections()
+	{
+		generateRoadSections (1);
+	}
+
+	void generateRoadSections(int count)
 	{
 		for (int i = 0; i < count; i++) {
 
@@ -126,6 +130,7 @@ public class RoadGenerator : MonoBehaviour {
 		newRoadSection.width = width;
 		newRoadSection.thickness = thickness;
 		newRoadSection.stepLength = stepLength;
+		newRoadSection.roadGenerator = this;
 
 		newRoadSection.drawRoad ();
 

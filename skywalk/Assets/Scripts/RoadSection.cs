@@ -21,6 +21,8 @@ public class RoadSection : MonoBehaviour {
 	public float stepLength;
 
 	public RoadPoint RoadPoint;
+	public SectionMark SectionMark;
+	public RoadGenerator roadGenerator;
 
 	public RoadPoint firstRoadPoint = null;
 	public RoadPoint lastRoadPoint = null;
@@ -92,6 +94,10 @@ public class RoadSection : MonoBehaviour {
 			previousPoint = currentPoint;
 			previousDirection = currentDirection;
 		}
+
+		Vector3 markPosition = new Vector3 (currentPoint.x, currentPoint.y + 1, currentPoint.z);
+		var mark = Instantiate (SectionMark, markPosition, Quaternion.identity);
+		mark.rd = roadGenerator;
 
 		calculateValuesForNextSection ();
 	}

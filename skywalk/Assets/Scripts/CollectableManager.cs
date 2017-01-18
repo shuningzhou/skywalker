@@ -42,7 +42,7 @@ public class CollectableManager : MonoBehaviour {
 			Vector3 collectablePosition = new Vector3 (position.x, position.y + floatDistance, position.z);
 			createCollectableAt (collectablePosition);
 			distance = 0;
-			space = Random.Range (20, 200);
+			space = Random.Range (10, 30);
 		}
 	}
 
