@@ -12,16 +12,21 @@ public class CollectableManager : MonoBehaviour {
 
 	private List<GameObject> collectables = new List<GameObject> ();
 
-	// Use this for initialization
-	void Start () {
+	void Awake()
+	{
 		distance = 0;
 		Vector3 startPosition = new Vector3 (0, -100, 0);
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < poolSize; i++)
 		{
 			GameObject c = Instantiate (collectable, startPosition, Quaternion.identity);
 			c.SetActive(false);
 			collectables.Add(c);
 		}
+	}
+
+	// Use this for initialization
+	void Start () {
+
 	}
 	
 	// Update is called once per frame
@@ -53,7 +58,7 @@ public class CollectableManager : MonoBehaviour {
 
 	public void createCollectableAt(Vector3 position)
 	{
-		for (int i = 0; i < 100; i++) 
+		for (int i = 0; i < poolSize; i++) 
 		{
 			GameObject c = collectables [i];
 

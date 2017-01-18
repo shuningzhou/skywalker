@@ -8,7 +8,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	bool rightInFront = false;
 	bool failed = false;
-	float rayReach = 1000.0f;
+	float rayReach = 2.0f;
 
 	public Vector3 getFootPosition()
 	{
@@ -47,12 +47,30 @@ public class CharacterMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (rightFoot != null && leftFoot != null) {
+			RaycastHit footHit;
+			if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road"))&& failed == false)
+			{
+				Rigidbody body = GetComponent<Rigidbody> ();
+				body.useGravity = true;
+				body.isKinematic = false;
+				failed = true;
+				if (rightInFront) {
+					body.AddRelativeTorque (Vector3.forward * 200);
+					body.AddRelativeTorque (Vector3.down * 250);
 
-			if (Input.GetButtonUp ("Horizontal") && failed == false) {
+				} else {
+					body.AddRelativeTorque (Vector3.forward * 200);
+					body.AddRelativeTorque (Vector3.up * 250);
+				}
+				body.AddForce (Vector3.down * 100);
+			}
+
+			if (Input.GetButtonUp ("Horizontal") && failed == false) 
+			{
+				RaycastHit movingHit;
 				Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
-				RaycastHit hit;
 
-				if (Physics.Raycast (getMovingPosition(), Vector3.down, out hit, rayReach) && (hit.transform.tag == "road"))
+				if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
 				{
 					doTurn ();
 				} 

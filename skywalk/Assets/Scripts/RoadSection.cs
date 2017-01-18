@@ -20,6 +20,11 @@ public class RoadSection : MonoBehaviour {
 
 	public float stepLength;
 
+	public RoadPoint RoadPoint;
+
+	public RoadPoint firstRoadPoint = null;
+	public RoadPoint lastRoadPoint = null;
+
 	public CollectableManager collectableManager;
 
 	private int length;
@@ -37,27 +42,12 @@ public class RoadSection : MonoBehaviour {
 
 	private bool acutallyTurnedRight;
 
-	private Mesh mesh;
-	private List<Vector3> points = new List<Vector3>();
-	private List<Vector3> vertices = new List<Vector3>();
-	private List<int> triangles = new List<int>();
-
 	public void drawRoad()
 	{
 		prepareAllNecessaryValues ();
 
-		MeshFilter filter = gameObject.GetComponent<MeshFilter>(); 
-		//MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>(); 
-		MeshCollider collier = gameObject.AddComponent<MeshCollider>();
-
-		if (filter.sharedMesh == null)
-		{
-			filter.sharedMesh = new Mesh ();
-		}
-			
-		mesh = filter.sharedMesh;
-		mesh.Clear ();
-
+		Vector3 previousPoint = Vector3.zero;
+		Vector3 previousDirection = Vector3.zero;
 
 		for (float i = 0f; i < length; i = i + stepLength)
 		{
@@ -69,147 +59,41 @@ public class RoadSection : MonoBehaviour {
 			} else {
 				currentDirection = Quaternion.AngleAxis (-360 * i / perimeter, Vector3.up) * startDirectrion;
 			}
-
+				
 			collectableManager.moved (stepLength, currentPoint);
 
-			addRoadPoint (currentPoint, currentDirection);
+			if (i > 0) 
+			{
+				var rd = Instantiate (RoadPoint, Vector3.zero, Quaternion.identity);
+				rd.position1 = previousPoint;
+				rd.direction1 = previousDirection;
+				rd.position2 = currentPoint;
+				rd.direction2 = currentDirection;
+				rd.width = width;
+				rd.thickness = thickness;
 
-//			GameObject r = GameObject.CreatePrimitive (PrimitiveType.Cylinder);
-//			r.transform.position = currentPoint;
-//			r.transform.localScale = new Vector3 (1.5f, 0.5f, 1.5f);
-//			r.tag = "road";
-//			Rigidbody rigidBody = r.AddComponent<Rigidbody>();
-//			rigidBody.isKinematic = true;
-//			if (degreeAngle > 90) {
-//				r.GetComponent<Renderer>().material.color = new Color(0, 255, 0); 
-//			}
+				Debug.Log ("0"+lastRoadPoint);
+
+				if (lastRoadPoint) 
+				{
+					Debug.Log ("1"+lastRoadPoint);
+					Debug.Log ("1"+rd);
+					lastRoadPoint.nextRoadPoint = rd;
+				}
+
+				lastRoadPoint = rd;
+
+				if (firstRoadPoint == null) 
+				{
+					firstRoadPoint = rd;
+				}
+			}
+				
+			previousPoint = currentPoint;
+			previousDirection = currentDirection;
 		}
-
-		mesh.vertices = vertices.ToArray ();
-		mesh.triangles = triangles.ToArray ();
-
-		Rigidbody rigidBody = gameObject.AddComponent<Rigidbody>();
-		rigidBody.isKinematic = true;
-
-		mesh.RecalculateNormals ();
-
-		collier.sharedMesh = mesh;
 
 		calculateValuesForNextSection ();
-	}
-
-	void addRoadPoint(Vector3 point, Vector3 direction)
-	{
-		float halfWidth = width / 2;
-
-		Vector3 rightNormal = getRightNormal (direction, true);
-		Vector3 leftNormal = getRightNormal (direction, false);
-
-		Vector3 rightPoint = new Vector3 (point.x + halfWidth * rightNormal.x,
-			point.y + halfWidth * rightNormal.y, 
-			point.z + halfWidth * rightNormal.z);
-		Vector3 leftPoint = new Vector3 (point.x + halfWidth * leftNormal.x,
-			point.y + halfWidth * leftNormal.y, 
-			point.z + halfWidth * leftNormal.z);
-
-		Vector3 rightBottomPoint = new Vector3 (rightPoint.x, rightPoint.y - thickness, rightPoint.z);
-		Vector3 leftBottomPoint = new Vector3 (leftPoint.x, leftPoint.y - thickness, leftPoint.z);
-
-		points.Add (leftBottomPoint);
-		points.Add (leftPoint);
-
-		points.Add (rightBottomPoint);
-		points.Add (rightPoint);
-
-		//Draw Body
-		if (points.Count >= 8) 
-		{
-			int start = points.Count - 8;
-			int cubeCount = points.Count / 4 - 1 - 1;
-
-			Vector3 p0 = points [start + 0];
-			Vector3 p1 = points [start + 1];
-			Vector3 p2 = points [start + 2];
-			Vector3 p3 = points [start + 3];
-			Vector3 p4 = points [start + 4];
-			Vector3 p5 = points [start + 5];
-			Vector3 p6 = points [start + 6];
-			Vector3 p7 = points [start + 7];
-
-			//left
-			vertices.Add(p4);//0
-			vertices.Add(p5);//1
-			vertices.Add(p1);//2
-			vertices.Add(p0);//3
-			//right
-			vertices.Add(p2);//4
-			vertices.Add(p3);//5
-			vertices.Add(p7);//6
-			vertices.Add(p6);//7
-			//front
-			vertices.Add(p0);//8
-			vertices.Add(p1);//9
-			vertices.Add(p3);//10
-			vertices.Add(p2);//11
-			//back
-			vertices.Add(p6);//12
-			vertices.Add(p7);//13
-			vertices.Add(p5);//14
-			vertices.Add(p4);//15
-			//top
-			vertices.Add(p1);//16
-			vertices.Add(p5);//17
-			vertices.Add(p7);//18
-			vertices.Add(p3);//19
-			//bot
-			vertices.Add(p2);//20
-			vertices.Add(p6);//21
-			vertices.Add(p4);//22
-			vertices.Add(p0);//23
-
-			//left
-			triangles.Add(0 + 24 * cubeCount);
-			triangles.Add(1 + 24 * cubeCount);
-			triangles.Add(2 + 24 * cubeCount);
-			triangles.Add(2 + 24 * cubeCount);
-			triangles.Add(3 + 24 * cubeCount);
-			triangles.Add(0 + 24 * cubeCount);
-			//right
-			triangles.Add(4 + 24 * cubeCount);
-			triangles.Add(5 + 24 * cubeCount);
-			triangles.Add(6 + 24 * cubeCount);
-			triangles.Add(6 + 24 * cubeCount);
-			triangles.Add(7 + 24 * cubeCount);
-			triangles.Add(4 + 24 * cubeCount);
-			//front
-			triangles.Add(8 + 24 * cubeCount);
-			triangles.Add(9 + 24 * cubeCount);
-			triangles.Add(10 + 24 * cubeCount);
-			triangles.Add(10 + 24 * cubeCount);
-			triangles.Add(11 + 24 * cubeCount);
-			triangles.Add(8 + 24 * cubeCount);
-			//back
-			triangles.Add(12 + 24 * cubeCount);
-			triangles.Add(13 + 24 * cubeCount);
-			triangles.Add(14 + 24 * cubeCount);
-			triangles.Add(14 + 24 * cubeCount);
-			triangles.Add(15 + 24 * cubeCount);
-			triangles.Add(12 + 24 * cubeCount);
-			//top
-			triangles.Add(16 + 24 * cubeCount);
-			triangles.Add(17 + 24 * cubeCount);
-			triangles.Add(18 + 24 * cubeCount);
-			triangles.Add(18 + 24 * cubeCount);
-			triangles.Add(19 + 24 * cubeCount);
-			triangles.Add(16 + 24 * cubeCount);
-			//bot
-			triangles.Add(20 + 24 * cubeCount);
-			triangles.Add(21 + 24 * cubeCount);
-			triangles.Add(22 + 24 * cubeCount);
-			triangles.Add(22 + 24 * cubeCount);
-			triangles.Add(23 + 24 * cubeCount);
-			triangles.Add(20 + 24 * cubeCount);
-		}
 	}
 
 	void prepareAllNecessaryValues()
@@ -292,19 +176,6 @@ public class RoadSection : MonoBehaviour {
 		Debug.DrawRay (tp, td * 10, Color.cyan, 100);
 	}
 
-	Vector3 getRightNormal(Vector3 d, bool right)
-	{
-		if (right)
-		{
-			return new Vector3 (d.z, d.y, -d.x);
-		}
-		else
-		{
-			return new Vector3 (-d.z, d.y, d.x);
-		} 
-	}
-
-
 	float angleBetweenVectors(Vector3 a, Vector3 b)
 	{
 		float dotProduct = a.x * b.x + a.y * b.y + a.z * b.z;
@@ -353,7 +224,17 @@ public class RoadSection : MonoBehaviour {
 		return result;
 	}
 
-
+	Vector3 getRightNormal(Vector3 d, bool right)
+	{
+		if (right)
+		{
+			return new Vector3 (d.z, d.y, -d.x);
+		}
+		else
+		{
+			return new Vector3 (-d.z, d.y, d.x);
+		} 
+	}
 
 	// Use this for initialization
 	void Start () {
