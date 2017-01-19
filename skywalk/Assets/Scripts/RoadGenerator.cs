@@ -79,7 +79,7 @@ public class RoadGenerator : MonoBehaviour {
 	void Update () {
 		if (!dropped)
 		{
-			firstRoadPoint.drop ();
+			//firstRoadPoint.drop ();
 			dropped = true;
 		}
 	}
