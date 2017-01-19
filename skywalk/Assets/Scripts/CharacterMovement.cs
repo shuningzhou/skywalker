@@ -42,6 +42,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void doTurn() {
 		rightInFront = !rightInFront;
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 	}
 
 	// Update is called once per frame

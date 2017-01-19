@@ -20,6 +20,7 @@ public class Collectable : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		ContactPoint contact = collision.contacts[0];
 		Vector3 pos = contact.point;
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
 
 		doParticle (pos);
 
