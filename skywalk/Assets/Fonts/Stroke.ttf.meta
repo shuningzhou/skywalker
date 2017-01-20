@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c8b49af9219af4b7bad1b2b536ecb27f
+timeCreated: 1484892614
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Stroke
+  fontNames:
+  - Stroke
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

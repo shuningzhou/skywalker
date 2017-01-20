@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2a1523b6326684a0ea642ae46f07271a
+timeCreated: 1484892573
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Europe Underground
+  fontNames:
+  - Europe Underground
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 04a95fa8770c94a38b51072423abd799, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

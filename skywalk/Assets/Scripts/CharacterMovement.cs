@@ -5,6 +5,7 @@ public class CharacterMovement : MonoBehaviour {
 	public float rotateSpeed = 250.0f;
 	public GameObject leftFoot;
 	public GameObject rightFoot;
+	public GameManager gameManager;
 
 	bool rightInFront = false;
 	bool failed = false;
@@ -45,25 +46,45 @@ public class CharacterMovement : MonoBehaviour {
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 	}
 
+	void doFailed()
+	{
+		Rigidbody body = GetComponent<Rigidbody> ();
+		body.useGravity = true;
+		body.isKinematic = false;
+		failed = true;
+		if (rightInFront) {
+			body.AddRelativeTorque (Vector3.forward * 200);
+			body.AddRelativeTorque (Vector3.down * 250);
+
+		} else {
+			body.AddRelativeTorque (Vector3.forward * 200);
+			body.AddRelativeTorque (Vector3.up * 250);
+		}
+		body.AddForce (Vector3.down * 100);
+		gameManager.playerFailed ();
+	}
+
+	void checkFailed()
+	{
+		RaycastHit movingHit;
+		Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
+
+		if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
+		{
+			doTurn ();
+		} 
+		else {
+			doFailed ();
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (rightFoot != null && leftFoot != null) {
 			RaycastHit footHit;
 			if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road"))&& failed == false)
 			{
-				Rigidbody body = GetComponent<Rigidbody> ();
-				body.useGravity = true;
-				body.isKinematic = false;
-				failed = true;
-				if (rightInFront) {
-					body.AddRelativeTorque (Vector3.forward * 200);
-					body.AddRelativeTorque (Vector3.down * 250);
-
-				} else {
-					body.AddRelativeTorque (Vector3.forward * 200);
-					body.AddRelativeTorque (Vector3.up * 250);
-				}
-				body.AddForce (Vector3.down * 100);
+				doFailed ();
 			}
 
 			//iOS/android control
@@ -71,56 +92,14 @@ public class CharacterMovement : MonoBehaviour {
 				Touch touch = Input.GetTouch(0);
 
 				if (touch.phase == TouchPhase.Ended) {
-					RaycastHit movingHit;
-					Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
-
-					if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
-					{
-						doTurn ();
-					} 
-					else {
-						Rigidbody body = GetComponent<Rigidbody> ();
-						body.useGravity = true;
-						body.isKinematic = false;
-						failed = true;
-						if (rightInFront) {
-							body.AddRelativeTorque (Vector3.forward * 200);
-							body.AddRelativeTorque (Vector3.down * 250);
-
-						} else {
-							body.AddRelativeTorque (Vector3.forward * 200);
-							body.AddRelativeTorque (Vector3.up * 250);
-						}
-						body.AddForce (Vector3.down * 100);
-					}
+					checkFailed ();
 				}
 			}
 
 			//keyboard control
 			if (Input.GetButtonUp ("Horizontal") && failed == false) 
 			{
-				RaycastHit movingHit;
-				Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
-
-				if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
-				{
-					doTurn ();
-				} 
-				else {
-					Rigidbody body = GetComponent<Rigidbody> ();
-					body.useGravity = true;
-					body.isKinematic = false;
-					failed = true;
-					if (rightInFront) {
-						body.AddRelativeTorque (Vector3.forward * 200);
-						body.AddRelativeTorque (Vector3.down * 250);
-
-					} else {
-						body.AddRelativeTorque (Vector3.forward * 200);
-						body.AddRelativeTorque (Vector3.up * 250);
-					}
-					body.AddForce (Vector3.down * 100);
-				}
+				checkFailed ();
 			}
 
 			if (failed == false) {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CollectableManager : MonoBehaviour {
 	public GameObject collectable;
+	public GameManager gameManager;
 
 	private int distance;
 	public int space = 100;
@@ -19,6 +20,8 @@ public class CollectableManager : MonoBehaviour {
 		for (int i = 0; i < poolSize; i++)
 		{
 			GameObject c = Instantiate (collectable, startPosition, Quaternion.identity);
+			Collectable ca = c.GetComponent<Collectable> ();
+			ca.gameManager = gameManager;
 			c.SetActive(false);
 			collectables.Add(c);
 		}

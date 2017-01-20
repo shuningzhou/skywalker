@@ -74,12 +74,8 @@ public class RoadSection : MonoBehaviour {
 				rd.width = width;
 				rd.thickness = thickness;
 
-				Debug.Log ("0"+lastRoadPoint);
-
 				if (lastRoadPoint) 
 				{
-					Debug.Log ("1"+lastRoadPoint);
-					Debug.Log ("1"+rd);
 					lastRoadPoint.nextRoadPoint = rd;
 				}
 
