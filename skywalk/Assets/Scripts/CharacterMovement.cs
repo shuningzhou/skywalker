@@ -66,6 +66,37 @@ public class CharacterMovement : MonoBehaviour {
 				body.AddForce (Vector3.down * 100);
 			}
 
+			//iOS/android control
+			if (Input.touchCount > 0) {
+				Touch touch = Input.GetTouch(0);
+
+				if (touch.phase == TouchPhase.Ended) {
+					RaycastHit movingHit;
+					Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
+
+					if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
+					{
+						doTurn ();
+					} 
+					else {
+						Rigidbody body = GetComponent<Rigidbody> ();
+						body.useGravity = true;
+						body.isKinematic = false;
+						failed = true;
+						if (rightInFront) {
+							body.AddRelativeTorque (Vector3.forward * 200);
+							body.AddRelativeTorque (Vector3.down * 250);
+
+						} else {
+							body.AddRelativeTorque (Vector3.forward * 200);
+							body.AddRelativeTorque (Vector3.up * 250);
+						}
+						body.AddForce (Vector3.down * 100);
+					}
+				}
+			}
+
+			//keyboard control
 			if (Input.GetButtonUp ("Horizontal") && failed == false) 
 			{
 				RaycastHit movingHit;
