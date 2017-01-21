@@ -26,7 +26,7 @@ public class GameGUI : MonoBehaviour {
 	private Vector3 videoButtonPosition;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		restartButtonPosition = restartButton.transform.position;
 		videoButtonPosition = videoButton.transform.position;
 		hideBothPause ();

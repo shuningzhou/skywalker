@@ -142,7 +142,7 @@ public class CharacterMovement : MonoBehaviour {
 		}
 		body.AddForce (Vector3.down * 100);
 		gameManager.append ("doFailed1");
-		gameManager.playerFailed ();
+		gameManager.playerFailed (false);
 	}
 
 	void checkFailed()

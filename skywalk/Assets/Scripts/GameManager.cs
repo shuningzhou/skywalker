@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using System;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 	public GameGUI gameGUI;
@@ -22,22 +20,35 @@ public class GameManager : MonoBehaviour {
 
 	private string debugText;
 
+	public string PREF_COLLECTED = "collected";
+	public string PREF_DISTANCE = "distance";
+	public string PREF_DATE = "date";
+
 	// Use this for initialization
 	void Awake()
 	{
-		append ("Awake");
-//		GameData oldData = loadGameData ();
-//		append ("Awake1");
-//		diamondCount = oldData.collectableCount;
-//		append ("Awake2");
+
 	}
 
 	void Start () 
 	{
-		if (shouldShowTip) {
-			gameGUI.showTipPanel ();
+		append ("Awake");
+		diamondCount = PlayerPrefs.GetInt(PREF_COLLECTED);
+		if (diamondCount < 20) {
+			playerFailed (true);
 		} else {
-			gameStart ();
+			PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount - 20);
+			PlayerPrefs.Save();
+
+			diamondCount = PlayerPrefs.GetInt(PREF_COLLECTED);
+
+			if (shouldShowTip) {
+				gameGUI.showTipPanel ();
+			} else {
+				gameStart ();
+			}
+
+			gameGUI.setDiamond (diamondCount);
 		}
 	}
 
@@ -63,24 +74,25 @@ public class GameManager : MonoBehaviour {
 		return gameOver;
 	}
 
-	public void playerFailed()
+	public void playerFailed(bool forced)
 	{
 		append ("playerFailed");
 		gameOver = true;
-		cameraMovement.playerFailed ();
+		cameraMovement.playerFailed (forced);
 		characterMovement.doGameEnd ();
-		//SCAnalytics.logGameOverEvent (totalDistance, diamondCountThisRound);
+		SCAnalytics.logGameOverEvent (totalDistance, diamondCountThisRound);
 
-		GameData oldData = loadGameData ();
-		oldData.collectableCount = diamondCount;
+		PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount);
+		PlayerPrefs.Save();
+
 		append ("playerFailed1");
-		if (totalDistance > oldData.bestEntryDistance) 
+		if (totalDistance > PlayerPrefs.GetInt (PREF_DISTANCE)) 
 		{
-			oldData.bestEntryDate = DateTime.Now;
-			oldData.bestEntryDistance = totalDistance;
+			PlayerPrefs.SetString (PREF_DATE, DateTime.Now.ToString ());
+			PlayerPrefs.SetFloat (PREF_DISTANCE, totalDistance);
+			PlayerPrefs.Save();
 		}
 		append ("playerFailed2");
-		saveGameData (oldData);
 
 		gameGUI.playerFailed (diamondCount);
 	}
@@ -120,6 +132,9 @@ public class GameManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			Debug.Log("The ad was successfully shown.");
+			PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount + 20);
+			PlayerPrefs.Save();
+			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 			//
 			// YOUR CODE TO REWARD THE GAMER
 			// Give coins etc.
@@ -131,41 +146,6 @@ public class GameManager : MonoBehaviour {
 			Debug.LogError("The ad failed to be shown.");
 			break;
 		}
-	}
-
-	public GameData loadGameData()
-	{
-		//return new GameData();
-		try {
-			var scoresFile = Application.persistentDataPath +
-				"/" + "gameData.dat";
-			append (scoresFile);
-			var stream = File.Open(scoresFile, FileMode.Open);
-			append ("scoresFile1");
-			var bin = new BinaryFormatter();
-			append ("scoresFile2");
-			var gd = (GameData)bin.Deserialize(stream);
-			append ("scoresFile3");
-			return gd;
-		}
-		catch (IOException ex) {
-			append ("Couldn’t load GameData." + " Exception: " + ex.Message);
-
-			Debug.LogWarning("Couldn’t load GameData." + " Exception: " + ex.Message);
-			return new GameData();
-		}
-	}
-
-	public void saveGameData(GameData gameData) 
-	{
-		append ("Save1");
-		var bFormatter = new BinaryFormatter();
-		var filePath = Application.persistentDataPath +
-			"/" + "gameData.dat";
-		using (var file = File.Open(filePath, FileMode.Create)) {
-			bFormatter.Serialize(file, gameData);
-		}
-		append ("Save2");
 	}
 
 	public void append(string txt)

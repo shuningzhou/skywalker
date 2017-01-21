@@ -40,9 +40,13 @@ public class CameraMovement : MonoBehaviour {
 		}
 	}
 
-	public void playerFailed()
+	public void playerFailed(bool forced)
 	{
-		StartCoroutine (doRise ());
+		if (forced) {
+			shouldRise = true;
+		} else {
+			StartCoroutine (doRise ());
+		}
 	}
 
 	IEnumerator doRise()
