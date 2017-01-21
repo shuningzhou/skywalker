@@ -9,8 +9,12 @@ public class GameGUI : MonoBehaviour {
 	public Button pauseButton;
 	public Button resumeButton;
 	public Button restartButton;
+	public Button videoButton;
+
 	public Text ifYouFail;
 	public Text diamondCount;
+	public Text distanceCount;
+
 	public GameObject tipPanel;
 	public GameManager gameManager;
 
@@ -19,10 +23,13 @@ public class GameGUI : MonoBehaviour {
 	public float ifYouFailAlpha = 0f;
 
 	private Vector3 restartButtonPosition;
+	private Vector3 videoButtonPosition;
 
 	// Use this for initialization
 	void Start () {
 		restartButtonPosition = restartButton.transform.position;
+		videoButtonPosition = videoButton.transform.position;
+		hideBothPause ();
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)
@@ -46,6 +53,7 @@ public class GameGUI : MonoBehaviour {
 	void Update()
 	{
 		lerpButtonToPosition (restartButton, restartButtonPosition);
+		lerpButtonToPosition (videoButton, videoButtonPosition);
 		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
 
@@ -65,16 +73,22 @@ public class GameGUI : MonoBehaviour {
 		gameManager.resumeGame ();
 	}
 
-	public void playerFailed()
+	public void playerFailed(int diamondCount)
 	{
 		hideBothPause ();
 		ifYouFailAlpha = 1;
 		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
+		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
 	}
 
 	public void restartGame()
 	{
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
+
+	public void showVideo()
+	{
+		SCAds.ShowRewardedAd (gameManager);
 	}
 
 	public void showTipPanel()
@@ -105,6 +119,11 @@ public class GameGUI : MonoBehaviour {
 	public void setDiamond(int count)
 	{
 		diamondCount.text = count.ToString();
+	}
+
+	public void setDistance(float distance)
+	{
+		distanceCount.text = distance.ToString("0.0");
 	}
 
 }

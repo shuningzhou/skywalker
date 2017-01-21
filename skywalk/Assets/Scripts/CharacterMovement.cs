@@ -122,10 +122,13 @@ public class CharacterMovement : MonoBehaviour {
 	void doTurn() {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
+		float movedDistance = calculateDistance ();
+		gameManager.playerMoved (movedDistance);
 	}
 
 	void doFailed()
 	{
+		gameManager.append ("doFailed");
 		Rigidbody body = GetComponent<Rigidbody> ();
 		body.useGravity = true;
 		body.isKinematic = false;
@@ -138,6 +141,7 @@ public class CharacterMovement : MonoBehaviour {
 			body.AddRelativeTorque (Vector3.up * 250);
 		}
 		body.AddForce (Vector3.down * 100);
+		gameManager.append ("doFailed1");
 		gameManager.playerFailed ();
 	}
 
@@ -153,5 +157,15 @@ public class CharacterMovement : MonoBehaviour {
 		else {
 			doFailed ();
 		}
+	}
+
+	float calculateDistance ()
+	{
+//		Vector3 newPosition = getFootPosition ();
+//		Debug.Log (newPosition);
+//		Debug.Log (lastPosition);
+//		float distance = Mathf.Sqrt((newPosition.z - lastPosition.z) * (newPosition.z - lastPosition.z) + (newPosition.x - lastPosition.x) * (newPosition.x - lastPosition.x));
+//		return distance/2f;
+		return 1.5f;
 	}
 }
