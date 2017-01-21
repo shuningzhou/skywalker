@@ -8,9 +8,8 @@ public class CharacterMovement : MonoBehaviour {
 	public GameManager gameManager;
 
 	bool rightInFront = false;
-	bool failed = false;
 	float rayReach = 2.0f;
-	bool gameStarted = false;
+	bool gameRunning = false;
 
 	public Vector3 getFootPosition()
 	{
@@ -45,7 +44,7 @@ public class CharacterMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (!gameStarted || failed) 
+		if (!gameRunning) 
 		{
 			return;
 		}
@@ -101,8 +100,24 @@ public class CharacterMovement : MonoBehaviour {
 
 	public void doGameStart ()
 	{
-		gameStarted = true;
+		gameRunning = true;
 	}
+
+	public void doGamePaused()
+	{
+		gameRunning = false;
+	}
+
+	public void doGameResume()
+	{
+		gameRunning = true;
+	}
+
+	public void doGameEnd()
+	{
+		gameRunning = false;
+	}
+
 
 	void doTurn() {
 		rightInFront = !rightInFront;
@@ -114,7 +129,6 @@ public class CharacterMovement : MonoBehaviour {
 		Rigidbody body = GetComponent<Rigidbody> ();
 		body.useGravity = true;
 		body.isKinematic = false;
-		failed = true;
 		if (rightInFront) {
 			body.AddRelativeTorque (Vector3.forward * 200);
 			body.AddRelativeTorque (Vector3.down * 250);

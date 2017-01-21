@@ -11,25 +11,18 @@ public class GameGUI : MonoBehaviour {
 	public Button restartButton;
 	public Text ifYouFail;
 	public Text diamondCount;
+	public GameObject tipPanel;
+	public GameManager gameManager;
 
 	public float uiMoveSpeed;
 	public float alphaChangeSpped;
+	public float ifYouFailAlpha = 0f;
 
-	private Vector3 pauseButtonPosition;
-	private Vector3 resumeButtonPosition;
 	private Vector3 restartButtonPosition;
-
-	private Vector3 originalButtonPosition;
-
-	private float ifYouFailAlpha;
 
 	// Use this for initialization
 	void Start () {
-		pauseButtonPosition = pauseButton.transform.position;
-		resumeButtonPosition = resumeButton.transform.position;
 		restartButtonPosition = restartButton.transform.position;
-		originalButtonPosition = pauseButtonPosition;
-		ifYouFailAlpha = ifYouFail.color.a;
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)
@@ -56,48 +49,57 @@ public class GameGUI : MonoBehaviour {
 		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
 
-	void updateButtonsPosition()
-	{
-		moveButtonToPosition (pauseButton, pauseButtonPosition);
-		moveButtonToPosition (resumeButton, resumeButtonPosition);
-	}
-
-	void hideAll()
-	{
-
-	}
-
 	public void pauseGame()
 	{
 		Debug.Log ("Pause");
 		Time.timeScale = 0f;
-		pauseButtonPosition.x = pauseButtonPosition.x - 1000f;
-		resumeButtonPosition.x = originalButtonPosition.x;
-		updateButtonsPosition ();
+		showPause (false);
+		gameManager.pauseGame ();
 	}
 
 	public void resumeGame()
 	{
 		Debug.Log ("resume");
 		Time.timeScale = 1f;
-		pauseButtonPosition.x = originalButtonPosition.x;
-		resumeButtonPosition.x = resumeButtonPosition.x - 1000f;
-		updateButtonsPosition ();
+		showPause (true);
+		gameManager.resumeGame ();
 	}
 
 	public void playerFailed()
 	{
-		pauseButtonPosition.x = pauseButtonPosition.x - 1000f;
-		updateButtonsPosition ();
-
+		hideBothPause ();
+		ifYouFailAlpha = 1;
 		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
-
-		ifYouFailAlpha = 1f;
 	}
 
 	public void restartGame()
 	{
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
+
+	public void showTipPanel()
+	{
+		tipPanel.SetActive (true);
+		hideBothPause ();
+	}
+
+	public void hideTipPanel()
+	{
+		tipPanel.SetActive (false);
+		gameManager.gameStart ();
+		showPause (true);
+	}
+
+	void showPause(bool show)
+	{
+		pauseButton.gameObject.SetActive(show);
+		resumeButton.gameObject.SetActive(!show);
+	}
+
+	void hideBothPause()
+	{
+		pauseButton.gameObject.SetActive(false);
+		resumeButton.gameObject.SetActive(false);
 	}
 
 	public void setDiamond(int count)

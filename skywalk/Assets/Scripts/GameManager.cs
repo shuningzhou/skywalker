@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 
 	private bool gameOver = false;
 	private int diamondCount = 0;
+	private bool shouldShowTip = true;
 
 	// Use this for initialization
 	void Awake()
@@ -18,7 +19,11 @@ public class GameManager : MonoBehaviour {
 
 	void Start () 
 	{
-		gameStart ();
+		if (shouldShowTip) {
+			gameGUI.showTipPanel ();
+		} else {
+			gameStart ();
+		}
 	}
 
 	public void gameStart()
@@ -48,11 +53,28 @@ public class GameManager : MonoBehaviour {
 		gameOver = true;
 		cameraMovement.playerFailed ();
 		gameGUI.playerFailed ();
+		characterMovement.doGameEnd ();
 	}
 
 	public void collectedDiamond()
 	{
 		diamondCount = diamondCount + 1;
 		gameGUI.setDiamond (diamondCount);
+	}
+
+	public void pauseGame()
+	{
+		characterMovement.doGamePaused ();
+	}
+
+	public void resumeGame()
+	{
+		StartCoroutine (doResume());
+	}
+
+	IEnumerator doResume()
+	{
+		yield return new WaitForSeconds(0.2f);
+		characterMovement.doGameResume ();
 	}
 }
