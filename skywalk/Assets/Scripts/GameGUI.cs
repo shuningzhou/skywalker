@@ -19,6 +19,8 @@ public class GameGUI : MonoBehaviour {
 	private Vector3 resumeButtonPosition;
 	private Vector3 restartButtonPosition;
 
+	private Vector3 originalButtonPosition;
+
 	private float ifYouFailAlpha;
 
 	// Use this for initialization
@@ -26,6 +28,7 @@ public class GameGUI : MonoBehaviour {
 		pauseButtonPosition = pauseButton.transform.position;
 		resumeButtonPosition = resumeButton.transform.position;
 		restartButtonPosition = restartButton.transform.position;
+		originalButtonPosition = pauseButtonPosition;
 		ifYouFailAlpha = ifYouFail.color.a;
 	}
 		
@@ -43,8 +46,6 @@ public class GameGUI : MonoBehaviour {
 	void lerpTextAlpha (Text t, float a)
 	{
 		Color newColor = t.color;
-		Debug.Log ("old a = "  + newColor.a);
-		Debug.Log ("new a = " + a);
 		newColor.a = Mathf.Lerp (newColor.a, a, Time.deltaTime * uiMoveSpeed);
 		t.color = newColor;
 	}
@@ -70,8 +71,8 @@ public class GameGUI : MonoBehaviour {
 	{
 		Debug.Log ("Pause");
 		Time.timeScale = 0f;
-		pauseButtonPosition.x = pauseButtonPosition.x - 60f;
-		resumeButtonPosition.x = resumeButtonPosition.x + 60f;
+		pauseButtonPosition.x = pauseButtonPosition.x - 1000f;
+		resumeButtonPosition.x = originalButtonPosition.x;
 		updateButtonsPosition ();
 	}
 
@@ -79,17 +80,17 @@ public class GameGUI : MonoBehaviour {
 	{
 		Debug.Log ("resume");
 		Time.timeScale = 1f;
-		pauseButtonPosition.x = pauseButtonPosition.x + 60f;
-		resumeButtonPosition.x = resumeButtonPosition.x - 60f;
+		pauseButtonPosition.x = originalButtonPosition.x;
+		resumeButtonPosition.x = resumeButtonPosition.x - 1000f;
 		updateButtonsPosition ();
 	}
 
-	public void playedFailed()
+	public void playerFailed()
 	{
-		pauseButtonPosition.x = pauseButtonPosition.x - 60f;
+		pauseButtonPosition.x = pauseButtonPosition.x - 1000f;
 		updateButtonsPosition ();
 
-		restartButtonPosition.y = restartButtonPosition.y + 250f;
+		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
 
 		ifYouFailAlpha = 1f;
 	}

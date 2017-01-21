@@ -4,20 +4,50 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 	public GameGUI gameGUI;
+	public CameraMovement cameraMovement;
+	public RoadGenerator roadGenerator;
+	public CharacterMovement characterMovement;
+
+	private bool gameOver = false;
 	private int diamondCount = 0;
+
 	// Use this for initialization
-	void Start () {
-		
+	void Awake()
+	{
 	}
-	
+
+	void Start () 
+	{
+		gameStart ();
+	}
+
+	public void gameStart()
+	{
+		StartCoroutine (doStart ());
+	}
+
+	IEnumerator doStart()
+	{
+		yield return new WaitForSeconds(1);
+		roadGenerator.doGameStart ();
+		characterMovement.doGameStart ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
+	public bool isGameOver()
+	{
+		return gameOver;
+	}
+
 	public void playerFailed()
 	{
-		gameGUI.playedFailed ();
+		gameOver = true;
+		cameraMovement.playerFailed ();
+		gameGUI.playerFailed ();
 	}
 
 	public void collectedDiamond()

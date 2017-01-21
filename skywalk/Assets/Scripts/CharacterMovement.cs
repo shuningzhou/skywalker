@@ -10,6 +10,7 @@ public class CharacterMovement : MonoBehaviour {
 	bool rightInFront = false;
 	bool failed = false;
 	float rayReach = 2.0f;
+	bool gameStarted = false;
 
 	public Vector3 getFootPosition()
 	{
@@ -39,6 +40,68 @@ public class CharacterMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+	}
+
+	// Update is called once per frame
+	void Update () {
+
+		if (!gameStarted || failed) 
+		{
+			return;
+		}
+			
+		checkRoadCollapsed ();
+		checkForMobile ();
+		checkForKeyboard ();
+		keepRotating ();
+	}
+
+	void checkRoadCollapsed()
+	{
+		RaycastHit footHit;
+		if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road")))
+		{
+			doFailed ();
+		}
+	}
+
+	void checkForMobile()
+	{
+		if (Input.touchCount > 0) {
+			Touch touch = Input.GetTouch(0);
+
+			if (touch.phase == TouchPhase.Ended) {
+				checkFailed ();
+			}
+		}
+	}
+
+	void checkForKeyboard()
+	{
+		if (Input.GetButtonUp ("Horizontal")) 
+		{
+			checkFailed ();
+		}
+	}
+
+	void keepRotating()
+	{
+		if (rightInFront) 
+		{
+			//rotate around the right foot
+			transform.RotateAround (rightFoot.transform.position, Vector3.down, rotateSpeed * Time.deltaTime);
+
+		} else {
+
+			//rotate around the right foot
+			transform.RotateAround (leftFoot.transform.position, Vector3.up, rotateSpeed * Time.deltaTime);
+
+		}
+	}
+
+	public void doGameStart ()
+	{
+		gameStarted = true;
 	}
 
 	void doTurn() {
@@ -77,48 +140,4 @@ public class CharacterMovement : MonoBehaviour {
 			doFailed ();
 		}
 	}
-
-	// Update is called once per frame
-	void Update () {
-		if (rightFoot != null && leftFoot != null) {
-			RaycastHit footHit;
-			if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road"))&& failed == false)
-			{
-				doFailed ();
-			}
-
-			//iOS/android control
-			if (Input.touchCount > 0) {
-				Touch touch = Input.GetTouch(0);
-
-				if (touch.phase == TouchPhase.Ended) {
-					checkFailed ();
-				}
-			}
-
-			//keyboard control
-			if (Input.GetButtonUp ("Horizontal") && failed == false) 
-			{
-				checkFailed ();
-			}
-
-			if (failed == false) {
-				if (rightInFront) {
-
-					//rotate around the right foot
-					transform.RotateAround (rightFoot.transform.position, Vector3.down, rotateSpeed * Time.deltaTime);
-
-				} else {
-
-					//rotate around the right foot
-					transform.RotateAround (leftFoot.transform.position, Vector3.up, rotateSpeed * Time.deltaTime);
-
-				}
-
-//				transform.position = new Vector3(transform.position.x, 52f, transform.position.z);
-			} 
-		}
-	}
-
-
 }

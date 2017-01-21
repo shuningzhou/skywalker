@@ -33,8 +33,6 @@ public class RoadGenerator : MonoBehaviour {
 	private RoadPoint firstRoadPoint;
 	private RoadPoint previousRoadPoint;
 
-	private bool dropped = false;
-
 	// Use this for initialization
 	void Start () 
 	{
@@ -77,11 +75,11 @@ public class RoadGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!dropped)
-		{
-			firstRoadPoint.drop ();
-			dropped = true;
-		}
+	}
+
+	public void doGameStart ()
+	{
+		firstRoadPoint.drop ();
 	}
 
 	public void generateNextRoadSections()
