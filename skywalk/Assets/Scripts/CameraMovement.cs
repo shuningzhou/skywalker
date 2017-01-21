@@ -7,8 +7,10 @@ public class CameraMovement : MonoBehaviour {
 	public float riseSpeed;
 	public float rotateSpeed;
 	public float maxHeight;
+	public float forcedMaxHeight;
 	public float riseDelay;
 
+	private float currentMaxHeight;
 	private bool shouldRise = false;
 
 	// Use this for initialization
@@ -22,7 +24,7 @@ public class CameraMovement : MonoBehaviour {
 			
 			if (shouldRise) {
 				Vector3 position = transform.position;
-				position.y = maxHeight;
+				position.y = currentMaxHeight;
 				transform.position = Vector3.Lerp(transform.position,
 					position, Time.deltaTime * riseSpeed);
 				transform.Rotate(Vector3.down, rotateSpeed * Time.deltaTime);
@@ -44,8 +46,10 @@ public class CameraMovement : MonoBehaviour {
 	{
 		if (forced) {
 			shouldRise = true;
+			currentMaxHeight = forcedMaxHeight;
 		} else {
 			StartCoroutine (doRise ());
+			currentMaxHeight = maxHeight;
 		}
 	}
 
