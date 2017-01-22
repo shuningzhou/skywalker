@@ -22,14 +22,24 @@ public class App42Helper : MonoBehaviour {
 
 	string createUserName()
 	{
+		return "Guest";
 	}
 
 	string createUserPassword()
 	{
+		return "Guestpw";
 	}
 
 	void createGuestUser()
 	{
 		
+	}
+
+	void uploadScoreForUser(float score)
+	{
+	}
+
+	void getTop5Score()
+	{
 	}
 }
