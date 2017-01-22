@@ -128,7 +128,6 @@ public class CharacterMovement : MonoBehaviour {
 
 	void doFailed()
 	{
-		gameManager.append ("doFailed");
 		Rigidbody body = GetComponent<Rigidbody> ();
 		body.useGravity = true;
 		body.isKinematic = false;
@@ -141,7 +140,6 @@ public class CharacterMovement : MonoBehaviour {
 			body.AddRelativeTorque (Vector3.up * 250);
 		}
 		body.AddForce (Vector3.down * 100);
-		gameManager.append ("doFailed1");
 		gameManager.playerFailed (false);
 	}
 

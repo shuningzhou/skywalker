@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour {
 	//private float bestDistance = 0;
 	private int diamondCountThisRound = 0;
 
-	private string debugText;
-
 	public string PREF_COLLECTED = "collected";
 	public string PREF_DISTANCE = "distance";
 	public string PREF_DATE = "date";
@@ -32,8 +30,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start () 
 	{
-		append ("Awake");
 		diamondCount = PlayerPrefs.GetInt(PREF_COLLECTED);
+
 		if (diamondCount < 20) {
 			playerFailed (true);
 		} else {
@@ -62,6 +60,8 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(1);
 		roadGenerator.doGameStart ();
 		characterMovement.doGameStart ();
+	
+		EveryPlayHelper.Instance.startRecording ();
 	}
 
 	// Update is called once per frame
@@ -76,25 +76,32 @@ public class GameManager : MonoBehaviour {
 
 	public void playerFailed(bool forced)
 	{
-		append ("playerFailed");
+		characterMovement.doGameEnd ();
+
+		StartCoroutine (doFailed (forced));
+	}
+
+	IEnumerator doFailed(bool forced)
+	{
+		yield return new WaitForSeconds(3);
 		gameOver = true;
 		cameraMovement.playerFailed (forced);
-		characterMovement.doGameEnd ();
 		SCAnalytics.logGameOverEvent (totalDistance, diamondCountThisRound);
 
 		PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount);
 		PlayerPrefs.Save();
 
-		append ("playerFailed1");
 		if (totalDistance > PlayerPrefs.GetInt (PREF_DISTANCE)) 
 		{
 			PlayerPrefs.SetString (PREF_DATE, DateTime.Now.ToString ());
 			PlayerPrefs.SetFloat (PREF_DISTANCE, totalDistance);
 			PlayerPrefs.Save();
 		}
-		append ("playerFailed2");
 
 		gameGUI.playerFailed (diamondCount);
+
+		EveryPlayHelper.Instance.stopRecording ();
+		EveryPlayHelper.Instance.setDemo ();
 	}
 
 	public void collectedDiamond()
@@ -146,25 +153,5 @@ public class GameManager : MonoBehaviour {
 			Debug.LogError("The ad failed to be shown.");
 			break;
 		}
-	}
-
-	public void append(string txt)
-	{
-		debugText = debugText + txt;
-		debugText = debugText + "\n";
-	}
-
-	void OnGUI()
-	{
-		int w = Screen.width, h = Screen.height;
-
-		GUIStyle style = new GUIStyle();
-
-		Rect rect = new Rect(0, 0, w, h * 2 / 100);
-		style.alignment = TextAnchor.UpperLeft;
-		style.fontSize = h * 2 / 100;
-		style.normal.textColor = new Color (0.0f, 0.0f, 0.5f, 1.0f);
-		string text = debugText;
-		GUI.Label(rect, text, style);
 	}
 }

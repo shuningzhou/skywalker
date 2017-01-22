@@ -10,6 +10,8 @@ public class GameGUI : MonoBehaviour {
 	public Button resumeButton;
 	public Button restartButton;
 	public Button videoButton;
+	public Button watchReplayButton;
+	public Button demoButton;
 
 	public Text ifYouFail;
 	public Text diamondCount;
@@ -24,11 +26,16 @@ public class GameGUI : MonoBehaviour {
 
 	private Vector3 restartButtonPosition;
 	private Vector3 videoButtonPosition;
+	private Vector3 watchReplayButtonPosition;
+	private Vector3 demoButtonPosition;
 
 	// Use this for initialization
 	void Awake () {
 		restartButtonPosition = restartButton.transform.position;
 		videoButtonPosition = videoButton.transform.position;
+		watchReplayButtonPosition = watchReplayButton.transform.position;
+		demoButtonPosition = demoButton.transform.position;
+
 		hideBothPause ();
 	}
 		
@@ -46,7 +53,7 @@ public class GameGUI : MonoBehaviour {
 	void lerpTextAlpha (Text t, float a)
 	{
 		Color newColor = t.color;
-		newColor.a = Mathf.Lerp (newColor.a, a, Time.deltaTime * uiMoveSpeed);
+		newColor.a = Mathf.Lerp (newColor.a, a, Time.deltaTime * alphaChangeSpped);
 		t.color = newColor;
 	}
 
@@ -54,6 +61,9 @@ public class GameGUI : MonoBehaviour {
 	{
 		lerpButtonToPosition (restartButton, restartButtonPosition);
 		lerpButtonToPosition (videoButton, videoButtonPosition);
+		lerpButtonToPosition (watchReplayButton, watchReplayButtonPosition);
+		lerpButtonToPosition (demoButton, demoButtonPosition);
+
 		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
 
@@ -79,6 +89,13 @@ public class GameGUI : MonoBehaviour {
 		ifYouFailAlpha = 1;
 		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
 		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
+		watchReplayButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
+		demoButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
+	}
+
+	public void playDemo()
+	{
+		EveryPlayHelper.Instance.playDemo ();
 	}
 
 	public void restartGame()
@@ -95,6 +112,12 @@ public class GameGUI : MonoBehaviour {
 	{
 		tipPanel.SetActive (true);
 		hideBothPause ();
+	}
+
+	public void watchReplay()
+	{
+		
+		EveryPlayHelper.Instance.playLastRecording ();
 	}
 
 	public void hideTipPanel()
