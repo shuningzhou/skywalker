@@ -9,6 +9,9 @@ public class CharacterMovement : MonoBehaviour {
 	bool rightInFront = false;
 	float rayReach = 2.0f;
 
+	public delegate void playerMoved(Vector3 position);
+	public static event playerMoved OnPlayerMoved;
+
 	public Vector3 getFootPosition()
 	{
 		if (rightFoot != null && leftFoot != null) {
@@ -101,6 +104,7 @@ public class CharacterMovement : MonoBehaviour {
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 		float movedDistance = calculateDistance ();
 		GameManager.sharedManager.playerMoved (movedDistance);
+		OnPlayerMoved (getFootPosition());
 	}
 
 	void doFailed()
