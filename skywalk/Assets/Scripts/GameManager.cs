@@ -9,13 +9,14 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager sharedManager = null;
 
-	public enum GameState {tutorial, playing, menu, gameover};
+	public enum GameState {tutorial, playing, menu, gameover, willStart};
 
 	public delegate void GameStateChange();
 	public static event GameStateChange onTutotial;
 	public static event GameStateChange onGamePlay;
 	public static event GameStateChange onMenu;
 	public static event GameStateChange onGameOver;
+	public static event GameStateChange onWillStart;
 
 	public GameState gameState = GameState.menu;
 
@@ -29,11 +30,15 @@ public class GameManager : MonoBehaviour {
 
 	void Awake()
 	{
-		if (sharedManager == null) {
+		if (sharedManager == null) 
+		{
 			sharedManager = this;
 		} else if (sharedManager != this) {
 			Destroy(gameObject);
+			return;
 		}
+
+		this.transform.parent = null;
 
 		DontDestroyOnLoad(gameObject);
 
@@ -43,6 +48,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () 
 	{
+		Debug.Log("GameManager started");
 		notifyStateListener();
 	}
 
@@ -61,6 +67,10 @@ public class GameManager : MonoBehaviour {
 		case GameState.gameover:
 			Debug.Log ("gameover");
 			onGameOver ();
+			break;
+		case GameState.willStart:
+			Debug.Log ("willStart");
+			onWillStart ();
 			break;
 		default:
 			Debug.Log ("tutorial");
@@ -82,12 +92,14 @@ public class GameManager : MonoBehaviour {
 
 	public void playerFailed(bool forced)
 	{
+		Debug.Log ("player failed");
+
 		gameState = GameState.gameover;
 
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
 
-		excuateInSeconds (enterMenuMode, 2F);
+		excuateInSeconds (enterMenuMode, 6f);
 	}
 
 	void enterMenuMode()
@@ -105,6 +117,7 @@ public class GameManager : MonoBehaviour {
 
 	public void playerMoved(float distance)
 	{
+		Debug.Log ("player moved");
 		totalDistance = totalDistance + distance;
 		distanceChanged ();
 	}
@@ -121,13 +134,20 @@ public class GameManager : MonoBehaviour {
 
 	public void playNewGame()
 	{
-		gameState = GameState.playing;
+		Debug.Log ("Play new game");
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		excuateInSeconds (doPlayNewGame, 1f);
+	}
+
+	void doPlayNewGame()
+	{
+		gameState = GameState.playing;
+		doResume ();
 	}
 
 	void doResume()
 	{
-		Time.timeScale = 1f;
+		Time.timeScale = 1.0f;
 	}
 
 	public void HandleShowResult(ShowResult result)

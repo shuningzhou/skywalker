@@ -23,7 +23,7 @@ public class CameraMovement : MonoBehaviour {
 	void Update () {
 		if (followTarget != null) 
 		{
-			if (GameManager.sharedManager.gameState == GameManager.GameState.menu) 
+			if (GameManager.sharedManager.gameState == GameManager.GameState.menu && GameManager.sharedManager.gameState == GameManager.GameState.gameover) 
 			{
 				Vector3 position = transform.position;
 				position.y = currentMaxHeight;
