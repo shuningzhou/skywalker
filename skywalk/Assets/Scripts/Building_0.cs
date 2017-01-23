@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingGenerator : MonoBehaviour {
-
-	public int currentMatrixIndex_x;
-	public int currentMatrixIndex;
-	private List<GameObject> matrix;
+public class Building_0 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
