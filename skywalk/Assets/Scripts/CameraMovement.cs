@@ -3,26 +3,28 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
 	public GameObject followTarget;
+
 	public float moveSpeed;
 	public float riseSpeed;
 	public float rotateSpeed;
 	public float maxHeight;
-	public float forcedMaxHeight;
 	public float riseDelay;
 
 	private float currentMaxHeight;
-	private bool shouldRise = false;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+		float randomness = Random.Range (0f, 20f);
+		currentMaxHeight = maxHeight + randomness;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (followTarget != null) {
-			
-			if (shouldRise) {
+		if (followTarget != null) 
+		{
+			if (GameManager.sharedManager.gameState == GameManager.GameState.menu) 
+			{
 				Vector3 position = transform.position;
 				position.y = currentMaxHeight;
 				transform.position = Vector3.Lerp(transform.position,
@@ -40,22 +42,5 @@ public class CameraMovement : MonoBehaviour {
 					position, Time.deltaTime * moveSpeed);
 			}
 		}
-	}
-
-	public void playerFailed(bool forced)
-	{
-		if (forced) {
-			shouldRise = true;
-			currentMaxHeight = forcedMaxHeight;
-		} else {
-			StartCoroutine (doRise ());
-			currentMaxHeight = maxHeight;
-		}
-	}
-
-	IEnumerator doRise()
-	{
-		yield return new WaitForSeconds(riseDelay);
-		shouldRise = true;
 	}
 }

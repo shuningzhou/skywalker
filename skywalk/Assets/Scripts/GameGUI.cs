@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameGUI : MonoBehaviour {
 
-	public Button pauseButton;
-	public Button resumeButton;
 	public Button restartButton;
 	public Button videoButton;
 	public Button watchReplayButton;
@@ -18,7 +16,6 @@ public class GameGUI : MonoBehaviour {
 	public Text distanceCount;
 
 	public GameObject tipPanel;
-	public GameManager gameManager;
 
 	public float uiMoveSpeed;
 	public float alphaChangeSpped;
@@ -35,8 +32,49 @@ public class GameGUI : MonoBehaviour {
 		videoButtonPosition = videoButton.transform.position;
 		watchReplayButtonPosition = watchReplayButton.transform.position;
 		demoButtonPosition = demoButton.transform.position;
+		GameManager.onMenu += onMenu;
+		GameManager.onGameOver += onGameOver;
+		GameManager.redCountChanged += redCountChanged;
+		GameManager.distanceChanged += distanceChanged;
+	}
 
-		hideBothPause ();
+	void OnDestroy()
+	{
+		GameManager.onMenu -= onMenu;
+		GameManager.onGameOver -= onGameOver;
+		GameManager.redCountChanged -= redCountChanged;
+		GameManager.distanceChanged -= distanceChanged;
+	}
+
+	void redCountChanged ()
+	{
+		int count = UserData.getRedsCount ();
+		diamondCount.text = count.ToString();
+	}
+
+	void distanceChanged()
+	{
+		float distance = GameManager.sharedManager.totalDistance;
+		distanceCount.text = distance.ToString("0.0");
+	}
+		
+	public void onMenu ()
+	{
+		showMenu ();
+	}
+
+	public void onGameOver ()
+	{
+		showMenu ();
+	}
+
+	public void showMenu()
+	{
+		ifYouFailAlpha = 1;
+		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
+		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
+		watchReplayButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
+		demoButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)
@@ -67,32 +105,6 @@ public class GameGUI : MonoBehaviour {
 		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
 
-	public void pauseGame()
-	{
-		Debug.Log ("Pause");
-		Time.timeScale = 0f;
-		showPause (false);
-		gameManager.pauseGame ();
-	}
-
-	public void resumeGame()
-	{
-		Debug.Log ("resume");
-		Time.timeScale = 1f;
-		showPause (true);
-		gameManager.resumeGame ();
-	}
-
-	public void playerFailed(int diamondCount)
-	{
-		hideBothPause ();
-		ifYouFailAlpha = 1;
-		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
-		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
-		watchReplayButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
-		demoButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
-	}
-
 	public void playDemo()
 	{
 		EveryPlayHelper.Instance.playDemo ();
@@ -100,18 +112,24 @@ public class GameGUI : MonoBehaviour {
 
 	public void restartGame()
 	{
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		int count = UserData.getRedsCount ();
+		if (count >= 20) {
+			UserData.addRedsCount (-20);
+			GameManager.sharedManager.playNewGame ();
+		} else {
+			EveryPlayHelper.Instance.append ("Not enough Reds.");
+		}
 	}
 
 	public void showVideo()
 	{
-		SCAds.ShowRewardedAd (gameManager);
+		SCAds.ShowRewardedAd (GameManager.sharedManager);
 	}
 
 	public void showTipPanel()
 	{
 		tipPanel.SetActive (true);
-		hideBothPause ();
+		GameManager.sharedManager.pauseGame ();
 	}
 
 	public void watchReplay()
@@ -123,30 +141,6 @@ public class GameGUI : MonoBehaviour {
 	public void hideTipPanel()
 	{
 		tipPanel.SetActive (false);
-		gameManager.gameStart ();
-		showPause (true);
+		GameManager.sharedManager.resumeGame ();
 	}
-
-	void showPause(bool show)
-	{
-		pauseButton.gameObject.SetActive(show);
-		resumeButton.gameObject.SetActive(!show);
-	}
-
-	void hideBothPause()
-	{
-		pauseButton.gameObject.SetActive(false);
-		resumeButton.gameObject.SetActive(false);
-	}
-
-	public void setDiamond(int count)
-	{
-		diamondCount.text = count.ToString();
-	}
-
-	public void setDistance(float distance)
-	{
-		distanceCount.text = distance.ToString("0.0");
-	}
-
 }

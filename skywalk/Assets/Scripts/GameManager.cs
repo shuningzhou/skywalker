@@ -6,131 +6,128 @@ using System;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
-	public GameGUI gameGUI;
-	public CameraMovement cameraMovement;
-	public RoadGenerator roadGenerator;
-	public CharacterMovement characterMovement;
 
-	private bool gameOver = false;
-	private int diamondCount = 0;
-	private bool shouldShowTip = true;
-	private float totalDistance = 0;
-	//private float bestDistance = 0;
-	private int diamondCountThisRound = 0;
+	public static GameManager sharedManager = null;
 
-	public string PREF_COLLECTED = "collected";
-	public string PREF_DISTANCE = "distance";
-	public string PREF_DATE = "date";
+	public enum GameState {tutorial, playing, menu, gameover};
 
-	// Use this for initialization
+	public delegate void GameStateChange();
+	public static event GameStateChange onTutotial;
+	public static event GameStateChange onGamePlay;
+	public static event GameStateChange onMenu;
+	public static event GameStateChange onGameOver;
+
+	public GameState gameState = GameState.menu;
+
+	public delegate void RefreshUI();
+	public static event RefreshUI redCountChanged;
+	public static event RefreshUI distanceChanged;
+
+	public float totalDistance = 0f;
+	private int redsCollectedThisRound = 0;
+
+
 	void Awake()
 	{
+		if (sharedManager == null) {
+			sharedManager = this;
+		} else if (sharedManager != this) {
+			Destroy(gameObject);
+		}
 
+		DontDestroyOnLoad(gameObject);
+
+		gameState = GameState.menu;
+		Debug.Log ("Game manager awake");
 	}
 
 	void Start () 
 	{
-		diamondCount = PlayerPrefs.GetInt(PREF_COLLECTED);
+		notifyStateListener();
+	}
 
-		if (diamondCount < 20) {
-			playerFailed (true);
-		} else {
-			PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount - 20);
-			PlayerPrefs.Save();
-
-			diamondCount = PlayerPrefs.GetInt(PREF_COLLECTED);
-
-			if (shouldShowTip) {
-				gameGUI.showTipPanel ();
-			} else {
-				gameStart ();
-			}
-
-			gameGUI.setDiamond (diamondCount);
+	void notifyStateListener()
+	{
+		switch(gameState)
+		{
+		case GameState.menu: 
+			Debug.Log ("Menu");
+			onMenu ();
+			break;
+		case GameState.playing:
+			Debug.Log ("playing");
+			onGamePlay ();
+			break;
+		case GameState.gameover:
+			Debug.Log ("gameover");
+			onGameOver ();
+			break;
+		default:
+			Debug.Log ("tutorial");
+			onTutotial ();
+			break;
 		}
 	}
 
-	public void gameStart()
+	public void excuateInSeconds(Action action, float seconds)
 	{
-		StartCoroutine (doStart ());
+		StartCoroutine (delayStart(seconds, action));
 	}
 
-	IEnumerator doStart()
+	IEnumerator delayStart(float delay, Action action)
 	{
-		yield return new WaitForSeconds(1);
-		roadGenerator.doGameStart ();
-		characterMovement.doGameStart ();
-	
-		EveryPlayHelper.Instance.startRecording ();
-	}
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	public bool isGameOver()
-	{
-		return gameOver;
+		yield return new WaitForSeconds(delay);
+		action ();
 	}
 
 	public void playerFailed(bool forced)
 	{
-		characterMovement.doGameEnd ();
+		gameState = GameState.gameover;
 
-		StartCoroutine (doFailed (forced));
+		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
+		UserData.updateBestDistance (totalDistance);
+
+		excuateInSeconds (enterMenuMode, 2F);
 	}
 
-	IEnumerator doFailed(bool forced)
+	void enterMenuMode()
 	{
-		yield return new WaitForSeconds(3);
-		gameOver = true;
-		cameraMovement.playerFailed (forced);
-		SCAnalytics.logGameOverEvent (totalDistance, diamondCountThisRound);
-
-		PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount);
-		PlayerPrefs.Save();
-
-		if (totalDistance > PlayerPrefs.GetInt (PREF_DISTANCE)) 
-		{
-			PlayerPrefs.SetString (PREF_DATE, DateTime.Now.ToString ());
-			PlayerPrefs.SetFloat (PREF_DISTANCE, totalDistance);
-			PlayerPrefs.Save();
-		}
-
-		gameGUI.playerFailed (diamondCount);
-
-		EveryPlayHelper.Instance.stopRecording ();
-		EveryPlayHelper.Instance.setDemo ();
+		gameState = GameState.menu;
+		notifyStateListener ();
 	}
 
-	public void collectedDiamond()
+	public void collectedRed()
 	{
-		diamondCount = diamondCount + 1;
-		diamondCountThisRound = diamondCountThisRound + 1;
-		gameGUI.setDiamond (diamondCount);
+		redsCollectedThisRound = redsCollectedThisRound + 1;
+		UserData.addRedsCount (1);
+		redCountChanged ();
 	}
 
 	public void playerMoved(float distance)
 	{
 		totalDistance = totalDistance + distance;
-		gameGUI.setDistance (totalDistance);
+		distanceChanged ();
 	}
 
 	public void pauseGame()
 	{
-		characterMovement.doGamePaused ();
+		Time.timeScale = 0f;
 	}
 
 	public void resumeGame()
 	{
-		StartCoroutine (doResume());
+		excuateInSeconds (doResume, 0.2f);
 	}
 
-	IEnumerator doResume()
+	public void playNewGame()
 	{
-		yield return new WaitForSeconds(0.2f);
-		characterMovement.doGameResume ();
+		gameState = GameState.playing;
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
+
+	void doResume()
+	{
+		Time.timeScale = 1f;
 	}
 
 	public void HandleShowResult(ShowResult result)
@@ -138,13 +135,8 @@ public class GameManager : MonoBehaviour {
 		switch (result)
 		{
 		case ShowResult.Finished:
-			Debug.Log("The ad was successfully shown.");
-			PlayerPrefs.SetInt (PREF_COLLECTED, diamondCount + 20);
-			PlayerPrefs.Save();
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-			//
-			// YOUR CODE TO REWARD THE GAMER
-			// Give coins etc.
+			Debug.Log ("The ad was successfully shown.");
+			playNewGame ();
 			break;
 		case ShowResult.Skipped:
 			Debug.Log("The ad was skipped before reaching the end.");

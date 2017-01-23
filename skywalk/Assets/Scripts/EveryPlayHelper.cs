@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EveryPlayHelper : MonoBehaviour {
+public class EveryPlayHelper : MonoBehaviour 
+{
 	public static EveryPlayHelper Instance = null;
-
 	private string debugText;
 
 	private string searchUrl = "/games/current/videos?client_id=49c37d5f8a6976340652e32be8e314c0278a7fcb&limit=1&meta_data={demo:1}";
@@ -16,6 +16,19 @@ public class EveryPlayHelper : MonoBehaviour {
 		Everyplay.RecordingStarted += RecordingStartedDelegate;
 		Everyplay.RecordingStopped += RecordingStoppedDelegate;
 		Everyplay.SetLowMemoryDevice (true);
+
+		GameManager.onGamePlay += onGamePlay;
+		GameManager.onGameOver += onGameOver;
+	}
+
+	void OnDestroy() {
+		/* Remove event receivers */
+		Everyplay.RecordingStarted -= RecordingStartedDelegate;
+		Everyplay.RecordingStopped -= RecordingStoppedDelegate;
+		Everyplay.ReadyForRecording -= OnReadyForRecording;
+
+		GameManager.onGamePlay -= onGamePlay;
+		GameManager.onGameOver -= onGameOver;
 	}
 
 	void Start()
@@ -38,6 +51,16 @@ public class EveryPlayHelper : MonoBehaviour {
 		}, delegate(string error) {
 			append("feature video not found" + error);
 		});
+	}
+
+	public void onGamePlay ()
+	{
+		startRecording ();
+	}
+
+	public void onGameOver ()
+	{
+		stopRecording ();
 	}
 
 	public void show()
@@ -79,13 +102,6 @@ public class EveryPlayHelper : MonoBehaviour {
 		}
 	}
 
-	void OnDestroy() {
-		/* Remove event receivers */
-		Everyplay.RecordingStarted -= RecordingStartedDelegate;
-		Everyplay.RecordingStopped -= RecordingStoppedDelegate;
-		Everyplay.ReadyForRecording -= OnReadyForRecording;
-	}
-
 	public void OnReadyForRecording(bool enabled) {
 		if (enabled) {
 			append ("Ready to Record");
@@ -115,16 +131,16 @@ public class EveryPlayHelper : MonoBehaviour {
 
 	void OnGUI()
 	{
-//		int w = Screen.width, h = Screen.height;
-//
-//		GUIStyle style = new GUIStyle();
-//
-//		Rect rect = new Rect(0, 0, w, h * 2 / 100);
-//		style.alignment = TextAnchor.UpperLeft;
-//		style.fontSize = h * 2 / 100;
-//		style.normal.textColor = new Color (0.0f, 0.0f, 0.5f, 1.0f);
-//		string text = debugText;
-////		GUI.Label(rect, text, style);
+		int w = Screen.width, h = Screen.height;
+
+		GUIStyle style = new GUIStyle();
+
+		Rect rect = new Rect(0, 0, w, h * 2 / 100);
+		style.alignment = TextAnchor.UpperLeft;
+		style.fontSize = h * 2 / 100;
+		style.normal.textColor = new Color (0.0f, 0.0f, 0.5f, 1.0f);
+		string text = debugText;
+		GUI.Label(rect, text, style);
 	}
 
 

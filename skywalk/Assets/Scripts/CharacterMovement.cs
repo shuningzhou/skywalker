@@ -5,11 +5,9 @@ public class CharacterMovement : MonoBehaviour {
 	public float rotateSpeed = 250.0f;
 	public GameObject leftFoot;
 	public GameObject rightFoot;
-	public GameManager gameManager;
 
 	bool rightInFront = false;
 	float rayReach = 2.0f;
-	bool gameRunning = false;
 
 	public Vector3 getFootPosition()
 	{
@@ -42,9 +40,9 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-
-		if (!gameRunning) 
+	void Update () 
+	{
+		if (GameManager.sharedManager.gameState != GameManager.GameState.playing) 
 		{
 			return;
 		}
@@ -85,8 +83,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void keepRotating()
 	{
-		if (rightInFront) 
-		{
+		if (rightInFront) {
 			//rotate around the right foot
 			transform.RotateAround (rightFoot.transform.position, Vector3.down, rotateSpeed * Time.deltaTime);
 
@@ -98,32 +95,12 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 
-	public void doGameStart ()
-	{
-		gameRunning = true;
-	}
-
-	public void doGamePaused()
-	{
-		gameRunning = false;
-	}
-
-	public void doGameResume()
-	{
-		gameRunning = true;
-	}
-
-	public void doGameEnd()
-	{
-		gameRunning = false;
-	}
-
 
 	void doTurn() {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 		float movedDistance = calculateDistance ();
-		gameManager.playerMoved (movedDistance);
+		GameManager.sharedManager.playerMoved (movedDistance);
 	}
 
 	void doFailed()
@@ -140,7 +117,8 @@ public class CharacterMovement : MonoBehaviour {
 			body.AddRelativeTorque (Vector3.up * 250);
 		}
 		body.AddForce (Vector3.down * 100);
-		gameManager.playerFailed (false);
+
+		GameManager.sharedManager.playerFailed (false);
 	}
 
 	void checkFailed()
@@ -164,6 +142,8 @@ public class CharacterMovement : MonoBehaviour {
 //		Debug.Log (lastPosition);
 //		float distance = Mathf.Sqrt((newPosition.z - lastPosition.z) * (newPosition.z - lastPosition.z) + (newPosition.x - lastPosition.x) * (newPosition.x - lastPosition.x));
 //		return distance/2f;
-		return 1.5f;
+		float randomDistance = Random.Range(0.3f, 0.7f);
+		randomDistance = 1f + randomDistance;
+		return randomDistance;
 	}
 }

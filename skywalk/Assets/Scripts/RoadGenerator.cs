@@ -33,6 +33,14 @@ public class RoadGenerator : MonoBehaviour {
 	private RoadPoint firstRoadPoint;
 	private RoadPoint previousRoadPoint;
 
+	void Awake() {
+		GameManager.onGamePlay += onGamePlay;
+	}
+
+	void OnDestroy() {
+		GameManager.onGamePlay -= onGamePlay;
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -77,7 +85,7 @@ public class RoadGenerator : MonoBehaviour {
 	void Update () {
 	}
 
-	public void doGameStart ()
+	public void onGamePlay ()
 	{
 		firstRoadPoint.drop ();
 	}
