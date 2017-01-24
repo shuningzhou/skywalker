@@ -53,9 +53,9 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("GameManager started");
 		notifyStateListener();
-		//App42Helper.Instance.createGuestUser ();
+		App42Helper.Instance.createGuestUser ();
 		//App42Helper.Instance.getUserRanking();
-		App42Helper.Instance.getTop5Score();
+		//App42Helper.Instance.getTop5Score();
 	}
 
 	void notifyStateListener()
@@ -109,8 +109,9 @@ public class GameManager : MonoBehaviour {
 
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
-		//App42Helper.Instance.uploadScoreForUser (totalDistance);
+		App42Helper.Instance.uploadScoreForUser (totalDistance);
 		excuateInSeconds (enterMenuMode, 6f);
+		totalDistance = 0;
 	}
 
 	void enterMenuMode()
