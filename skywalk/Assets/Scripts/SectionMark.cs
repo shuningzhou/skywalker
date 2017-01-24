@@ -16,7 +16,7 @@ public class SectionMark : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) 
 	{
-		rd.generateNextRoadSections ();
+		//rd.generateNextRoadSections ();
 		Destroy (gameObject);
 	}
 }

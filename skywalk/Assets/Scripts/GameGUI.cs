@@ -21,10 +21,14 @@ public class GameGUI : MonoBehaviour {
 	public float alphaChangeSpped;
 	public float ifYouFailAlpha = 0f;
 
+	public int lifeCost = 20;
+
 	private Vector3 restartButtonPosition;
 	private Vector3 videoButtonPosition;
 	private Vector3 watchReplayButtonPosition;
 	private Vector3 demoButtonPosition;
+
+
 
 	// Use this for initialization
 	void Awake () {
@@ -113,8 +117,8 @@ public class GameGUI : MonoBehaviour {
 	public void restartGame()
 	{
 		int count = UserData.getRedsCount ();
-		if (count >= 20) {
-			UserData.addRedsCount (-20);
+		if (count >= lifeCost) {
+			UserData.addRedsCount (- lifeCost);
 			GameManager.sharedManager.playNewGame ();
 		} else {
 			EveryPlayHelper.Instance.append ("Not enough Reds.");

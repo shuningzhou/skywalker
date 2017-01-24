@@ -10,7 +10,8 @@ public class RoadSection : MonoBehaviour {
 	public int maxRadius;
 	public int minRadius;
 	public bool turnRight;
-	public float width;
+	public float minWidth;
+	public float maxWidth;
 	public float thickness;
 
 	public Vector3 totalCircleCenter;
@@ -51,8 +52,13 @@ public class RoadSection : MonoBehaviour {
 		Vector3 previousPoint = Vector3.zero;
 		Vector3 previousDirection = Vector3.zero;
 
+		float widthChange = (maxWidth - minWidth)/(length/stepLength);
+		float currentWidth = maxWidth;
+
 		for (float i = 0f; i < length; i = i + stepLength)
 		{
+			currentWidth = currentWidth - widthChange;
+
 			currentPoint = calculateRoadPoint(i);
 
 			if (acutallyTurnedRight) 
@@ -71,7 +77,7 @@ public class RoadSection : MonoBehaviour {
 				rd.direction1 = previousDirection;
 				rd.position2 = currentPoint;
 				rd.direction2 = currentDirection;
-				rd.width = width;
+				rd.width = currentWidth;
 				rd.thickness = thickness;
 
 				if (lastRoadPoint) 

@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour {
 	public static event RefreshUI redCountChanged;
 	public static event RefreshUI distanceChanged;
 
+	public delegate void playerPowerUp();
+	public static event playerPowerUp onPowerUp;
+
 	public float totalDistance = 0f;
 	private int redsCollectedThisRound = 0;
 
@@ -50,6 +53,9 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("GameManager started");
 		notifyStateListener();
+		//App42Helper.Instance.createGuestUser ();
+		//App42Helper.Instance.getUserRanking();
+		App42Helper.Instance.getTop5Score();
 	}
 
 	void notifyStateListener()
@@ -79,6 +85,11 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void test()
+	{
+		onPowerUp ();
+	}
+
 	public void excuateInSeconds(Action action, float seconds)
 	{
 		StartCoroutine (delayStart(seconds, action));
@@ -98,7 +109,7 @@ public class GameManager : MonoBehaviour {
 
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
-
+		//App42Helper.Instance.uploadScoreForUser (totalDistance);
 		excuateInSeconds (enterMenuMode, 6f);
 	}
 
@@ -117,7 +128,6 @@ public class GameManager : MonoBehaviour {
 
 	public void playerMoved(float distance)
 	{
-		Debug.Log ("player moved");
 		totalDistance = totalDistance + distance;
 		distanceChanged ();
 	}
@@ -135,6 +145,7 @@ public class GameManager : MonoBehaviour {
 	public void playNewGame()
 	{
 		Debug.Log ("Play new game");
+		gameState = GameState.willStart;
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 		excuateInSeconds (doPlayNewGame, 1f);
 	}
@@ -142,7 +153,7 @@ public class GameManager : MonoBehaviour {
 	void doPlayNewGame()
 	{
 		gameState = GameState.playing;
-		doResume ();
+		notifyStateListener ();
 	}
 
 	void doResume()

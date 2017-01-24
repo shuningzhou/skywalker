@@ -23,8 +23,8 @@ public class CameraMovement : MonoBehaviour {
 	void Update () {
 		if (followTarget != null) 
 		{
-			if (GameManager.sharedManager.gameState == GameManager.GameState.menu && GameManager.sharedManager.gameState == GameManager.GameState.gameover) 
-			{
+			if (GameManager.sharedManager.gameState == GameManager.GameState.menu) 
+			{   
 				Vector3 position = transform.position;
 				position.y = currentMaxHeight;
 				transform.position = Vector3.Lerp(transform.position,

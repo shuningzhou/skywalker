@@ -14,7 +14,9 @@ public class RoadGenerator : MonoBehaviour {
 	public float minRad = Mathf.PI / 10;
 	public int maxRadius = 3;
 	public int minRadius = 2;
-	public float width;
+	public float maxWidth;
+	public float minWidth;
+
 	public float thickness;
 	public int initalRoadSectionCount;
 
@@ -30,6 +32,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float totalCircleRadius = 0;
 	public float stepLength;
 
+	private float currentWidth;
 	private RoadPoint firstRoadPoint;
 	private RoadPoint previousRoadPoint;
 
@@ -44,11 +47,11 @@ public class RoadGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		float startz = 0f - 10 * stepLength;
+		float startz = 0f - 15 * stepLength;
 
 		Vector3 previousPoint = new Vector3 (0f, 49.5f, startz);
 
-		for (int i = 1; i < 11; i++) 
+		for (int i = 1; i < 16; i++) 
 		{
 			Vector3 currentPoint = new Vector3 (0f, 49.5f, startz + stepLength * i);
 			var rd = Instantiate (RoadPoint, Vector3.zero, Quaternion.identity);
@@ -56,7 +59,7 @@ public class RoadGenerator : MonoBehaviour {
 			rd.direction1 = Vector3.forward;
 			rd.position2 = currentPoint;
 			rd.direction2 = Vector3.forward;
-			rd.width = width;
+			rd.width = maxWidth;
 			rd.thickness = thickness;
 
 			previousPoint = currentPoint;
@@ -97,8 +100,11 @@ public class RoadGenerator : MonoBehaviour {
 
 	void generateRoadSections(int count)
 	{
-		for (int i = 0; i < count; i++) {
+		float widthChange = ((maxWidth - minWidth) / count ) * 5;
+		currentWidth = maxWidth;
 
+		for (int i = 0; i < count; i++) 
+		{
 			if (lastRoadSection)
 			{
 				currentStartPostion = lastRoadSection.tailPostion ();
@@ -107,8 +113,14 @@ public class RoadGenerator : MonoBehaviour {
 				totalCircleCenter = lastRoadSection.newTotalCircleCenter;
 				totalCircleRadius = lastRoadSection.newTotalCircleRadius;
 			}
+			var newRoadSection = generateRoadSection (currentWidth, currentWidth - widthChange);
 
-			var newRoadSection = generateRoadSection ();
+			currentWidth = currentWidth - widthChange;
+
+			if (currentWidth <= 1f) 
+			{
+				widthChange = 0f;
+			}
 
 			if (previousRoadPoint) {
 				previousRoadPoint.nextRoadPoint = newRoadSection.firstRoadPoint;
@@ -120,7 +132,7 @@ public class RoadGenerator : MonoBehaviour {
 		}
 	}
 
-	RoadSection generateRoadSection()
+	RoadSection generateRoadSection(float maxWidth, float minWidth)
 	{
 		var newRoadSection = Instantiate (roadSection, Vector3.zero, Quaternion.identity);
 		newRoadSection.collectableManager = collectableManager;
@@ -133,7 +145,8 @@ public class RoadGenerator : MonoBehaviour {
 		newRoadSection.turnRight = currentTurnRight;
 		newRoadSection.totalCircleCenter = totalCircleCenter;
 		newRoadSection.totalCircleRadius = totalCircleRadius;
-		newRoadSection.width = width;
+		newRoadSection.maxWidth = maxWidth;
+		newRoadSection.minWidth = minWidth;
 		newRoadSection.thickness = thickness;
 		newRoadSection.stepLength = stepLength;
 		newRoadSection.roadGenerator = this;

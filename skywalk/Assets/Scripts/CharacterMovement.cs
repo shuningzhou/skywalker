@@ -12,6 +12,15 @@ public class CharacterMovement : MonoBehaviour {
 	public delegate void playerMoved(Vector3 position);
 	public static event playerMoved OnPlayerMoved;
 
+	void Awake () {
+		GameManager.onPowerUp += onPowerUp;
+	}
+
+	void OnDestroy()
+	{
+		GameManager.onPowerUp -= onPowerUp;
+	}
+
 	public Vector3 getFootPosition()
 	{
 		if (rightFoot != null && leftFoot != null) {
@@ -98,13 +107,23 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 
+	void onPowerUp()
+	{
+		Vector3 scale = transform.localScale;
+		scale.z = scale.z + 0.3f;
+		transform.localScale = scale;
+//		transform.position += new Vector3( 0f, 0f, 6 * 0.5f ); 
+	}
 
 	void doTurn() {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 		float movedDistance = calculateDistance ();
 		GameManager.sharedManager.playerMoved (movedDistance);
-		OnPlayerMoved (getFootPosition());
+		if (OnPlayerMoved != null)
+		{
+			OnPlayerMoved (getFootPosition());
+		}
 	}
 
 	void doFailed()
