@@ -9,6 +9,7 @@ public class UserData : MonoBehaviour {
 	public static string PREF_DISTANCE = "distance";
 	public static string PREF_DATE = "date";
 	public static string PREF_TUTORIAL_DONE = "tutorial_done";
+	public static string PREF_USER_NAME = "user_name";
 
 	public static float getLocalBestRecordValue()
 	{
@@ -18,6 +19,11 @@ public class UserData : MonoBehaviour {
 	public static string getLocalBestRecordDate()
 	{
 		return PlayerPrefs.GetString(PREF_DATE, "No Record");
+	}
+
+	public static string getUserName()
+	{
+		return PlayerPrefs.GetString(PREF_USER_NAME, "");
 	}
 
 	public static int getRedsCount()
@@ -39,6 +45,12 @@ public class UserData : MonoBehaviour {
 	public static void saveLocalBestRecordDate(string value)
 	{
 		PlayerPrefs.SetString (PREF_DATE, value);
+		PlayerPrefs.Save();
+	}
+
+	public static void saveUserName(string value)
+	{
+		PlayerPrefs.SetString (PREF_USER_NAME, value);
 		PlayerPrefs.Save();
 	}
 

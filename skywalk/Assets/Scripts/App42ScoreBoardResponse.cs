@@ -35,6 +35,7 @@ namespace AssemblyCSharp
 				}
 			}
 
+			GameGUI.Instance.refreshGUI ();
 		}
 
 		public void OnException (Exception e)
@@ -58,6 +59,8 @@ namespace AssemblyCSharp
 			Game game = (Game) response;       
 			Debug.Log("gameName is " + game.GetName());   
 			Debug.Log("gameDescription is " + game.GetDescription());   
+
+			GameGUI.Instance.refreshGUI ();
 		}  
 
 		public void OnException(Exception e)  
@@ -71,20 +74,22 @@ namespace AssemblyCSharp
 		public void OnSuccess(object response)
 		{
 			Game game = (Game)response;
-			App42Log.Console ("gameName is " + game.GetName());
 			for(int i = 0;i<game.GetScoreList().Count;i++)
 			{
 				Debug.Log ("userName is : " + game.GetScoreList()[i].GetUserName());
 				Debug.Log ("rank is : " + game.GetScoreList()[i].GetRank());
 				Debug.Log ("score is : " + game.GetScoreList()[i].GetValue());
 				Debug.Log ("scoreId is : " + game.GetScoreList()[i].GetScoreId());
+
+				App42Helper.Instance.userRanking = game.GetScoreList () [i].GetRank ().ToString ();
 			}
+
+			GameGUI.Instance.refreshGUI ();
 		}
 		public void OnException (Exception e)
 		{
-			Debug.Log("Exception : " + e);
+			Debug.Log("UserRanking Exception : " + e);
 		}  
-
 	}
 
 	public class App42TopRankingResponse : App42CallBack  
@@ -92,17 +97,29 @@ namespace AssemblyCSharp
 		public void OnSuccess(object response)  
 		{  
 			Game game = (Game) response;       
-			App42Log.Console("gameName is " + game.GetName());   
+			List<RankData> rankDatas = new List<RankData> ();
+
 			for(int i = 0;i<game.GetScoreList().Count;i++)  
 			{  
+				
 				Debug.Log("userName is : " + game.GetScoreList()[i].GetUserName());  
 				Debug.Log("score is : " + game.GetScoreList()[i].GetValue());  
 				Debug.Log("scoreId is : " + game.GetScoreList()[i].GetScoreId());  
+				RankData rd = new RankData ();
+				rd.userRank = (i+1).ToString ();
+				rd.userName = game.GetScoreList()[i].GetUserName();
+				rd.userScore = game.GetScoreList () [i].GetValue ().ToString ();
+
+				rankDatas.Add (rd);
 			}  
+
+			App42Helper.Instance.rankDatas = rankDatas;
+
+			GameGUI.Instance.refreshGUI ();
 		}  
 		public void OnException(Exception e)  
 		{  
-			Debug.Log("Exception : " + e);  
+			Debug.Log("TopRanking Exception : " + e);  
 		}  
 	}  
 }

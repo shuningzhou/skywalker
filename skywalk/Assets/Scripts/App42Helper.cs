@@ -15,13 +15,15 @@ public class App42Helper : MonoBehaviour {
 	private ServiceAPI api = null;
 	public Lexic.NameGenerator namegen;
 
-	private string userName;
+	public string userName;
 	private string email;
 	private string password;
 
-	List<RankData> rankDatas = new List<RankData> ();
-	// Use this for initialization
-	void Start()
+	public string userRanking = "";
+
+	public List<RankData> rankDatas = new List<RankData> ();
+
+	void Awake()
 	{
 		if (Instance == null) {
 			Instance = this;
@@ -35,13 +37,25 @@ public class App42Helper : MonoBehaviour {
 
 		api = new ServiceAPI (apiKey, secretKey);
 
-		userName = createUserName ();
+		if (UserData.getUserName ().Length == 0) {
+			userName = createUserName ();
+		} else {
+			userName = UserData.getUserName ();
+		}
+
 		email = createUserEmail ();
 		password = createUserPassword ();
-	}
-	// Update is called once per frame
-	void Update () {
-		
+
+		for (int i = 0; i < 6; i++) 
+		{
+			RankData rd = new RankData ();
+			rd.userRank = "";
+			rd.userName = "";
+			rd.userScore = "";
+			rankDatas.Add (rd);
+		}
+
+		Debug.Log ("App42 Awake");
 	}
 
 	string gameName()
@@ -56,9 +70,9 @@ public class App42Helper : MonoBehaviour {
 
 	string createUserName()
 	{
-		string timestamp = System.DateTime.Now.ToString ("HHmmss");
+		string timestamp = System.DateTime.Now.ToString ("ddHHmmss");
 		string uid = namegen.GetNextRandomName () + timestamp;
-		Debug.Log (uid);
+		UserData.saveUserName (uid);
 		return uid;
 	}
 
@@ -72,6 +86,18 @@ public class App42Helper : MonoBehaviour {
 		return userName + "@sourceoven.com";
 	}
 
+	public void createNewUser()
+	{
+		updatePasswordAndEmail ();
+		createGuestUser ();
+	}
+
+	public void updatePasswordAndEmail()
+	{
+		email = createUserEmail ();
+		password = createUserPassword ();
+	}
+
 	public void createGuestUser()
 	{
 		UserService service = api.BuildUserService ();
@@ -82,19 +108,25 @@ public class App42Helper : MonoBehaviour {
 	public void uploadScoreForUser(float score)
 	{
 		ScoreBoardService service = api.BuildScoreBoardService ();
-		service.SaveUserScore (gameName(), createUserName(), score, new App42ScoreBoardResponse());
+		service.SaveUserScore (gameName(), userName, score, new App42ScoreBoardResponse());
 	}
 
-	public void getTop5Score()
+//	public void getRanksNearUser()
+//	{
+//		float best = UserData.getLocalBestRecordValue ();
+//		ScoreBoardService service = api.BuildScoreBoardService ();
+//		service.GetUsersWithScoreRange ();
+//	}
+
+	public void getTop6Score()
 	{
 		ScoreBoardService service = api.BuildScoreBoardService ();
-		service.GetTopNRankings (gameName (), 5, new App42TopRankingResponse ());
+		service.GetTopNRankings (gameName (), 6, new App42TopRankingResponse ());
 	}
 
 	public void getUserRanking()
 	{
 		ScoreBoardService service = api.BuildScoreBoardService ();
-		string userName = createUserName ();
 		service.GetUserRanking (gameName (), userName, new App42UserRankingResponse ());
 	}
 
@@ -106,6 +138,6 @@ public class App42Helper : MonoBehaviour {
 
 	public List<RankData> getRankDatas ()
 	{
-		
+		return rankDatas;
 	}
 }

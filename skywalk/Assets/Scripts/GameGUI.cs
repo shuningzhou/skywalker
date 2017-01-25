@@ -6,20 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class GameGUI : MonoBehaviour {
 
+	public static GameGUI Instance = null;
+
 	public Text diamondCount;
 	public Text distanceCount;
 
 	public float uiMoveSpeed;
 	public float alphaChangeSpped;
 
-	public int lifeCost = 20;
+	public int lifeCost = 0;
 
 	public MenuPanel menuPanel;
-
-	private List<GameObject> planes = new List<GameObject>();
+	public AlertPanel alertPanel;
 
 	// Use this for initialization
 	void Awake () {
+
+		if (Instance == null) {
+			Instance = this;
+		} else if (Instance != this) {
+			Destroy(gameObject);
+		}
 
 		GameManager.onMenu += onMenu;
 		GameManager.onGameOver += onGameOver;
@@ -35,6 +42,11 @@ public class GameGUI : MonoBehaviour {
 		GameManager.distanceChanged -= distanceChanged;
 	}
 
+	public void refreshGUI()
+	{
+		menuPanel.refreshRankings ();
+	}
+
 	void redCountChanged ()
 	{
 		int count = UserData.getRedsCount ();
@@ -44,7 +56,7 @@ public class GameGUI : MonoBehaviour {
 	void distanceChanged()
 	{
 		float distance = GameManager.sharedManager.totalDistance;
-		distanceCount.text = distance.ToString("0.0");
+		distanceCount.text = distance.ToString("0.00");
 	}
 		
 	public void onMenu ()
@@ -59,7 +71,19 @@ public class GameGUI : MonoBehaviour {
 
 	public void showMenu()
 	{
+		menuPanel.gameObject.SetActive (true);
+		menuPanel.refreshRankings ();
+	}
 
+	public void showAlert(string message)
+	{
+		alertPanel.gameObject.SetActive (true);
+		alertPanel.messageText.text = message;
+	}
+
+	public void hideAlert()
+	{
+		alertPanel.gameObject.SetActive (false);
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)

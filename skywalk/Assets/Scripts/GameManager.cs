@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 
 		gameState = GameState.menu;
+
 		Debug.Log ("Game manager awake");
 	}
 
@@ -53,7 +54,14 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("GameManager started");
 		notifyStateListener();
-		App42Helper.Instance.createGuestUser ();
+		//App42Helper.Instance.createGuestUser ();
+		if (UserData.getUserName ().Length == 0)
+		{
+			App42Helper.Instance.createGuestUser ();
+		}
+
+		App42Helper.Instance.getUserRanking();
+		App42Helper.Instance.getTop6Score ();
 		//App42Helper.Instance.getUserRanking();
 		//App42Helper.Instance.getTop5Score();
 	}
@@ -106,10 +114,10 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("player failed");
 
 		gameState = GameState.gameover;
-
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
 		App42Helper.Instance.uploadScoreForUser (totalDistance);
+
 		excuateInSeconds (enterMenuMode, 6f);
 		totalDistance = 0;
 	}
@@ -118,6 +126,8 @@ public class GameManager : MonoBehaviour {
 	{
 		gameState = GameState.menu;
 		notifyStateListener ();
+		App42Helper.Instance.getTop6Score ();
+		App42Helper.Instance.getUserRanking ();
 	}
 
 	public void collectedRed()

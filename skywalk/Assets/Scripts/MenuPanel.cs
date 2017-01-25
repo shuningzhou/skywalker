@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuPanel : MonoBehaviour {
 
@@ -11,6 +12,10 @@ public class MenuPanel : MonoBehaviour {
 	public Row row4;
 	public Row row5;
 
+	public Text playerRankingText;
+	public Text userIDText;
+	public InputField userIdField;
+
 	public RankData rd;
 	public RankData rd1;
 	public RankData rd2;
@@ -20,56 +25,54 @@ public class MenuPanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		row.rank = rd.rank;
-		row.name = rd.name;
-		row.score = rd.score;
-
-		row1.rank = rd1.rank;
-		row1.name = rd1.name;
-		row1.score = rd1.score;
-
-		row2.rank = rd2.rank;
-		row2.name = rd2.name;
-		row2.score = rd2.score;
-
-		row3.rank = rd3.rank;
-		row3.name = rd3.name;
-		row3.score = rd3.score;
-
-		row4.rank = rd4.rank;
-		row4.name = rd4.name;
-		row4.score = rd4.score;
-
-		row5.rank = rd5.rank;
-		row5.name = rd5.name;
-		row5.score = rd5.score;
+		refreshRankings ();
 	}
 
 	public void refreshRankings()
 	{
-		row.rank = rd.rank;
-		row.name = rd.name;
-		row.score = rd.score;
+		List<RankData> rankDatas = App42Helper.Instance.rankDatas;
+		row.rank = rankDatas[0].userRank;
+		row.userName = rankDatas[0].userName;
+		row.score = rankDatas[0].userScore;
+		row.refreshUI ();
 
-		row1.rank = rd1.rank;
-		row1.name = rd1.name;
-		row1.score = rd1.score;
+		row1.rank = rankDatas[1].userRank;
+		row1.userName = rankDatas[1].userName;
+		row1.score = rankDatas[1].userScore;
+		row1.refreshUI ();
 
-		row2.rank = rd2.rank;
-		row2.name = rd2.name;
-		row2.score = rd2.score;
+		row2.rank = rankDatas[2].userRank;
+		row2.userName = rankDatas[2].userName;
+		row2.score = rankDatas[2].userScore;
+		row2.refreshUI ();
 
-		row3.rank = rd3.rank;
-		row3.name = rd3.name;
-		row3.score = rd3.score;
+		row3.rank = rankDatas[3].userRank;
+		row3.userName = rankDatas[3].userName;
+		row3.score = rankDatas[3].userScore;
+		row3.refreshUI ();
 
-		row4.rank = rd4.rank;
-		row4.name = rd4.name;
-		row4.score = rd4.score;
+		row4.rank = rankDatas[4].userRank;
+		row4.userName = rankDatas[4].userName;
+		row4.score = rankDatas[4].userScore;
+		row4.refreshUI ();
 
-		row5.rank = rd5.rank;
-		row5.name = rd5.name;
-		row5.score = rd5.score;
+		row5.rank = rankDatas[5].userRank;
+		row5.userName = rankDatas[5].userName;
+		row5.score = rankDatas[5].userScore;
+		row5.refreshUI ();
+
+		string rankString = "";
+
+		if (App42Helper.Instance.userRanking.Length == 0) {
+			rankString = "You are not ranked.";
+		} else {
+			rankString = "You are ranked #" + App42Helper.Instance.userRanking.ToString () + " in the world!";
+		}
+		playerRankingText.text = rankString;
+
+		Debug.Log ("Refresh Rankings " + App42Helper.Instance.userName);
+		userIdField.text = App42Helper.Instance.userName;
+		//userIDText.text = App42Helper.Instance.userName;
 	}
 
 	// Update is called once per frame
@@ -87,16 +90,36 @@ public class MenuPanel : MonoBehaviour {
 
 	public void startPressed()
 	{
+		GameGUI.Instance.restartGame ();
 	}
 
 	public void startForFreePressed()
 	{
+		GameGUI.Instance.showVideo ();
+	}
+
+	public void userNameChanged(string value)
+	{
+		string newvalue = userIdField.text;
+
+		if (newvalue.Length > 20) {
+			GameGUI.Instance.showAlert ("Game ID has to be less than 20 characters");
+			userIdField.text = App42Helper.Instance.userName;
+		} else if (newvalue.Length < 6) {
+			GameGUI.Instance.showAlert ("Game ID has to be more than 6 characters");
+			userIdField.text = App42Helper.Instance.userName;
+		} else {
+			App42Helper.Instance.userName = newvalue;
+			App42Helper.Instance.createNewUser ();
+		}
+
+		Debug.Log ("User name changed" + userIdField.text);
 	}
 }
 
 public class RankData
 {
-	public string rank;
-	public string name;
-	public string score;
+	public string userRank;
+	public string userName;
+	public string userScore;
 }

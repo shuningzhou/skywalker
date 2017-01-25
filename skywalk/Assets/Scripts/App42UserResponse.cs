@@ -18,6 +18,7 @@ namespace AssemblyCSharp
 					User userObj = (User)user;
 					result = userObj.ToString();
 					Debug.Log ("UserName : " + userObj.GetUserName());
+					UserData.saveUserName(userObj.GetUserName());
 					Debug.Log ("EmailId : " + userObj.GetEmail());
 					User.Profile profileObj = (User.Profile)userObj.GetProfile();
 					if (profileObj != null )
@@ -33,6 +34,7 @@ namespace AssemblyCSharp
 					result = userList[0].ToString();
 					Debug.Log ("UserName : " + userList[0].GetUserName());
 					Debug.Log ("EmailId : " + userList[0].GetEmail());
+					UserData.saveUserName(userList[0].GetUserName());
 
 				}
 			}
@@ -40,13 +42,22 @@ namespace AssemblyCSharp
 			{
 				result = e.ToString();
 				Debug.Log ("App42Exception : "+ e);
+				GameGUI.Instance.showAlert ("Sorry...Game ID already taken.\nPlease try another again.");
+				App42Helper.Instance.userName = UserData.getUserName ();
+				App42Helper.Instance.updatePasswordAndEmail();
 			}
+
+			GameGUI.Instance.refreshGUI ();
 		}
 
 		public void OnException(Exception e)
 		{
 			result = e.ToString();
 			Debug.Log ("Exception : " + e);
+			GameGUI.Instance.showAlert ("Sorry...Game ID already taken.\nPlease try another again.");
+			App42Helper.Instance.userName = UserData.getUserName ();
+			App42Helper.Instance.updatePasswordAndEmail();
+			GameGUI.Instance.refreshGUI ();
 		}
 
 		public string getResult() {
