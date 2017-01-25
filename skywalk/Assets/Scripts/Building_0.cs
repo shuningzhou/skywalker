@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class Building_0 : MonoBehaviour {
 
+	private bool isOverlap = false;
+
 	// Use this for initialization
 	void Start () {
-		
+		if (isOverlap) {
+			Destroy (gameObject);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void OnTriggerEnter(Collider other)
+	{
+		Debug.Log ("building_0 is overlapping");
+		isOverlap = true;
 	}
 }
