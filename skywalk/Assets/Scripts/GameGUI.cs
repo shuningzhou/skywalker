@@ -6,31 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class GameGUI : MonoBehaviour {
 
-	public Button restartButton;
-	public Button videoButton;
-	public Button watchReplayButton;
-
-	public Text ifYouFail;
 	public Text diamondCount;
 	public Text distanceCount;
 
 	public float uiMoveSpeed;
 	public float alphaChangeSpped;
-	public float ifYouFailAlpha = 0f;
 
 	public int lifeCost = 20;
 
-	private Vector3 restartButtonPosition;
-	private Vector3 videoButtonPosition;
-	private Vector3 watchReplayButtonPosition;
+	public MenuPanel menuPanel;
 
-	public PlaneController planeController;
+	private List<GameObject> planes = new List<GameObject>();
 
 	// Use this for initialization
 	void Awake () {
-		restartButtonPosition = restartButton.transform.position;
-		videoButtonPosition = videoButton.transform.position;
-		watchReplayButtonPosition = watchReplayButton.transform.position;
+
 		GameManager.onMenu += onMenu;
 		GameManager.onGameOver += onGameOver;
 		GameManager.redCountChanged += redCountChanged;
@@ -69,10 +59,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void showMenu()
 	{
-		ifYouFailAlpha = 1;
-		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
-		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
-		watchReplayButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
+
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)
@@ -95,11 +82,7 @@ public class GameGUI : MonoBehaviour {
 
 	void Update()
 	{
-		lerpButtonToPosition (restartButton, restartButtonPosition);
-		lerpButtonToPosition (videoButton, videoButtonPosition);
-		lerpButtonToPosition (watchReplayButton, watchReplayButtonPosition);
 
-		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
 
 	public void playDemo()

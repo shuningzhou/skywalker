@@ -19,6 +19,7 @@ public class App42Helper : MonoBehaviour {
 	private string email;
 	private string password;
 
+	List<RankData> rankDatas = new List<RankData> ();
 	// Use this for initialization
 	void Start()
 	{
@@ -101,5 +102,10 @@ public class App42Helper : MonoBehaviour {
 	{
 		GameService service = api.BuildGameService ();
 		service.CreateGame (gameName(), gameDescription(), new App42CreateGameResponse ());
+	}
+
+	public List<RankData> getRankDatas ()
+	{
+		
 	}
 }

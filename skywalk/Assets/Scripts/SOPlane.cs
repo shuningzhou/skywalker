@@ -14,5 +14,19 @@ public class SOPlane : MonoBehaviour {
 		
 	}
 
+	public void sharePressed()
+	{
+	}
 
+	public void PurchasePressed()
+	{
+	}
+
+	public void startPressed()
+	{
+	}
+
+	public void startForFreePressed()
+	{
+	}
 }
