@@ -9,13 +9,10 @@ public class GameGUI : MonoBehaviour {
 	public Button restartButton;
 	public Button videoButton;
 	public Button watchReplayButton;
-	public Button demoButton;
 
 	public Text ifYouFail;
 	public Text diamondCount;
 	public Text distanceCount;
-
-	public GameObject tipPanel;
 
 	public float uiMoveSpeed;
 	public float alphaChangeSpped;
@@ -26,16 +23,14 @@ public class GameGUI : MonoBehaviour {
 	private Vector3 restartButtonPosition;
 	private Vector3 videoButtonPosition;
 	private Vector3 watchReplayButtonPosition;
-	private Vector3 demoButtonPosition;
 
-
+	public PlaneController planeController;
 
 	// Use this for initialization
 	void Awake () {
 		restartButtonPosition = restartButton.transform.position;
 		videoButtonPosition = videoButton.transform.position;
 		watchReplayButtonPosition = watchReplayButton.transform.position;
-		demoButtonPosition = demoButton.transform.position;
 		GameManager.onMenu += onMenu;
 		GameManager.onGameOver += onGameOver;
 		GameManager.redCountChanged += redCountChanged;
@@ -78,7 +73,6 @@ public class GameGUI : MonoBehaviour {
 		restartButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
 		videoButtonPosition.y = ifYouFail.transform.position.y - (float)(Screen.height / 10);
 		watchReplayButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
-		demoButtonPosition.y = ifYouFail.transform.position.y + (float)(Screen.height / 10);
 	}
 		
 	void moveButtonToPosition(Button b, Vector3 p)
@@ -104,7 +98,6 @@ public class GameGUI : MonoBehaviour {
 		lerpButtonToPosition (restartButton, restartButtonPosition);
 		lerpButtonToPosition (videoButton, videoButtonPosition);
 		lerpButtonToPosition (watchReplayButton, watchReplayButtonPosition);
-		lerpButtonToPosition (demoButton, demoButtonPosition);
 
 		lerpTextAlpha (ifYouFail, ifYouFailAlpha);
 	}
@@ -130,21 +123,8 @@ public class GameGUI : MonoBehaviour {
 		SCAds.ShowRewardedAd (GameManager.sharedManager);
 	}
 
-	public void showTipPanel()
-	{
-		tipPanel.SetActive (true);
-		GameManager.sharedManager.pauseGame ();
-	}
-
 	public void watchReplay()
 	{
-		
 		EveryPlayHelper.Instance.playLastRecording ();
-	}
-
-	public void hideTipPanel()
-	{
-		tipPanel.SetActive (false);
-		GameManager.sharedManager.resumeGame ();
 	}
 }
