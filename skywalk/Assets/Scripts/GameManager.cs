@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour {
 	public static event RefreshUI redCountChanged;
 	public static event RefreshUI distanceChanged;
 
-	public delegate void playerPowerUp();
-	public static event playerPowerUp onPowerUp;
+	public delegate void PlayerPowerUp();
+	public static event PlayerPowerUp onPowerUp;
 
 	public float totalDistance = 0f;
 	private int redsCollectedThisRound = 0;
@@ -152,11 +152,6 @@ public class GameManager : MonoBehaviour {
 		totalDistance = totalDistance + distance;
 		distanceChanged ();
 	}
-
-	public void showTutorial()
-	{
-		GameGUI.Instance.showTutorial ();
-	}
 		
 	public void resumeGame()
 	{
@@ -197,5 +192,21 @@ public class GameManager : MonoBehaviour {
 			Debug.LogError("The ad failed to be shown.");
 			break;
 		}
+	}
+
+	public void tutorialTriggered ()
+	{
+		Debug.Log ("Tutorial triggered");
+		GameGUI.Instance.showTutorial ();
+
+		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
+		cm.inTutorial = true;
+	}
+
+	public void tutorialUserTapped ()
+	{
+		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
+		cm.inTutorial = false;
+		cm.doTurn ();
 	}
 }

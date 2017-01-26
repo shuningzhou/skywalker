@@ -9,8 +9,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	bool rightInFront = false;
 	float rayReach = 2.0f;
-	bool tutorialStarted = false;
-	bool inTutorial = false;
+	public bool inTutorial = false;
 
 	public delegate void playerMoved(Vector3 position);
 	public static event playerMoved OnPlayerMoved;
@@ -52,7 +51,6 @@ public class CharacterMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		excuateInSeconds (startTutorial, 3f);
 	}
 
 	// Update is called once per frame
@@ -67,26 +65,11 @@ public class CharacterMovement : MonoBehaviour {
 		else if (GameManager.sharedManager.gameState == GameManager.GameState.tutorial) 
 		{
 			if (inTutorial) {
-				return;
+
+			} else {
+				keepRotating ();
 			}
-
-			keepRotating ();
-
-			if (tutorialStarted) {
-				RaycastHit movingHit;
-
-				if (Physics.Raycast (getMovingPosition (), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road")) 
-				{
-					inTutorial = true;
-					GameGUI.Instance.showTutorial ();
-				} 
-			} 
 		}
-	}
-
-	void startTutorial()
-	{
-		tutorialStarted = true;
 	}
 
 	public void excuateInSeconds(Action action, float seconds)
@@ -150,7 +133,7 @@ public class CharacterMovement : MonoBehaviour {
 //		transform.position += new Vector3( 0f, 0f, 6 * 0.5f ); 
 	}
 
-	void doTurn() {
+	public void doTurn() {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 		float movedDistance = calculateDistance ();
@@ -159,6 +142,8 @@ public class CharacterMovement : MonoBehaviour {
 		{
 			OnPlayerMoved (getFootPosition());
 		}
+			
+		rotateSpeed = rotateSpeed + 2.0f;
 	}
 
 	void doFailed()

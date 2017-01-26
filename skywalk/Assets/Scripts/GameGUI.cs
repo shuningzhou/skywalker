@@ -140,4 +140,11 @@ public class GameGUI : MonoBehaviour {
 	{
 		tutorialPanel.gameObject.SetActive (true);
 	}
+
+	public void hideTutorial()
+	{
+		Debug.Log ("Hide tutorial");
+		tutorialPanel.gameObject.SetActive (false);
+		GameManager.sharedManager.tutorialUserTapped ();
+	}
 }
