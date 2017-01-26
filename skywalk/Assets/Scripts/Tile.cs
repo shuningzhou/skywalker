@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour {
 
+	public static Tile Instance = null;
 	public GameObject Building_0, Building_1;
 	public GameObject followTarget;
 	public float initTileSize = 200;
@@ -45,6 +46,25 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+	}
+
+	void Awake () {
+
+		if (Instance == null) {
+			Instance = this;
+		} else if (Instance != this) {
+			Destroy(gameObject);
+		}
+
+		CharacterMovement.OnPlayerMoved += OnPlayerMoved;
+	}
+
+	void OnDestroy()
+	{
+		CharacterMovement.OnPlayerMoved -= OnPlayerMoved;
+	}
+
+	void OnPlayerMoved(Vector3 other){
 		CharacterMovement moveScript = followTarget.GetComponent<CharacterMovement> ();
 		newPosition = moveScript.getFootPosition ();
 		distance = Mathf.Sqrt(Mathf.Pow(newPosition.x-position.x, 2f) - Mathf.Pow(newPosition.z-position.z, 2f));
@@ -66,6 +86,5 @@ public class Tile : MonoBehaviour {
 			timeToChange = false;
 			changeFactor = 0;
 		}
-			
 	}
 }
