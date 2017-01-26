@@ -18,6 +18,7 @@ public class GameGUI : MonoBehaviour {
 
 	public MenuPanel menuPanel;
 	public AlertPanel alertPanel;
+	public TutorialPanel tutorialPanel;
 
 	// Use this for initialization
 	void Awake () {
@@ -133,5 +134,10 @@ public class GameGUI : MonoBehaviour {
 	public void watchReplay()
 	{
 		EveryPlayHelper.Instance.playLastRecording ();
+	}
+
+	public void showTutorial()
+	{
+		tutorialPanel.gameObject.SetActive (true);
 	}
 }

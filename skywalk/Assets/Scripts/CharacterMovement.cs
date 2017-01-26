@@ -54,15 +54,22 @@ public class CharacterMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (GameManager.sharedManager.gameState != GameManager.GameState.playing) 
+		if (GameManager.sharedManager.gameState == GameManager.GameState.playing) {
+			checkRoadCollapsed ();
+			checkForMobile ();
+			checkForKeyboard ();
+			keepRotating ();
+		} 
+		else if (GameManager.sharedManager.gameState == GameManager.GameState.tutorial) 
 		{
-			return;
+			RaycastHit movingHit;
+			Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
+
+			if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
+			{
+				GameManager.sharedManager.pauseGameForTutorial ();
+			} 
 		}
-			
-		checkRoadCollapsed ();
-		checkForMobile ();
-		checkForKeyboard ();
-		keepRotating ();
 	}
 
 	void checkRoadCollapsed()

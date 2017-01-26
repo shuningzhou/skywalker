@@ -143,11 +143,12 @@ public class GameManager : MonoBehaviour {
 		distanceChanged ();
 	}
 
-	public void pauseGame()
+	public void pauseGameForTutorial()
 	{
 		Time.timeScale = 0f;
+		GameGUI.Instance.showTutorial ();
 	}
-
+		
 	public void resumeGame()
 	{
 		excuateInSeconds (doResume, 0.2f);
@@ -163,7 +164,7 @@ public class GameManager : MonoBehaviour {
 
 	void doPlayNewGame()
 	{
-		gameState = GameState.playing;
+		gameState = GameState.tutorial;
 		notifyStateListener ();
 	}
 
