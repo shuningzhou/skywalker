@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TutorialPanel : MonoBehaviour {
 
 	public Image tapImage;
-
+	private float alphaChangeSpeed = 0.05f;
 	// Use this for initialization
 	void Start () {
 		StartBlinking();
@@ -13,7 +13,12 @@ public class TutorialPanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		if (tapImage.color.a >= 0.5f) {
+			tapImage.color = new Color(tapImage.color.r, tapImage.color.g, tapImage.color.b, 0.1f);
+		} else {
+			tapImage.color = new Color(tapImage.color.r, tapImage.color.g, tapImage.color.b, tapImage.color.a + alphaChangeSpeed * Time.deltaTime);
+		}
 	}
 
 	void StartBlinking()
@@ -33,14 +38,16 @@ public class TutorialPanel : MonoBehaviour {
 		{
 			switch(tapImage.color.a.ToString())
 			{
-			case "0":
+			case "0.2":
 				tapImage.color = new Color(tapImage.color.r, tapImage.color.g, tapImage.color.b, 0.5f);
-				//Play sound
 				yield return new WaitForSeconds(0.5f);
 				break;
-			case "1":
+			case "0.5":
 				tapImage.color = new Color(tapImage.color.r, tapImage.color.g, tapImage.color.b, 0.2f);
-				//Play sound
+				yield return new WaitForSeconds(0.5f);
+				break;
+			default:
+				tapImage.color = new Color(tapImage.color.r, tapImage.color.g, tapImage.color.b, 0.2f);
 				yield return new WaitForSeconds(0.5f);
 				break;
 			}

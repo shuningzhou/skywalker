@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CharacterMovement : MonoBehaviour {
 	public float rotateSpeed = 250.0f;
@@ -8,6 +9,8 @@ public class CharacterMovement : MonoBehaviour {
 
 	bool rightInFront = false;
 	float rayReach = 2.0f;
+	bool tutorialStarted = false;
+	bool inTutorial = false;
 
 	public delegate void playerMoved(Vector3 position);
 	public static event playerMoved OnPlayerMoved;
@@ -49,6 +52,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		excuateInSeconds (startTutorial, 3f);
 	}
 
 	// Update is called once per frame
@@ -62,14 +66,38 @@ public class CharacterMovement : MonoBehaviour {
 		} 
 		else if (GameManager.sharedManager.gameState == GameManager.GameState.tutorial) 
 		{
-			RaycastHit movingHit;
-			Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
+			if (inTutorial) {
+				return;
+			}
 
-			if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
-			{
-				GameManager.sharedManager.pauseGameForTutorial ();
+			keepRotating ();
+
+			if (tutorialStarted) {
+				RaycastHit movingHit;
+
+				if (Physics.Raycast (getMovingPosition (), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road")) 
+				{
+					inTutorial = true;
+					GameGUI.Instance.showTutorial ();
+				} 
 			} 
 		}
+	}
+
+	void startTutorial()
+	{
+		tutorialStarted = true;
+	}
+
+	public void excuateInSeconds(Action action, float seconds)
+	{
+		StartCoroutine (delayStart(seconds, action));
+	}
+
+	IEnumerator delayStart(float delay, Action action)
+	{
+		yield return new WaitForSeconds(delay);
+		action ();
 	}
 
 	void checkRoadCollapsed()
@@ -172,7 +200,7 @@ public class CharacterMovement : MonoBehaviour {
 //		Debug.Log (lastPosition);
 //		float distance = Mathf.Sqrt((newPosition.z - lastPosition.z) * (newPosition.z - lastPosition.z) + (newPosition.x - lastPosition.x) * (newPosition.x - lastPosition.x));
 //		return distance/2f;
-		float randomDistance = Random.Range(0.3f, 0.7f);
+		float randomDistance = UnityEngine.Random.Range(0.3f, 0.7f);
 		randomDistance = 1f + randomDistance;
 		return randomDistance;
 	}

@@ -72,23 +72,33 @@ public class GameManager : MonoBehaviour {
 		{
 		case GameState.menu: 
 			Debug.Log ("Menu");
-			onMenu ();
+			if (onMenu != null) {
+				onMenu ();
+			}
 			break;
 		case GameState.playing:
 			Debug.Log ("playing");
-			onGamePlay ();
+			if (onGamePlay != null) {
+				onGamePlay ();
+			}
 			break;
 		case GameState.gameover:
 			Debug.Log ("gameover");
-			onGameOver ();
+			if (onGameOver != null) {
+				onGameOver ();
+			}
 			break;
 		case GameState.willStart:
 			Debug.Log ("willStart");
-			onWillStart ();
+			if (onWillStart != null) {
+				onWillStart ();
+			}
 			break;
 		default:
 			Debug.Log ("tutorial");
-			onTutotial ();
+			if (onTutotial != null) {
+				onTutotial ();
+			}
 			break;
 		}
 	}
@@ -143,9 +153,8 @@ public class GameManager : MonoBehaviour {
 		distanceChanged ();
 	}
 
-	public void pauseGameForTutorial()
+	public void showTutorial()
 	{
-		Time.timeScale = 0f;
 		GameGUI.Instance.showTutorial ();
 	}
 		
