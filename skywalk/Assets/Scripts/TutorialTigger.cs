@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TutorialTigger : MonoBehaviour {
 
+	public bool isLastTigger = false;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,8 +18,7 @@ public class TutorialTigger : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) 
 	{
-		
-		GameManager.sharedManager.tutorialTriggered ();
+		GameManager.sharedManager.tutorialTriggered (isLastTigger);
 		Destroy (gameObject);
 	}
 }

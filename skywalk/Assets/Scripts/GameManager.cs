@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 
 	public float totalDistance = 0f;
 	private int redsCollectedThisRound = 0;
-
+	private bool isOnLastTutorialTrigger = false;
 
 	void Awake()
 	{
@@ -194,13 +194,15 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void tutorialTriggered ()
+	public void tutorialTriggered (bool isLastTrigger)
 	{
 		Debug.Log ("Tutorial triggered");
 		GameGUI.Instance.showTutorial ();
 
 		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		cm.inTutorial = true;
+
+		isOnLastTutorialTrigger = isLastTrigger;
 	}
 
 	public void tutorialUserTapped ()
@@ -208,5 +210,15 @@ public class GameManager : MonoBehaviour {
 		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		cm.inTutorial = false;
 		cm.doTurn ();
+
+		if (isOnLastTutorialTrigger) {
+			excuateInSeconds (startPlaying, 1f);
+		}
+	}
+
+	void startPlaying()
+	{
+		gameState = GameState.playing;
+		notifyStateListener ();
 	}
 }
