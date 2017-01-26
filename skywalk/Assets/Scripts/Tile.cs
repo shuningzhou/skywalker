@@ -6,12 +6,17 @@ public class Tile : MonoBehaviour {
 
 	public GameObject Building_0, Building_1;
 	public GameObject followTarget;
-	public float initTileSize = 1000;
-	public double buildingDensity = 0.5;
+	public float initTileSize = 100;
+	public double buildingDensity = 0.3;
 	private int randomNum = 0;
 	private int numOfBuildingsInTile;
 	private Vector3 position;
 	private Vector3 newPosition;
+	private Vector3 futurePosition;
+	private float distance;
+	private Vector3 direction;
+	public bool timeToChange = false;
+	private int changeFactor = 0;
 
 	// Use this for initialization
 	void createBuildings(Vector3 centerPosition, float tileSize)
@@ -40,6 +45,27 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		CharacterMovement moveScript = followTarget.GetComponent<CharacterMovement> ();
+		newPosition = moveScript.getFootPosition ();
+		distance = Mathf.Sqrt(Mathf.Pow(newPosition.x-position.x, 2f) - Mathf.Pow(newPosition.z-position.z, 2f));
+		if (distance >= (initTileSize / 4)) {
+			direction = newPosition - position;
+			direction.y = 0;
+			futurePosition = direction * 3 + position;
+			futurePosition.y = 21.1f;
+			createBuildings (futurePosition, initTileSize);
+			position = newPosition;
+			changeFactor++;
+		}
+
+		if (changeFactor >= 2) {
+			timeToChange = true;
+			changeFactor++;
+		}
+		if (changeFactor > 20) {
+			timeToChange = false;
+			changeFactor = 0;
+		}
+			
 	}
 }

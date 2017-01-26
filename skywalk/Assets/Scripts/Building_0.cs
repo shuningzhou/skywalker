@@ -5,6 +5,10 @@ using UnityEngine;
 public class Building_0 : MonoBehaviour {
 
 	private bool isOverlap = false;
+	private float distance;
+	private Vector3 newPosition;
+	public GameObject followTarget;
+	public GameObject tile;
 
 	// Use this for initialization
 	void Start () {
@@ -12,10 +16,22 @@ public class Building_0 : MonoBehaviour {
 			Destroy (gameObject);
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+		Tile tileScript = tile.GetComponent<Tile> ();
+
+		//if (tileScript.timeToChange)
+		{
+			CharacterMovement moveScript = followTarget.GetComponent<CharacterMovement> ();
+			newPosition = moveScript.getFootPosition ();
+			distance = Mathf.Sqrt (Mathf.Pow (newPosition.x - transform.position.x, 2f) - Mathf.Pow (newPosition.z - transform.position.z, 2f));
+
+			if (distance >= (tileScript.initTileSize / 2)) {
+				Debug.Log ("Building_0 is destroyed because it is too far away from player");
+				Destroy (gameObject);
+			}
+		}
 	}
 
 	public void OnTriggerEnter(Collider other)
