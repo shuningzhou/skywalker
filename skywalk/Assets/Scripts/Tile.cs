@@ -6,7 +6,7 @@ public class Tile : MonoBehaviour {
 
 	public GameObject Building_0, Building_1;
 	public GameObject followTarget;
-	public float initTileSize = 100;
+	public float initTileSize = 200;
 	public double buildingDensity = 0.3;
 	private int randomNum = 0;
 	private int numOfBuildingsInTile;
