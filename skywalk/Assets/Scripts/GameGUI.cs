@@ -15,10 +15,18 @@ public class GameGUI : MonoBehaviour {
 	public float alphaChangeSpped;
 
 	public int lifeCost = 0;
+	public float tokenGenPeriod = 30.0f;
 
 	public MenuPanel menuPanel;
 	public AlertPanel alertPanel;
 	public TutorialPanel tutorialPanel;
+	public Image newTokenImage;
+	public Image tokenImage;
+	public enum TokenImageState {growing, moving};
+	public TokenImageState tokenImageState;
+
+	public Vector3 origionalNewTokenImagePosition;
+	public Vector3 tokenImagePosition;
 
 	// Use this for initialization
 	void Awake () {
@@ -33,6 +41,8 @@ public class GameGUI : MonoBehaviour {
 		GameManager.onGameOver += onGameOver;
 		GameManager.redCountChanged += redCountChanged;
 		GameManager.distanceChanged += distanceChanged;
+		origionalNewTokenImagePosition = newTokenImage.rectTransform.position;
+		tokenImagePosition = tokenImage.rectTransform.position;
 	}
 
 	void OnDestroy()
@@ -107,7 +117,42 @@ public class GameGUI : MonoBehaviour {
 
 	void Update()
 	{
+		switch(tokenImageState)
+		{
+		case TokenImageState.growing: 
+			Debug.Log ("TokenImageState.growing");
+			Vector2 currentSize = newTokenImage.rectTransform.sizeDelta;
+			if (currentSize.x >= 30.0f) {
+				tokenImageState = TokenImageState.moving;
+			} else {
+				Vector2 newSize = new Vector2 (currentSize.x + tokenGenPeriod * Time.deltaTime, currentSize.y + tokenGenPeriod * Time.deltaTime);
+				newTokenImage.rectTransform.sizeDelta = newSize;
+			}
+			break;
 
+		case TokenImageState.moving:
+			Debug.Log ("TokenImageState.moving");
+
+			Vector3 currentPosition = newTokenImage.rectTransform.position;
+			
+			if (currentPosition.y >= tokenImagePosition.y) 
+			{
+				tokenImageState = TokenImageState.growing;
+				newTokenImage.rectTransform.sizeDelta =  new Vector2 (0f, 0f);
+				newTokenImage.rectTransform.position = origionalNewTokenImagePosition;
+				UserData.addRedsCount (1);
+				redCountChanged ();
+
+			} else {
+				newTokenImage.rectTransform.position = new Vector3 (currentPosition.x, currentPosition.y + 40.0f * Time.deltaTime, currentPosition.z);
+			}
+
+			break;
+
+		default:
+			Debug.Log ("WTF");
+			break;
+		}
 	}
 
 	public void playDemo()

@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour {
 		cm.doTurn ();
 
 		if (isOnLastTutorialTrigger) {
-			excuateInSeconds (startPlaying, 1f);
+			excuateInSeconds (startPlaying, 0.2f);
 		}
 	}
 
