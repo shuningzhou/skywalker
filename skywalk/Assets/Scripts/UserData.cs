@@ -6,6 +6,7 @@ using System;
 public class UserData : MonoBehaviour {
 	
 	public static string PREF_COLLECTED = "collected";
+	public static string PREF_LAST_DISTANCE = "last_distance";
 	public static string PREF_DISTANCE = "distance";
 	public static string PREF_DATE = "date";
 	public static string PREF_TUTORIAL_DONE = "tutorial_done";
@@ -19,6 +20,11 @@ public class UserData : MonoBehaviour {
 	public static string getLocalBestRecordDate()
 	{
 		return PlayerPrefs.GetString(PREF_DATE, "No Record");
+	}
+
+	public static float getLastDistance()
+	{
+		return PlayerPrefs.GetFloat(PREF_LAST_DISTANCE, 0);
 	}
 
 	public static string getUserName()
@@ -39,6 +45,12 @@ public class UserData : MonoBehaviour {
 	public static void saveLocalBestRecordValue(float value)
 	{
 		PlayerPrefs.SetFloat (PREF_DISTANCE, value);
+		PlayerPrefs.Save();
+	}
+
+	public static void saveLastDistance(float value)
+	{
+		PlayerPrefs.SetFloat (PREF_LAST_DISTANCE, value);
 		PlayerPrefs.Save();
 	}
 

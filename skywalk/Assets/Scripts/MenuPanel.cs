@@ -13,8 +13,9 @@ public class MenuPanel : MonoBehaviour {
 	public Row row5;
 
 	public Text playerRankingText;
-	public Text userIDText;
+	public Text distanceText;
 	public InputField userIdField;
+	public Text localBest;
 
 	public RankData rd;
 	public RankData rd1;
@@ -72,6 +73,21 @@ public class MenuPanel : MonoBehaviour {
 
 		Debug.Log ("Refresh Rankings " + App42Helper.Instance.userName);
 		userIdField.text = App42Helper.Instance.userName;
+
+		float lastDistance = UserData.getLastDistance ();
+		if (lastDistance > 0) {
+			distanceText.text = lastDistance.ToString ("0.00");
+		} else {
+			distanceText.text = "00.00";
+		}
+
+		float bestDistance = UserData.getLocalBestRecordValue();
+
+		if (bestDistance > 0f) {
+			localBest.text = "BEST " + bestDistance.ToString ("0.00");
+		} else {
+			localBest.text = "";
+		}
 		//userIDText.text = App42Helper.Instance.userName;
 	}
 

@@ -82,6 +82,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void showMenu()
 	{
+		distanceCount.gameObject.SetActive (false);
 		menuPanel.gameObject.SetActive (true);
 		menuPanel.refreshRankings ();
 	}

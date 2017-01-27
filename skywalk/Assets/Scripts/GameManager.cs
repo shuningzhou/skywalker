@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour {
 		gameState = GameState.gameover;
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
+		UserData.saveLastDistance (totalDistance);
 		App42Helper.Instance.uploadScoreForUser (totalDistance);
 
 		excuateInSeconds (enterMenuMode, 6f);
