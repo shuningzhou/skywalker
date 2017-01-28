@@ -98,6 +98,7 @@ public class MenuPanel : MonoBehaviour {
 
 	public void sharePressed()
 	{
+		GameManager.sharedManager.revivePlayer ();
 	}
 
 	public void PurchasePressed()

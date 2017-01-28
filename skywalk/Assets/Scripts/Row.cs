@@ -24,8 +24,8 @@ public class Row : MonoBehaviour {
 		nameText.text = userName;
 		scoreText.text = score;
 
-		Debug.Log ("1 ROW: " + userName);
-		Debug.Log ("2 ROW: " + UserData.getUserName ());
+//		Debug.Log ("1 ROW: " + userName);
+//		Debug.Log ("2 ROW: " + UserData.getUserName ());
 		if (userName == UserData.getUserName ()) 
 		{
 			nameText.text = "YOU";

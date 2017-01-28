@@ -87,6 +87,12 @@ public class GameGUI : MonoBehaviour {
 		menuPanel.refreshRankings ();
 	}
 
+	public void hideMenu()
+	{
+		distanceCount.gameObject.SetActive (true);
+		menuPanel.gameObject.SetActive (false);
+	}
+
 	public void showAlert(string message)
 	{
 		alertPanel.gameObject.SetActive (true);
@@ -116,12 +122,16 @@ public class GameGUI : MonoBehaviour {
 		t.color = newColor;
 	}
 
+	void Start()
+	{
+		redCountChanged ();
+	}
+
 	void Update()
 	{
 		switch(tokenImageState)
 		{
 		case TokenImageState.growing: 
-			Debug.Log ("TokenImageState.growing");
 			Vector2 currentSize = newTokenImage.rectTransform.sizeDelta;
 			if (currentSize.x >= 30.0f) {
 				tokenImageState = TokenImageState.moving;
@@ -132,8 +142,6 @@ public class GameGUI : MonoBehaviour {
 			break;
 
 		case TokenImageState.moving:
-			Debug.Log ("TokenImageState.moving");
-
 			Vector3 currentPosition = newTokenImage.rectTransform.position;
 			
 			if (currentPosition.y >= tokenImagePosition.y) 
@@ -145,7 +153,7 @@ public class GameGUI : MonoBehaviour {
 				redCountChanged ();
 
 			} else {
-				newTokenImage.rectTransform.position = new Vector3 (currentPosition.x, currentPosition.y + 40.0f * Time.deltaTime, currentPosition.z);
+				newTokenImage.rectTransform.position = new Vector3 (currentPosition.x, currentPosition.y + 120.0f * Time.deltaTime, currentPosition.z);
 			}
 
 			break;

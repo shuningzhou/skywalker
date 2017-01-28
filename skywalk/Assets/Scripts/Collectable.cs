@@ -25,8 +25,7 @@ public class Collectable : MonoBehaviour {
 		doParticle (pos);
 
 		GameManager.sharedManager.collectedRed ();
-//		GameManager.sharedManager.test ();
-
+		//GameManager.sharedManager.test ();
 		gameObject.SetActive (false);
 	}
 

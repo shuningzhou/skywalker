@@ -27,9 +27,12 @@ public class GameManager : MonoBehaviour {
 	public delegate void PlayerPowerUp();
 	public static event PlayerPowerUp onPowerUp;
 
+	public RoadPoint currentDroppingRoadPoint;
+
 	public float totalDistance = 0f;
 	private int redsCollectedThisRound = 0;
 	private bool isOnLastTutorialTrigger = false;
+
 
 	void Awake()
 	{
@@ -123,6 +126,10 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log ("player failed");
 
+		if (currentDroppingRoadPoint != null) {
+			currentDroppingRoadPoint.stopDropping ();
+		}
+
 		gameState = GameState.gameover;
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
@@ -150,6 +157,7 @@ public class GameManager : MonoBehaviour {
 
 	public void playerMoved(float distance)
 	{
+		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		totalDistance = totalDistance + distance;
 		distanceChanged ();
 	}
@@ -165,6 +173,15 @@ public class GameManager : MonoBehaviour {
 		gameState = GameState.willStart;
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 		excuateInSeconds (doPlayNewGame, 1f);
+	}
+
+	public void revivePlayer()
+	{
+		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
+		cm.revive ();
+		GameGUI.Instance.hideMenu ();
+		startPlaying ();
+		totalDistance = UserData.getLastDistance ();
 	}
 
 	void doPlayNewGame()

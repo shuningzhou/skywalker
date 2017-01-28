@@ -11,7 +11,7 @@ public class RoadPoint : MonoBehaviour {
 	public float thickness;
 
 	public float dropDelay;
-	private bool dropped = false;
+	private bool stopDropped = false;
 
 	public RoadPoint nextRoadPoint;
 
@@ -50,35 +50,42 @@ public class RoadPoint : MonoBehaviour {
 
 	public void drop()
 	{
+		GameManager.sharedManager.currentDroppingRoadPoint = this;
 		StartCoroutine (doDrop ());
 		StartCoroutine (doDestroy ());
 	}
-
+		
+	public void stopDropping()
+	{
+		stopDropped = true;
+	}
 
 	IEnumerator doDrop()
 	{
 		yield return new WaitForSeconds(dropDelay);
-		dropped = true;
-		Rigidbody body = GetComponent<Rigidbody> ();
-		body.useGravity = true;
-		body.isKinematic = false;
 
-		if (nextRoadPoint) {
-			nextRoadPoint.drop ();
+		if (!stopDropped) 
+		{
+			Rigidbody body = GetComponent<Rigidbody> ();
+			body.useGravity = true;
+			body.isKinematic = false;
+
+			if (nextRoadPoint) 
+			{
+				nextRoadPoint.drop ();
+			}
 		}
 	}
 
 	IEnumerator doDestroy()
 	{
 		yield return new WaitForSeconds(6);
-		Destroy(gameObject);
+		gameObject.SetActive (false);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (!dropped)
-		{
-		}
+
 	}
 
 	void createMesh()

@@ -47,11 +47,11 @@ public class RoadGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		float startz = 0f - 40 * stepLength;
+		float startz = 0f - 80 * stepLength;
 
 		Vector3 previousPoint = new Vector3 (0f, 49.5f, startz);
 
-		for (int i = 1; i < 41; i++) 
+		for (int i = 1; i < 81; i++) 
 		{
 			Vector3 currentPoint = new Vector3 (0f, 49.5f, startz + stepLength * i);
 			var rd = Instantiate (RoadPoint, Vector3.zero, Quaternion.identity);

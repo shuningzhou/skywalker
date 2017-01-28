@@ -14,6 +14,9 @@ public class CharacterMovement : MonoBehaviour {
 	public delegate void playerMoved(Vector3 position);
 	public static event playerMoved OnPlayerMoved;
 
+	private Vector3 lastPosition;
+	private Quaternion lastRotation;
+
 	void Awake () {
 		GameManager.onPowerUp += onPowerUp;
 	}
@@ -137,13 +140,30 @@ public class CharacterMovement : MonoBehaviour {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
 		float movedDistance = calculateDistance ();
+
+		lastPosition = gameObject.transform.position;
+		lastRotation = gameObject.transform.rotation;
+
 		GameManager.sharedManager.playerMoved (movedDistance);
 		if (OnPlayerMoved != null)
 		{
 			OnPlayerMoved (getFootPosition());
 		}
-			
-		rotateSpeed = rotateSpeed + 2.0f;
+
+		if (rotateSpeed < 375.0f) 
+		{
+			rotateSpeed = rotateSpeed + 2.0f;
+		}
+
+	}
+
+	public void revive()
+	{
+		Rigidbody body = GetComponent<Rigidbody> ();
+		body.useGravity = false;
+		body.isKinematic = true;
+		gameObject.transform.position = lastPosition;
+		gameObject.transform.rotation = lastRotation;
 	}
 
 	void doFailed()
