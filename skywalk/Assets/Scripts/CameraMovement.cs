@@ -40,7 +40,6 @@ public class CameraMovement : MonoBehaviour {
 
 				transform.position = Vector3.Lerp (transform.position,
 					position, Time.deltaTime * moveSpeed);
-				transform.Rotate(Vector3.down, 0.5f * Time.deltaTime);
 			}
 		}
 	}

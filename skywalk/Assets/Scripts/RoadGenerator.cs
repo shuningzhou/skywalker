@@ -90,7 +90,9 @@ public class RoadGenerator : MonoBehaviour {
 
 	public void onGamePlay ()
 	{
-		firstRoadPoint.drop ();
+		if (firstRoadPoint.isActiveAndEnabled) {
+			firstRoadPoint.drop ();
+		}
 	}
 
 	public void generateNextRoadSections()

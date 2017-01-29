@@ -19,6 +19,7 @@ public class GameGUI : MonoBehaviour {
 
 	public MenuPanel menuPanel;
 	public AlertPanel alertPanel;
+	public RevivePanel revivePanel;
 	public TutorialPanel tutorialPanel;
 	public Image newTokenImage;
 	public Image tokenImage;
@@ -93,6 +94,16 @@ public class GameGUI : MonoBehaviour {
 		menuPanel.gameObject.SetActive (false);
 	}
 
+	public void showRevive()
+	{
+		revivePanel.gameObject.SetActive (true);
+	}
+
+	public void hideRevive()
+	{
+		revivePanel.gameObject.SetActive (false);
+	}
+		
 	public void showAlert(string message)
 	{
 		alertPanel.gameObject.SetActive (true);
@@ -182,7 +193,26 @@ public class GameGUI : MonoBehaviour {
 
 	public void showVideo()
 	{
+		hideRevive ();
 		SCAds.ShowRewardedAd (GameManager.sharedManager);
+	}
+
+	public void useToken()
+	{
+		hideRevive ();
+
+		if (UserData.getRedsCount () >= 100) {
+			UserData.addRedsCount (-100);
+			redCountChanged ();
+		}
+
+		GameManager.sharedManager.revivePlayer ();
+	}
+
+	public void skipRevive()
+	{
+		hideRevive ();
+		GameManager.sharedManager.playerFailed (true);
 	}
 
 	public void watchReplay()

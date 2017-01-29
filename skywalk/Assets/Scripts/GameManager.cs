@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
 	public float totalDistance = 0f;
 	private int redsCollectedThisRound = 0;
 	private bool isOnLastTutorialTrigger = false;
-
+	private bool alreadyRevived = false;
 
 	void Awake()
 	{
@@ -134,10 +134,24 @@ public class GameManager : MonoBehaviour {
 		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
 		UserData.updateBestDistance (totalDistance);
 		UserData.saveLastDistance (totalDistance);
-		App42Helper.Instance.uploadScoreForUser (totalDistance);
 
-		excuateInSeconds (enterMenuMode, 6f);
-		totalDistance = 0;
+		if (alreadyRevived) {
+			App42Helper.Instance.uploadScoreForUser (totalDistance);
+			if (forced) {
+				enterMenuMode ();
+			} else {
+				excuateInSeconds (enterMenuMode, 4f);
+			}
+			totalDistance = 0;
+		} else {
+			excuateInSeconds (enterReviveMode, 2f);
+			alreadyRevived = true;
+		}
+	}
+
+	void enterReviveMode()
+	{
+		GameGUI.Instance.showRevive ();
 	}
 
 	void enterMenuMode()
@@ -157,7 +171,6 @@ public class GameManager : MonoBehaviour {
 
 	public void playerMoved(float distance)
 	{
-		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		totalDistance = totalDistance + distance;
 		distanceChanged ();
 	}
@@ -172,6 +185,7 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("Play new game");
 		gameState = GameState.willStart;
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		alreadyRevived = false;
 		excuateInSeconds (doPlayNewGame, 1f);
 	}
 
@@ -182,6 +196,11 @@ public class GameManager : MonoBehaviour {
 		GameGUI.Instance.hideMenu ();
 		startPlaying ();
 		totalDistance = UserData.getLastDistance ();
+		while (!currentDroppingRoadPoint.isActiveAndEnabled) {
+			currentDroppingRoadPoint = currentDroppingRoadPoint.nextRoadPoint;
+		}
+//		currentDroppingRoadPoint.stopDropped = false;
+		currentDroppingRoadPoint.drop ();
 	}
 
 	void doPlayNewGame()
@@ -201,13 +220,15 @@ public class GameManager : MonoBehaviour {
 		{
 		case ShowResult.Finished:
 			Debug.Log ("The ad was successfully shown.");
-			playNewGame ();
+			revivePlayer ();
 			break;
 		case ShowResult.Skipped:
-			Debug.Log("The ad was skipped before reaching the end.");
+			Debug.Log ("The ad was skipped before reaching the end.");
+			GameGUI.Instance.skipRevive ();
 			break;
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");
+			GameGUI.Instance.skipRevive ();
 			break;
 		}
 	}

@@ -11,7 +11,7 @@ public class RoadPoint : MonoBehaviour {
 	public float thickness;
 
 	public float dropDelay;
-	private bool stopDropped = false;
+	public bool stopDropped = false;
 
 	public RoadPoint nextRoadPoint;
 
@@ -52,14 +52,14 @@ public class RoadPoint : MonoBehaviour {
 	{
 		GameManager.sharedManager.currentDroppingRoadPoint = this;
 		StartCoroutine (doDrop ());
-		StartCoroutine (doDestroy ());
+
 	}
 		
 	public void stopDropping()
 	{
 		stopDropped = true;
 	}
-
+		
 	IEnumerator doDrop()
 	{
 		yield return new WaitForSeconds(dropDelay);
@@ -73,8 +73,11 @@ public class RoadPoint : MonoBehaviour {
 			if (nextRoadPoint) 
 			{
 				nextRoadPoint.drop ();
+				StartCoroutine (doDestroy ());
 			}
 		}
+
+		stopDropped = false;
 	}
 
 	IEnumerator doDestroy()
