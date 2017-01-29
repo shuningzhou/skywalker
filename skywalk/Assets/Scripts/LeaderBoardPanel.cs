@@ -21,7 +21,7 @@ public class LeaderBoardPanel : MonoBehaviour {
 		foreach (RankData rd in App42Helper.Instance.rankDatas) {
 			Row r = Instantiate (row);
 			r.gameObject.SetActive (true);
-			r.name = rd.userName;
+			r.userName = rd.userName;
 			r.rank = rd.userRank;
 			r.score = rd.userScore;
 			r.gameObject.transform.SetParent (scrollContent.transform);

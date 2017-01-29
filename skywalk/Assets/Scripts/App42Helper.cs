@@ -46,15 +46,6 @@ public class App42Helper : MonoBehaviour {
 		email = createUserEmail ();
 		password = createUserPassword ();
 
-		for (int i = 0; i < 6; i++) 
-		{
-			RankData rd = new RankData ();
-			rd.userRank = "";
-			rd.userName = "";
-			rd.userScore = "";
-			rankDatas.Add (rd);
-		}
-
 		Debug.Log ("App42 Awake");
 	}
 
@@ -121,7 +112,7 @@ public class App42Helper : MonoBehaviour {
 	public void getTop10Rankers()
 	{
 		ScoreBoardService service = api.BuildScoreBoardService ();
-		service.GetTopNRankers (gameName (), 10, new App42TopRankingResponse ());
+		service.GetTopNRankers (gameName (), 20, new App42TopRankingResponse ());
 	}
 
 	public void getUserRanking()
