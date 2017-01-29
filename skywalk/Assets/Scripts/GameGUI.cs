@@ -21,6 +21,8 @@ public class GameGUI : MonoBehaviour {
 	public AlertPanel alertPanel;
 	public RevivePanel revivePanel;
 	public TutorialPanel tutorialPanel;
+	public LeaderBoardPanel leaderBoardPanel;
+
 	public Image newTokenImage;
 	public Image tokenImage;
 	public enum TokenImageState {growing, moving};
@@ -57,6 +59,7 @@ public class GameGUI : MonoBehaviour {
 	public void refreshGUI()
 	{
 		menuPanel.refreshRankings ();
+		leaderBoardPanel.refreshGUI ();
 	}
 
 	void redCountChanged ()
