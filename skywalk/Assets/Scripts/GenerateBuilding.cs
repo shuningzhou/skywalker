@@ -29,12 +29,11 @@ public class GenerateBuilding : MonoBehaviour {
 				}
 
 				Vector3 pos = new Vector3 ((x * buildingDistance + startPos.x),
-					randomNum / 2,
+					0.541f,
 					(z * buildingDistance + startPos.z));
 				
 				// create a plane
 				if ((x == 0) && (z == 0)) {
-					pos.y = 0.541f;
 					GameObject p = (GameObject)Instantiate (plane, pos, Quaternion.identity);
 					p.transform.SetParent (this.gameObject.transform);
 					p.transform.localScale = new Vector3((buildingDistance*halfBlockX*2+50)/10, 1,
@@ -45,6 +44,7 @@ public class GenerateBuilding : MonoBehaviour {
 				if (randomNum < 20) {
 					continue;
 				}
+				pos.y = randomNum / 2;
 				GameObject c = (GameObject)Instantiate (cube, pos, Quaternion.identity);
 				c.transform.localScale = new Vector3 (10, randomNum, 10);
 				c.transform.SetParent (this.gameObject.transform);
