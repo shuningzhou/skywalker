@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		App42Helper.Instance.getUserRanking();
-		App42Helper.Instance.getTop6Score ();
+		App42Helper.Instance.getTop10Rankers();
 		//App42Helper.Instance.getUserRanking();
 		//App42Helper.Instance.getTop5Score();
 	}
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour {
 	{
 		gameState = GameState.menu;
 		notifyStateListener ();
-		App42Helper.Instance.getTop6Score ();
+		App42Helper.Instance.getTop10Rankers ();
 		App42Helper.Instance.getUserRanking ();
 	}
 

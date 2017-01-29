@@ -118,10 +118,10 @@ public class App42Helper : MonoBehaviour {
 //		service.GetUsersWithScoreRange ();
 //	}
 
-	public void getTop6Score()
+	public void getTop10Rankers()
 	{
 		ScoreBoardService service = api.BuildScoreBoardService ();
-		service.GetTopNRankings (gameName (), 6, new App42TopRankingResponse ());
+		service.GetTopNRankers (gameName (), 10, new App42TopRankingResponse ());
 	}
 
 	public void getUserRanking()
