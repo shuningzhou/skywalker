@@ -88,10 +88,3 @@ public class MenuPanel : MonoBehaviour {
 		Debug.Log ("User name changed" + userIdField.text);
 	}
 }
-
-public class RankData
-{
-	public string userRank;
-	public string userName;
-	public string userScore;
-}

@@ -25,6 +25,11 @@ public class LeaderBoardPanel : MonoBehaviour {
 			r.rank = rd.userRank;
 			r.score = rd.userScore;
 			r.gameObject.transform.SetParent (scrollContent.transform);
+			r.gameObject.transform.localScale = new Vector3 (1f, 1f, 1f);
+
+			r.refreshUI ();
 		}
+
+
 	}
 }

@@ -108,7 +108,7 @@ namespace AssemblyCSharp
 				RankData rd = new RankData ();
 				rd.userRank = (i+1).ToString ();
 				rd.userName = game.GetScoreList()[i].GetUserName();
-				rd.userScore = game.GetScoreList () [i].GetValue ().ToString ();
+				rd.userScore = (float)game.GetScoreList () [i].GetValue ();
 
 				rankDatas.Add (rd);
 			}  
@@ -122,4 +122,11 @@ namespace AssemblyCSharp
 			Debug.Log("TopRanking Exception : " + e);  
 		}  
 	}  
+}
+
+public class RankData
+{
+	public string userRank;
+	public string userName;
+	public float userScore;
 }
