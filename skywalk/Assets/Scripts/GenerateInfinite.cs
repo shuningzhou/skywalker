@@ -60,7 +60,7 @@ public class GenerateInfinite : MonoBehaviour {
 					(z * planeSize + startPos.z));
 				string blockName = "Block_" + ((int)(pos.x)).ToString () + "_" + ((int)(pos.z)).ToString ();
 				GameObject b = GameObject.Find (blockName);
-				b.transform.localScale *= upScaleLevel;
+				//b.transform.localScale *= upScaleLevel;
 			}
 		}
 	}
