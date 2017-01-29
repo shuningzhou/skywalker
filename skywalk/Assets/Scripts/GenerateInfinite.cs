@@ -27,6 +27,10 @@ public class GenerateInfinite : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		//test by biao
+		gameObject.SetActive(false);
+
 		this.gameObject.transform.position = Vector3.zero;
 		startPos = player.transform.position;
 
@@ -34,7 +38,15 @@ public class GenerateInfinite : MonoBehaviour {
 
 		for (int x = -halfBlockX; x < halfBlockX; x++) {
 			for (int z = -halfBlockZ; z < halfBlockZ; z++) {
-				//Vector3 pos = new Vector3(x * planeSize)
+				Vector3 pos = new Vector3 ((x * planeSize + startPos.x),
+					              0.541f,
+					              (z * planeSize + startPos.z));
+				GameObject b = (GameObject)Instantiate (plane, pos, Quaternion.identity);
+
+				string blockName = "Block_" + ((int)(pos.x)).ToString () + "_" + ((int)(pos.z)).ToString ();
+				b.name = blockName;
+				Block block = new Block (b, updateTime);
+				blocks.Add (blockName, block);
 			}
 		}
 	}
