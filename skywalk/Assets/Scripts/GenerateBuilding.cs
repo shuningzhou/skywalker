@@ -5,6 +5,7 @@ using UnityEngine;
 public class GenerateBuilding : MonoBehaviour {
 
 	public GameObject cube;
+	public GameObject plane;
 
 	int buildingDistance = 20;
 	int halfBlockX = 3;
@@ -27,13 +28,23 @@ public class GenerateBuilding : MonoBehaviour {
 					randomNum = Random.Range (20f, 40f);
 				}
 
+				Vector3 pos = new Vector3 ((x * buildingDistance + startPos.x),
+					randomNum / 2,
+					(z * buildingDistance + startPos.z));
+				
+				// create a plane
+				if ((x == 0) && (z == 0)) {
+					pos.y = 0.541f;
+					GameObject p = (GameObject)Instantiate (plane, pos, Quaternion.identity);
+					p.transform.SetParent (this.gameObject.transform);
+					p.transform.localScale = new Vector3((buildingDistance*halfBlockX*2+50)/10, 1,
+						(buildingDistance*halfBlockZ*2+50)/10);
+				}
+
 				// if cube is shorter than 20, ignore it
 				if (randomNum < 20) {
 					continue;
 				}
-				Vector3 pos = new Vector3 ((x * buildingDistance + startPos.x),
-					randomNum / 2,
-					(z * buildingDistance + startPos.z));
 				GameObject c = (GameObject)Instantiate (cube, pos, Quaternion.identity);
 				c.transform.localScale = new Vector3 (10, randomNum, 10);
 				c.transform.SetParent (this.gameObject.transform);
