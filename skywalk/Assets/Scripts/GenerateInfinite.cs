@@ -20,6 +20,7 @@ public class GenerateInfinite : MonoBehaviour {
 	int planeSize = 10;
 	int halfBlockX = 10;
 	int halfBlockZ = 10;
+	Vector3 upScaleLevel = new Vector3 (10f, 15f, 10f);
 
 	Vector3 startPos;
 
@@ -36,17 +37,30 @@ public class GenerateInfinite : MonoBehaviour {
 
 		float updateTime = Time.realtimeSinceStartup;
 
+		// Initially generate the terrain but set to inactive
 		for (int x = -halfBlockX; x < halfBlockX; x++) {
 			for (int z = -halfBlockZ; z < halfBlockZ; z++) {
 				Vector3 pos = new Vector3 ((x * planeSize + startPos.x),
-					              0.541f,
-					              (z * planeSize + startPos.z));
+					0.541f,
+					(z * planeSize + startPos.z));
 				GameObject b = (GameObject)Instantiate (plane, pos, Quaternion.identity);
+				b.SetActive (false);
 
 				string blockName = "Block_" + ((int)(pos.x)).ToString () + "_" + ((int)(pos.z)).ToString ();
 				b.name = blockName;
 				Block block = new Block (b, updateTime);
 				blocks.Add (blockName, block);
+			}
+		}
+		// Upscale the terrain and set to active
+		for (int x = -halfBlockX; x < halfBlockX; x++) {
+			for (int z = -halfBlockZ; z < halfBlockZ; z++) {
+				Vector3 pos = new Vector3 ((x * planeSize + startPos.x),
+					0.541f,
+					(z * planeSize + startPos.z));
+				string blockName = "Block_" + ((int)(pos.x)).ToString () + "_" + ((int)(pos.z)).ToString ();
+				GameObject b = GameObject.Find (blockName);
+				b.transform.localScale *= upScaleLevel;
 			}
 		}
 	}
