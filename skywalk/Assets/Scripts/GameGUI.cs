@@ -175,20 +175,13 @@ public class GameGUI : MonoBehaviour {
 		}
 	}
 
-	public void playDemo()
-	{
-		EveryPlayHelper.Instance.playDemo ();
-	}
-
 	public void restartGame()
 	{
 		int count = UserData.getRedsCount ();
 		if (count >= lifeCost) {
 			UserData.addRedsCount (- lifeCost);
 			GameManager.sharedManager.playNewGame ();
-		} else {
-			EveryPlayHelper.Instance.append ("Not enough Reds.");
-		}
+		} 
 	}
 
 	public void showVideo()
@@ -213,11 +206,6 @@ public class GameGUI : MonoBehaviour {
 	{
 		hideRevive ();
 		GameManager.sharedManager.playerFailed (true);
-	}
-
-	public void watchReplay()
-	{
-		EveryPlayHelper.Instance.playLastRecording ();
 	}
 
 	public void showTutorial()
