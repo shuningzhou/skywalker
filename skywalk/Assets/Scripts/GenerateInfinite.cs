@@ -23,11 +23,20 @@ public class GenerateInfinite : MonoBehaviour {
 
 	Vector3 startPos;
 
-	Hashtable tiles = new Hashtable();
+	Hashtable blocks = new Hashtable();
 
 	// Use this for initialization
 	void Start () {
-		
+		this.gameObject.transform.position = Vector3.zero;
+		startPos = player.transform.position;
+
+		float updateTime = Time.realtimeSinceStartup;
+
+		for (int x = -halfBlockX; x < halfBlockX; x++) {
+			for (int z = -halfBlockZ; z < halfBlockZ; z++) {
+				//Vector3 pos = new Vector3(x * planeSize)
+			}
+		}
 	}
 	
 	// Update is called once per frame
