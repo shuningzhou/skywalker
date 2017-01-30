@@ -21,7 +21,7 @@ public class GenerateBuilding : MonoBehaviour {
 		// Initially generate the terrain but set to inactive
 		for (int x = -halfBlockX; x <= halfBlockX; x++) {
 			for (int z = -halfBlockZ; z <= halfBlockZ; z++) {
-				float randomNum = Random.Range (0f, 50f);
+				float randomNum = Random.Range (0f, 45f);
 				// Sort the building height to make it more nature
 				if (randomNum <= 10f) {
 					randomNum = 10f;
@@ -30,7 +30,7 @@ public class GenerateBuilding : MonoBehaviour {
 					randomNum = Random.Range (25f, 30f);
 				}
 				if (randomNum > 40) {
-					randomNum = 50;
+					randomNum = 48;
 				}
 
 				// If cube is along the side, set it to a taller cube
