@@ -32,7 +32,9 @@ public class GenerateInfinite : MonoBehaviour {
 	void Start () {
 
 		this.gameObject.transform.position = Vector3.zero;
-		startPos = player.transform.position;
+		//startPos = player.transform.position;// We cannot do this because when new block generates, they doesn't aline with
+											   // the initial blocks
+		startPos = Vector3.zero;
 
 		float updateTime = Time.realtimeSinceStartup;
 
