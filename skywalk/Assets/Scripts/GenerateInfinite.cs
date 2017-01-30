@@ -17,10 +17,11 @@ public class GenerateInfinite : MonoBehaviour {
 	public GameObject plane;
 	public GameObject player;
 
-	int planeSizeX = 20*3*2+50;
-	int planeSizeZ = 20*5*2+50;
-	int halfBlockX = 1;
-	int halfBlockZ = 1;
+	// with block gap
+	int planeSizeX = 12*3*2+15;
+	int planeSizeZ = 12*5*2+15;
+	int halfBlockX = 2;
+	int halfBlockZ = 2;
 //	Vector3 upScaleLevel = new Vector3 (5f, 10f, 5f);// we dont need up scale for buildings
 
 	Vector3 startPos;
