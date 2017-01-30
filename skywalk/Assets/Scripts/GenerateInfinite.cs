@@ -18,8 +18,8 @@ public class GenerateInfinite : MonoBehaviour {
 	public GameObject player;
 
 	// with block gap
-	int planeSizeX = 12*3*2+15;
-	int planeSizeZ = 12*5*2+15;
+	int planeSizeX = 12*3*2+18;
+	int planeSizeZ = 12*5*2+18;
 	int halfBlockX = 2;
 	int halfBlockZ = 2;
 //	Vector3 upScaleLevel = new Vector3 (5f, 10f, 5f);// we dont need up scale for buildings

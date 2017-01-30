@@ -27,7 +27,7 @@ public class GenerateBuilding : MonoBehaviour {
 					randomNum = 10f;
 				}
 				if (10 < randomNum && randomNum< 40) {
-					randomNum = Random.Range (25f, 30f);
+					randomNum = Random.Range (20f, 30f);
 				}
 				if (randomNum > 40) {
 					randomNum = 48;
