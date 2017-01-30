@@ -9,6 +9,8 @@ public class MenuPanel : MonoBehaviour {
 	public Text distanceText;
 	public InputField userIdField;
 	public Text localBest;
+	public Image rankImage;
+	public Text title;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +28,6 @@ public class MenuPanel : MonoBehaviour {
 		}
 		playerRankingText.text = rankString;
 
-		Debug.Log ("Refresh Rankings " + App42Helper.Instance.userName);
 		userIdField.text = App42Helper.Instance.userName;
 
 		float lastDistance = UserData.getLastDistance ();
@@ -43,7 +44,22 @@ public class MenuPanel : MonoBehaviour {
 		} else {
 			localBest.text = "";
 		}
+
+		updateRankImage ();
+		updateRankTitle ();
 		//userIDText.text = App42Helper.Instance.userName;
+	}
+
+	public void updateRankImage()
+	{
+		Sprite sprite = RankImage.Instance.getRankSpriteForScore (UserData.getLocalBestRecordValue());
+		rankImage.sprite = sprite;
+	}
+
+	public void updateRankTitle()
+	{
+		string rankTitle = RankImage.Instance.getRankTitleForScore (UserData.getLocalBestRecordValue ());
+		title.text = rankTitle;
 	}
 
 	// Update is called once per frame
@@ -63,6 +79,11 @@ public class MenuPanel : MonoBehaviour {
 	public void startPressed()
 	{
 		GameGUI.Instance.restartGame ();
+	}
+
+	public void showLeaderBoardPressed()
+	{
+		GameGUI.Instance.showLeaderBoard ();
 	}
 
 	public void startForFreePressed()

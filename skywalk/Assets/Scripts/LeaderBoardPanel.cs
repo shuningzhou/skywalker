@@ -18,6 +18,10 @@ public class LeaderBoardPanel : MonoBehaviour {
 
 	public void refreshGUI()
 	{
+		foreach (Transform child in scrollContent.transform) {
+			GameObject.Destroy(child.gameObject);
+		}
+
 		foreach (RankData rd in App42Helper.Instance.rankDatas) {
 			Row r = Instantiate (row);
 			r.gameObject.SetActive (true);

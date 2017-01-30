@@ -222,4 +222,17 @@ public class GameGUI : MonoBehaviour {
 		tutorialPanel.gameObject.SetActive (false);
 		GameManager.sharedManager.tutorialUserTapped ();
 	}
+
+	public void showLeaderBoard()
+	{
+		leaderBoardPanel.gameObject.SetActive (true);
+		App42Helper.Instance.getTop10Rankers ();
+		hideMenu ();
+	}
+
+	public void hideLeaderBoard()
+	{
+		leaderBoardPanel.gameObject.SetActive (false);
+		showMenu ();
+	}
 }

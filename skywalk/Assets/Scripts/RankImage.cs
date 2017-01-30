@@ -78,4 +78,17 @@ public class RankImage : MonoBehaviour {
 			return rank16;
 		} 
 	}
+
+	public string getRankTitleForScore(float score)
+	{
+		if (score <= 100f) {
+			return "Recruit";
+		}else if (score <= 220f) {
+			return "Master";
+		} else if (score <= 380f) {
+			return "Champion";
+		} else{
+			return "Legend";
+		} 
+	}
 }

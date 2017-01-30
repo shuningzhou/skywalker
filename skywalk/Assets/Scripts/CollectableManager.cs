@@ -37,12 +37,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public void moved(float step, Vector3 position)
 	{
-		Debug.Log ("step: " + step);
 		distance = distance + (int)(step);
 		if (shouldCreateCollectable ()) 
 		{
 			Vector3 collectablePosition = new Vector3 (position.x, position.y + floatDistance, position.z);
-			Debug.Log ("Create: " + collectablePosition);
 			createCollectableAt (collectablePosition);
 			distance = 0;
 			space = Random.Range (3, 10);
@@ -52,10 +50,6 @@ public class CollectableManager : MonoBehaviour {
 	public bool shouldCreateCollectable()
 	{
 		int reminder = distance % space;
-
-		Debug.Log ("distance: " + distance);
-		Debug.Log ("space: " + space);
-		Debug.Log ("reminder: " + reminder);
 
 		if (reminder == 0 ) {
 			return true;
