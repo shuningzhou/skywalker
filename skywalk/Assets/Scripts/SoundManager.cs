@@ -10,6 +10,9 @@ public class SoundManager : MonoBehaviour {
 	public AudioClip moved;
 	public AudioClip collected;
 	public AudioClip dropped;
+	public AudioClip purchased;
+	public AudioClip buttonClicked;
+	public AudioClip gameStarted;
 
 	// Use this for initialization
 	void Start () {

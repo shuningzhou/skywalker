@@ -74,6 +74,7 @@ public class MenuPanel : MonoBehaviour {
 
 	public void PurchasePressed()
 	{
+		GameGUI.Instance.showStorePanel ();
 	}
 
 	public void startPressed()

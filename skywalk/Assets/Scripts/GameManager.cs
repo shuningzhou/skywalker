@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour {
 	public void playerFailed(bool forced)
 	{
 		Debug.Log ("player failed");
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
 
 		if (currentDroppingRoadPoint != null) {
 			currentDroppingRoadPoint.stopDropping ();
@@ -201,12 +202,15 @@ public class GameManager : MonoBehaviour {
 		}
 //		currentDroppingRoadPoint.stopDropped = false;
 		currentDroppingRoadPoint.drop ();
+
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
 	}
 
 	void doPlayNewGame()
 	{
 		gameState = GameState.tutorial;
 		notifyStateListener ();
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
 	}
 
 	void doResume()

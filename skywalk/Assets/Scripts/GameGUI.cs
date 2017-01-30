@@ -22,6 +22,7 @@ public class GameGUI : MonoBehaviour {
 	public RevivePanel revivePanel;
 	public TutorialPanel tutorialPanel;
 	public LeaderBoardPanel leaderBoardPanel;
+	public StorePanel storePanel;
 
 	public Image newTokenImage;
 	public Image tokenImage;
@@ -60,6 +61,8 @@ public class GameGUI : MonoBehaviour {
 	{
 		menuPanel.refreshRankings ();
 		leaderBoardPanel.refreshGUI ();
+		redCountChanged ();
+		distanceChanged ();
 	}
 
 	void redCountChanged ()
@@ -104,6 +107,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void hideRevive()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		revivePanel.gameObject.SetActive (false);
 	}
 		
@@ -115,6 +119,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void hideAlert()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		alertPanel.gameObject.SetActive (false);
 	}
 		
@@ -180,21 +185,19 @@ public class GameGUI : MonoBehaviour {
 
 	public void restartGame()
 	{
-		int count = UserData.getRedsCount ();
-		if (count >= lifeCost) {
-			UserData.addRedsCount (- lifeCost);
-			GameManager.sharedManager.playNewGame ();
-		} 
+		GameManager.sharedManager.playNewGame ();
 	}
 
 	public void showVideo()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		hideRevive ();
 		SCAds.ShowRewardedAd (GameManager.sharedManager);
 	}
 
 	public void useToken()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		hideRevive ();
 
 		if (UserData.getRedsCount () >= 100) {
@@ -209,6 +212,7 @@ public class GameGUI : MonoBehaviour {
 	{
 		hideRevive ();
 		GameManager.sharedManager.playerFailed (true);
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 	}
 
 	public void showTutorial()
@@ -225,6 +229,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void showLeaderBoard()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		leaderBoardPanel.gameObject.SetActive (true);
 		App42Helper.Instance.getTop10Rankers ();
 		hideMenu ();
@@ -232,7 +237,22 @@ public class GameGUI : MonoBehaviour {
 
 	public void hideLeaderBoard()
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		leaderBoardPanel.gameObject.SetActive (false);
+		showMenu ();
+	}
+
+	public void showStorePanel()
+	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		storePanel.gameObject.SetActive (true);
+		hideMenu ();
+	}
+
+	public void hideStorePanel()
+	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		storePanel.gameObject.SetActive (false);
 		showMenu ();
 	}
 }

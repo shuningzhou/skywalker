@@ -23,6 +23,10 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	public static string kProductIDNonConsumable = "nonconsumable";
 	public static string kProductIDSubscription =  "subscription"; 
 
+	public string stackOfTokenID = "pivota.tokens";
+	public string chestOfTokenID = "pivota.chestoftokens";
+
+
 	// Apple App Store-specific product identifier for the subscription product.
 	private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
 
@@ -54,6 +58,10 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		// Add a product to sell / restore by way of its identifier, associating the general identifier
 		// with its store-specific identifiers.
 		builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
+
+		builder.AddProduct(stackOfTokenID, ProductType.Consumable);
+		builder.AddProduct(chestOfTokenID, ProductType.Consumable);
+
 		// Continue adding the non-consumable product.
 		builder.AddProduct(kProductIDNonConsumable, ProductType.NonConsumable);
 		// And finish adding the subscription product. Notice this uses store-specific IDs, illustrating
@@ -83,6 +91,30 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(kProductIDConsumable);
+	}
+
+	public void BuyChestOfTokens()
+	{
+		// Buy the consumable product using its general identifier. Expect a response either 
+		// through ProcessPurchase or OnPurchaseFailed asynchronously.
+		BuyProductID(chestOfTokenID);
+	}
+
+	public string getPriceForChestOfToken()
+	{
+		return m_StoreController.products.WithID (chestOfTokenID).metadata.localizedPriceString;
+	}
+
+	public void BuyStackOfToken()
+	{
+		// Buy the consumable product using its general identifier. Expect a response either 
+		// through ProcessPurchase or OnPurchaseFailed asynchronously.
+		BuyProductID(stackOfTokenID);
+	}
+
+	public string getPriceForStackOfToken()
+	{
+		return m_StoreController.products.WithID (stackOfTokenID).metadata.localizedPriceString;
 	}
 
 
@@ -202,7 +234,25 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 	{
 		// A consumable product has been purchased by this user.
-		if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
+		if (String.Equals(args.purchasedProduct.definition.id, stackOfTokenID, StringComparison.Ordinal))
+		{
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			GameGUI.Instance.showAlert ("Thank you for purchasing Stack of Tokens!");
+			UserData.addRedsCount (1000);
+			GameGUI.Instance.refreshGUI ();
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
+			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
+		}
+		else if (String.Equals(args.purchasedProduct.definition.id, chestOfTokenID, StringComparison.Ordinal))
+		{
+			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			GameGUI.Instance.showAlert ("Thank you for purchasing Chest of Tokens!");
+			UserData.addRedsCount (6000);
+			GameGUI.Instance.refreshGUI ();
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
+			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
+		}
+		else if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
@@ -223,6 +273,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		else 
 		{
 			Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
+			GameGUI.Instance.showAlert ("Unable to purchase the item, Unrecognized product.");
 		}
 
 		// Return a flag indicating whether this product has completely been received, or if the application needs 
@@ -237,5 +288,21 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		// A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
 		// this reason with the user to guide their troubleshooting actions.
 		Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+		if (failureReason == PurchaseFailureReason.PaymentDeclined) {
+			GameGUI.Instance.showAlert ("There was a problem with the payment. Please try again.");
+		}
+		else if (failureReason == PurchaseFailureReason.ExistingPurchasePending) {
+			GameGUI.Instance.showAlert ("A purchase was already in progress when a new purchase was requested. Please wait.");
+		}
+		else if (failureReason == PurchaseFailureReason.ProductUnavailable) {
+			GameGUI.Instance.showAlert ("The product is not available to purchase on the store.");
+		}
+		else if (failureReason == PurchaseFailureReason.PurchasingUnavailable) {
+			GameGUI.Instance.showAlert ("The system purchasing feature is unavailable.");
+		}
+		else
+		{
+			GameGUI.Instance.showAlert ("There was a problem with the payment. Please try again.");
+		}
 	}
 }
