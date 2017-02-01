@@ -122,6 +122,19 @@ public class GameManager : MonoBehaviour {
 		action ();
 	}
 
+	public void playWon ()
+	{
+		Debug.Log ("Player WON!");
+
+		if (currentDroppingRoadPoint != null) {
+			currentDroppingRoadPoint.stopDropping ();
+		}
+
+		gameState = GameState.gameover;
+
+		excuateInSeconds (enterWinMode, 1f);
+	}
+
 	public void playerFailed(bool forced)
 	{
 		Debug.Log ("player failed");
@@ -148,6 +161,11 @@ public class GameManager : MonoBehaviour {
 			excuateInSeconds (enterReviveMode, 2f);
 			alreadyRevived = true;
 		}
+	}
+
+	void enterWinMode()
+	{
+		GameGUI.Instance.showWinPanel (3, 50, 99);
 	}
 
 	void enterReviveMode()
@@ -257,6 +275,10 @@ public class GameManager : MonoBehaviour {
 		if (isOnLastTutorialTrigger) {
 			excuateInSeconds (startPlaying, 0.2f);
 		}
+	}
+
+	public void levelFinished()
+	{
 	}
 
 	void startPlaying()

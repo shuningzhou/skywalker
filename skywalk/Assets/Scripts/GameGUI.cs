@@ -23,6 +23,7 @@ public class GameGUI : MonoBehaviour {
 	public TutorialPanel tutorialPanel;
 	public LeaderBoardPanel leaderBoardPanel;
 	public StorePanel storePanel;
+	public LevelFinishedPanel winPanel;
 
 	public Image newTokenImage;
 	public Image tokenImage;
@@ -253,6 +254,23 @@ public class GameGUI : MonoBehaviour {
 	{
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		storePanel.gameObject.SetActive (false);
+		showMenu ();
+	}
+
+	public void showWinPanel(int starRating, int reward, int level)
+	{
+		winPanel.gameObject.SetActive (true);
+		winPanel.starRating = starRating;
+		winPanel.reward = reward;
+		winPanel.level = level;
+		winPanel.updateUI ();
+	}
+
+	public void hideWinPanel()
+	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		winPanel.gameObject.SetActive (false);
+		winPanel.resetAll ();
 		showMenu ();
 	}
 }

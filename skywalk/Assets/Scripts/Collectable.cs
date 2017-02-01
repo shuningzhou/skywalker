@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour {
 	public GameObject explosionPrefab;
+
+	public bool rotateY = true;
+	public bool rotateX = true;
+	public bool rotateZ = true;
 	// Use this for initialization
 	void Start () {
 		
@@ -12,9 +16,17 @@ public class Collectable : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		int speed = Random.Range (10, 200);
-		transform.Rotate (Vector3.up, speed * Time.deltaTime);
-		transform.Rotate (Vector3.left, speed * Time.deltaTime);
-		transform.Rotate (Vector3.forward, speed * Time.deltaTime);
+		if (rotateY) {
+			transform.Rotate (Vector3.up, speed * Time.deltaTime);
+		}
+
+		if (rotateZ) {
+			transform.Rotate (Vector3.left, speed * Time.deltaTime);
+		}
+
+		if (rotateX) {
+			transform.Rotate (Vector3.forward, speed * Time.deltaTime);
+		}
 	}
 
 	void OnCollisionEnter(Collision collision) {

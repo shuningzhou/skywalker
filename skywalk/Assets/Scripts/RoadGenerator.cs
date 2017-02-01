@@ -17,6 +17,8 @@ public class RoadGenerator : MonoBehaviour {
 	public float maxWidth;
 	public float minWidth;
 
+
+
 	public float thickness;
 	public int initalRoadSectionCount;
 
@@ -102,7 +104,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	void generateRoadSections(int count)
 	{
-		float widthChange = ((maxWidth - minWidth) / count ) * 5;
+		float widthChange = ((maxWidth - minWidth) / count );
 		currentWidth = maxWidth;
 
 		for (int i = 0; i < count; i++) 
@@ -132,6 +134,8 @@ public class RoadGenerator : MonoBehaviour {
 				
 			lastRoadSection = newRoadSection;
 		}
+
+		collectableManager.createChest (previousRoadPoint.position1);
 	}
 
 	RoadSection generateRoadSection(float maxWidth, float minWidth)

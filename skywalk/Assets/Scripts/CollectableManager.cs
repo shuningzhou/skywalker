@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollectableManager : MonoBehaviour {
 	public GameObject collectable;
 	public GameManager gameManager;
+	public GameObject chest;
 
 	private int distance;
 	public int space = 10;
@@ -45,6 +46,12 @@ public class CollectableManager : MonoBehaviour {
 			distance = 0;
 			space = Random.Range (3, 10);
 		}
+	}
+
+	public void createChest(Vector3 position)
+	{
+		Vector3 collectablePosition = new Vector3 (position.x, position.y + floatDistance, position.z);
+		Instantiate (chest, collectablePosition, Quaternion.identity);
 	}
 
 	public bool shouldCreateCollectable()
