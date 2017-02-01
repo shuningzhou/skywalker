@@ -104,7 +104,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	void generateRoadSections(int count)
 	{
-		float widthChange = ((maxWidth - minWidth) / count );
+		float widthChange = ((maxWidth - minWidth) / count ) / 3;
 		currentWidth = maxWidth;
 
 		for (int i = 0; i < count; i++) 
