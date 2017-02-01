@@ -26,10 +26,10 @@ public class GenerateBuilding : MonoBehaviour {
 				if (randomNum <= 10f) {
 					randomNum = 10f;
 				}
-				if (10 < randomNum && randomNum< 40) {
+				if (10 < randomNum && randomNum< 42) {
 					randomNum = Random.Range (20f, 30f);
 				}
-				if (randomNum > 40) {
+				if (randomNum > 42) {
 					randomNum = 48;
 				}
 
@@ -46,7 +46,7 @@ public class GenerateBuilding : MonoBehaviour {
 				if ((x == 0) && (z == 0)) {
 					GameObject p = (GameObject)Instantiate (plane, pos, Quaternion.identity);
 					p.transform.SetParent (this.gameObject.transform);
-					p.transform.localScale = new Vector3((buildingDistance*halfBlockX*2+20)/10, 1,
+					p.transform.localScale = new Vector3((buildingDistance*halfBlockX*2+18)/10, 1,
 						(buildingDistance*halfBlockZ*2+20)/10);
 				}
 
@@ -57,7 +57,7 @@ public class GenerateBuilding : MonoBehaviour {
 				pos.y = randomNum / 2;
 				float randomNum2 = Random.Range (8f, 11f);
 				float randomNum3 = Random.Range (8f, 11f);
-				if (randomNum == 50) {
+				if (randomNum == 48) {
 					randomNum2 = randomNum3 = 10;
 				}
 				GameObject c = (GameObject)Instantiate (cube, pos, Quaternion.identity);
