@@ -4,14 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StorePanel : MonoBehaviour {
-	public Button stackButton;
-	public Button chestButton;
+	
+	public Button Button1;
+	public Button Button2;
+	public Button Button3;
+	public Button Button4;
+
 	public Purchaser purchaser;
 
 	// Use this for initialization
 	void Start () {
-		stackButton.GetComponentInChildren<Text>().text = purchaser.getPriceForStackOfToken ();
-		chestButton.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
+		Button1.GetComponentInChildren<Text>().text = purchaser.getPriceForStackOfToken ();
+		Button2.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
+		Button3.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
+		Button4.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
 	}
 	
 	// Update is called once per frame

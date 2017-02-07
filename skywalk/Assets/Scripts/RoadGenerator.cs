@@ -7,7 +7,7 @@ public class RoadGenerator : MonoBehaviour {
 	public GameObject player;
 	public CollectableManager collectableManager;
 
-	public Vector3 startPostion = new Vector3 (0f, 49.5f, 0f);
+	public Vector3 startPostion = new Vector3 (0f, 69.5f, 0f);
 	public Vector3 startDirection = Vector3.forward;
 
 	public float maxRad = Mathf.PI * 3 / 4;
@@ -51,11 +51,11 @@ public class RoadGenerator : MonoBehaviour {
 	{
 		float startz = 0f - 80 * stepLength;
 
-		Vector3 previousPoint = new Vector3 (0f, 49.5f, startz);
+		Vector3 previousPoint = new Vector3 (0f, 69.5f, startz);
 
 		for (int i = 1; i < 81; i++) 
 		{
-			Vector3 currentPoint = new Vector3 (0f, 49.5f, startz + stepLength * i);
+			Vector3 currentPoint = new Vector3 (0f, 69.5f, startz + stepLength * i);
 			var rd = Instantiate (RoadPoint, Vector3.zero, Quaternion.identity);
 			rd.position1 = previousPoint;
 			rd.direction1 = Vector3.forward;

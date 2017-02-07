@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour {
 
 	void enterWinMode()
 	{
-		GameGUI.Instance.showWinPanel (3, 50, 99);
+		GameGUI.Instance.showWinPanel (3, 6, 99);
 	}
 
 	void enterReviveMode()

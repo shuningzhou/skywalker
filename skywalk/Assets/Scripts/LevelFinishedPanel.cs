@@ -6,22 +6,18 @@ using System;
 
 public class LevelFinishedPanel : MonoBehaviour {
 
-	public Text goodText;
-	public Image starRatingImage;
-	public Text levelText;
 	public int starRating;
 	public int reward;
 	public Text rewardText;
 	public int level;
 	public int currentRating;
 	public int currentReward;
-	public float rewardDelay = 0.05f;
-	public float ratingDealy = 1f;
+	public float rewardDelay = 0.2f;
+	public float ratingDealy = 0.7f;
 
-	public Sprite star0;
-	public Sprite star1;
-	public Sprite star2;
-	public Sprite star3;
+	public Image star1;
+	public Image star2;
+	public Image star3;
 
 	public int skipEffect = 5;
 
@@ -45,41 +41,25 @@ public class LevelFinishedPanel : MonoBehaviour {
 		reward = 0;
 		currentRating = 0;
 		currentReward = 0;
-		goodText.text = "";
-		starRatingImage.sprite = star0;
 		rewardText.text = "0";
-		levelText.text = "0";
+		star1.gameObject.SetActive (true);
+		star2.gameObject.SetActive (true);
+		star3.gameObject.SetActive (true);
 	}
 
 	public void updateUI()
 	{
-		levelText.text = level.ToString();
-		if(starRating == 0)
-		{
-			goodText.text = "Defeated";
-		}
-		else if (starRating == 1)
-		{
-			goodText.text = "Good";
-		}
-		else if (starRating == 1)
-		{
-			goodText.text = "Fantastic";
-		}
-		else
-		{
-			goodText.text = "Epic";
-		}
-
-		animateRating();
+		excuateInSeconds(animateRating, 1.1f);
 	}
 
 	public void animateRating()
 	{
-		if (currentRating != starRating) {
+		if (currentRating != starRating) 
+		{
 			excuateInSeconds (updateStarRatingImage, ratingDealy);
-		} else {
-			animateReward ();
+		} else 
+		{
+			excuateInSeconds (animateReward, ratingDealy);
 		}
 	}
 
@@ -88,13 +68,13 @@ public class LevelFinishedPanel : MonoBehaviour {
 		currentRating = currentRating + 1;
 
 		if (currentRating == 1) {
-			starRatingImage.sprite = star1;
+			star1.gameObject.SetActive (true);
 		}
 		else if (currentRating == 2) {
-			starRatingImage.sprite = star2;
+			star2.gameObject.SetActive (true);
 		}
 		else {
-			starRatingImage.sprite = star3;
+			star3.gameObject.SetActive (true);
 		}
 
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.rating);
@@ -116,7 +96,7 @@ public class LevelFinishedPanel : MonoBehaviour {
 
 		rewardText.text = currentReward.ToString ();
 
-		if (skip == skipEffect) {
+		if (true){//skip == skipEffect) {
 			SoundManager.Instance.PlayOneShot (SoundManager.Instance.count);
 			skip = 0;
 		} else {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameGUI : MonoBehaviour {
 
@@ -242,17 +243,25 @@ public class GameGUI : MonoBehaviour {
 		leaderBoardPanel.gameObject.SetActive (false);
 		showMenu ();
 	}
-
+	 
 	public void showStorePanel()
 	{
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		storePanel.gameObject.SetActive (true);
 		hideMenu ();
+		distanceCount.gameObject.SetActive (false);
 	}
 
 	public void hideStorePanel()
 	{
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		Animator a = storePanel.GetComponent<Animator> ();
+		a.SetBool ("shouldClose", true);
+		excuateInSeconds (deactiveStorePanle, 1.5f);
+	}
+
+	public void deactiveStorePanle()
+	{
 		storePanel.gameObject.SetActive (false);
 		showMenu ();
 	}
@@ -272,5 +281,16 @@ public class GameGUI : MonoBehaviour {
 		winPanel.gameObject.SetActive (false);
 		winPanel.resetAll ();
 		showMenu ();
+	}
+
+	public void excuateInSeconds(Action action, float seconds)
+	{
+		StartCoroutine (delayStart(seconds, action));
+	}
+
+	IEnumerator delayStart(float delay, Action action)
+	{
+		yield return new WaitForSeconds(delay);
+		action ();
 	}
 }

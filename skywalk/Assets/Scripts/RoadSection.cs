@@ -68,7 +68,7 @@ public class RoadSection : MonoBehaviour {
 				currentDirection = Quaternion.AngleAxis (-360 * i / perimeter, Vector3.up) * startDirectrion;
 			}
 				
-			collectableManager.moved (stepLength, currentPoint);
+			collectableManager.moved (stepLength, currentPoint, currentWidth);
 
 			if (i > 0) 
 			{

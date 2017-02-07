@@ -32,16 +32,20 @@ public class Collectable : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
 		ContactPoint contact = collision.contacts[0];
 		Vector3 pos = contact.point;
-		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
 
 		doParticle (pos);
+		onCollision (pos);
 
-		GameManager.sharedManager.collectedRed ();
-		//GameManager.sharedManager.test ();
 		gameObject.SetActive (false);
 	}
 
-	void doParticle(Vector3 position)
+	public virtual void onCollision(Vector3 position)
+	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
+		GameManager.sharedManager.collectedRed ();
+	}
+
+	public virtual void doParticle(Vector3 position)
 	{
 		Instantiate(explosionPrefab, position, Quaternion.identity);
 	}
