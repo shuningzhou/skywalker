@@ -11,11 +11,36 @@ public class ProgressLine : MonoBehaviour {
 	public Sprite blackHorizontal;
 	public Sprite colorHorizontal;
 	public bool isVertical;
-
+	public int levelIndex;
 
 	// Use this for initialization
 	void Start () {
 		
+		Level level = LevelManager.sharedManager.levels [levelIndex];
+		int userProgressLevel = Level.getUerProgressLevel ();
+
+		if (userProgressLevel < level.level) 
+		{
+			if (isVertical) 
+			{
+				image.sprite = blackVertical;
+			} 
+			else 
+			{
+				image.sprite = blackHorizontal;
+			}
+		} 
+		else 
+		{
+			if (isVertical) 
+			{
+				image.sprite = colorVertical;
+			} 
+			else 
+			{
+				image.sprite = colorHorizontal;
+			}
+		}
 	}
 	
 	// Update is called once per frame
