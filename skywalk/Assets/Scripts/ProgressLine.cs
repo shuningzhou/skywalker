@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class ProgressLine : MonoBehaviour {
 
 	public Image image;
-	public Sprite black;
-	public Sprite color;
+	public Sprite blackVertical;
+	public Sprite colorVertical;
+	public Sprite blackHorizontal;
+	public Sprite colorHorizontal;
+	public bool isVertical;
 
 
 	// Use this for initialization

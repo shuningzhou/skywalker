@@ -13,6 +13,8 @@ public class LevelButton : MonoBehaviour {
 	public Sprite star2;
 	public Sprite star3;
 
+	public Level level;
+
 	// Use this for initialization
 	void Start () {
 		

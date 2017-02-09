@@ -61,7 +61,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void refreshGUI()
 	{
-		menuPanel.refreshRankings ();
+		//menuPanel.refreshRankings ();
 		leaderBoardPanel.refreshGUI ();
 		redCountChanged ();
 		distanceChanged ();
@@ -93,7 +93,7 @@ public class GameGUI : MonoBehaviour {
 	{
 		distanceCount.gameObject.SetActive (false);
 		menuPanel.gameObject.SetActive (true);
-		menuPanel.refreshRankings ();
+		//menuPanel.refreshRankings ();
 	}
 
 	public void hideMenu()

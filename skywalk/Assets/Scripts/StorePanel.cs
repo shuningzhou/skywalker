@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StorePanel : MonoBehaviour {
+public class StorePanel : SOPanel {
 	
 	public Button Button1;
 	public Button Button2;
