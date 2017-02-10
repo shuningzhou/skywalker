@@ -56,7 +56,14 @@ public class LevelButton : MonoBehaviour {
 			levelText.text = this.level.level.ToString ();
 		}
 	}
-	
+
+	public void pressed()
+	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		LevelManager.sharedManager.setCurrentLevel (this.level);
+		LevelManager.sharedManager.playCurrentLevel ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		

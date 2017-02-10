@@ -18,7 +18,11 @@ public class TutorialTigger : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) 
 	{
-		GameManager.sharedManager.tutorialTriggered (isLastTigger);
+		if (!GameManager.sharedManager.isOnLastTutorialTrigger) 
+		{
+			GameManager.sharedManager.tutorialTriggered (isLastTigger);
+		}
+
 		Destroy (gameObject);
 	}
 }

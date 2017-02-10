@@ -17,18 +17,21 @@ public class HomePanel : SOPanel {
 	public void potionButtonPressed()
 	{
 		Debug.Log ("Potion button Pressed");
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		PanelManager.sharedManager.showPanel (PanelManager.sharedManager.potionPanel);
 	}
 
 	public void questButtonPressed()
 	{
 		Debug.Log ("Quest button Pressed");
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		PanelManager.sharedManager.showPanel (PanelManager.sharedManager.questPanel);
 	}
 
 	public void storeButtonPressed()
 	{
 		Debug.Log ("Store button Pressed");
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		PanelManager.sharedManager.showPanel (PanelManager.sharedManager.storePanel);
 	}
 }

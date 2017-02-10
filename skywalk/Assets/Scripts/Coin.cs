@@ -7,7 +7,7 @@ public class Coin : Collectable {
 	public override void onCollision(Vector3 position)
 	{
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
-		GameManager.sharedManager.collectedRed ();
+		GameManager.sharedManager.collectedCoin ();
 	}
 
 	public override void doParticle(Vector3 position)

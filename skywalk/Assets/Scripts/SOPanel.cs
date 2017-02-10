@@ -15,13 +15,23 @@ public class SOPanel : MonoBehaviour {
 		
 	}
 
-	public virtual void show()
+	public virtual void show(bool playSound)
 	{
+		if (playSound) 
+		{
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		}
+
 		this.gameObject.SetActive (true);
 	}
 
-	public virtual void dismiss()
+	public virtual void dismiss(bool playSound)
 	{
+		if (playSound) 
+		{
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		}
+
 		Animator a = GetComponent<Animator> ();
 		a.Play ("close");
 		excuateInSeconds (doDeactive, 1f);

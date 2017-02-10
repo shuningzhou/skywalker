@@ -9,29 +9,30 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager sharedManager = null;
 
-	public enum GameState {tutorial, playing, menu, gameover, willStart};
+	public enum GameState {tutorial, playing, gamefinished, gamewon, gamerevive, gameover};
 
 	public delegate void GameStateChange();
 	public static event GameStateChange onTutotial;
 	public static event GameStateChange onGamePlay;
-	public static event GameStateChange onMenu;
+	public static event GameStateChange onGameFinished;
+	public static event GameStateChange onGameWon;
+	public static event GameStateChange onGameRevive;
 	public static event GameStateChange onGameOver;
-	public static event GameStateChange onWillStart;
 
-	public GameState gameState = GameState.menu;
+	public GameState gameState = GameState.tutorial;
 
 	public delegate void RefreshUI();
-	public static event RefreshUI redCountChanged;
-	public static event RefreshUI distanceChanged;
+	public static event RefreshUI coinCountChanged;
+	public static event RefreshUI percentageChanged;
 
 	public delegate void PlayerPowerUp();
 	public static event PlayerPowerUp onPowerUp;
 
 	public RoadPoint currentDroppingRoadPoint;
 
-	public float totalDistance = 0f;
-	private int redsCollectedThisRound = 0;
-	private bool isOnLastTutorialTrigger = false;
+	private int gemCollectedThisRound = 0;
+	private int coinsCollectedThisRound = 0;
+	public bool isOnLastTutorialTrigger = false;
 	private bool alreadyRevived = false;
 
 	void Awake()
@@ -44,11 +45,7 @@ public class GameManager : MonoBehaviour {
 			return;
 		}
 
-		this.transform.parent = null;
-
-		DontDestroyOnLoad(gameObject);
-
-		gameState = GameState.menu;
+		gameState = GameState.tutorial;
 
 		Debug.Log ("Game manager awake");
 	}
@@ -57,44 +54,41 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("GameManager started");
 		notifyStateListener();
-		//App42Helper.Instance.createGuestUser ();
-		if (UserData.getUserName ().Length == 0)
-		{
-			App42Helper.Instance.createGuestUser ();
-		}
-
-		App42Helper.Instance.getUserRanking();
-		App42Helper.Instance.getTop10Rankers();
-		//App42Helper.Instance.getUserRanking();
-		//App42Helper.Instance.getTop5Score();
 	}
 
 	void notifyStateListener()
 	{
 		switch(gameState)
 		{
-		case GameState.menu: 
-			Debug.Log ("Menu");
-			if (onMenu != null) {
-				onMenu ();
-			}
-			break;
 		case GameState.playing:
-			Debug.Log ("playing");
+			Debug.Log ("notify playing");
 			if (onGamePlay != null) {
 				onGamePlay ();
 			}
 			break;
+		case GameState.gamewon:
+			Debug.Log ("notify game won");
+			if (onGameWon != null) {
+				onGameWon ();
+			}
+			break;
 		case GameState.gameover:
-			Debug.Log ("gameover");
+			Debug.Log ("notify game over");
 			if (onGameOver != null) {
 				onGameOver ();
 			}
 			break;
-		case GameState.willStart:
-			Debug.Log ("willStart");
-			if (onWillStart != null) {
-				onWillStart ();
+		case GameState.gamefinished:
+			Debug.Log ("notify game finished");
+			if (onGameFinished != null) {
+				onGameFinished ();
+			}
+			break;
+		case GameState.gamerevive:
+			Debug.Log ("notify game revive");
+			if (onGameRevive != null) 
+			{
+				onGameRevive ();
 			}
 			break;
 		default:
@@ -104,11 +98,6 @@ public class GameManager : MonoBehaviour {
 			}
 			break;
 		}
-	}
-
-	public void test()
-	{
-		onPowerUp ();
 	}
 
 	public void excuateInSeconds(Action action, float seconds)
@@ -130,12 +119,10 @@ public class GameManager : MonoBehaviour {
 			currentDroppingRoadPoint.stopDropping ();
 		}
 
-		gameState = GameState.gameover;
-
 		excuateInSeconds (enterWinMode, 1f);
 	}
 
-	public void playerFailed(bool forced)
+	public void playerFailed()
 	{
 		Debug.Log ("player failed");
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
@@ -144,20 +131,15 @@ public class GameManager : MonoBehaviour {
 			currentDroppingRoadPoint.stopDropping ();
 		}
 
-		gameState = GameState.gameover;
-		SCAnalytics.logGameOverEvent (totalDistance, redsCollectedThisRound);
-		UserData.updateBestDistance (totalDistance);
-		UserData.saveLastDistance (totalDistance);
+		gameState = GameState.gamefinished;
+		notifyStateListener ();
 
-		if (alreadyRevived) {
-			App42Helper.Instance.uploadScoreForUser (totalDistance);
-			if (forced) {
-				enterMenuMode ();
-			} else {
-				excuateInSeconds (enterMenuMode, 4f);
-			}
-			totalDistance = 0;
-		} else {
+		if (alreadyRevived)
+		{
+			excuateInSeconds (enterGameOverMode, 4f);
+		}
+		else 
+		{
 			excuateInSeconds (enterReviveMode, 2f);
 			alreadyRevived = true;
 		}
@@ -165,75 +147,47 @@ public class GameManager : MonoBehaviour {
 
 	void enterWinMode()
 	{
-		GameGUI.Instance.showWinPanel (3, 6, 99);
+		gameState = GameState.gamewon;
+		notifyStateListener ();
 	}
 
 	void enterReviveMode()
 	{
-		GameGUI.Instance.showRevive ();
-	}
-
-	void enterMenuMode()
-	{
-		gameState = GameState.menu;
+		gameState = GameState.gamerevive;
 		notifyStateListener ();
-		App42Helper.Instance.getTop10Rankers ();
-		App42Helper.Instance.getUserRanking ();
 	}
 
-	public void collectedRed()
+	void enterGameOverMode()
 	{
-		redsCollectedThisRound = redsCollectedThisRound + 1;
-		UserData.addRedsCount (1);
-		redCountChanged ();
+		gameState = GameState.gameover;
+		notifyStateListener ();
 	}
 
-	public void playerMoved(float distance)
+	public void collectedGem()
 	{
-		totalDistance = totalDistance + distance;
-		distanceChanged ();
-	}
-		
-	public void resumeGame()
-	{
-		excuateInSeconds (doResume, 0.2f);
+		gemCollectedThisRound = gemCollectedThisRound + 1;
+
+		percentageChanged ();
 	}
 
-	public void playNewGame()
+	public void collectedCoin ()
 	{
-		Debug.Log ("Play new game");
-		gameState = GameState.willStart;
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-		alreadyRevived = false;
-		excuateInSeconds (doPlayNewGame, 1f);
+		coinsCollectedThisRound = coinsCollectedThisRound + 1;
+
+		coinCountChanged ();
+	}
+
+	public void coinCountUpdated()
+	{
+		coinCountChanged ();
 	}
 
 	public void revivePlayer()
 	{
 		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		cm.revive ();
-		GameGUI.Instance.hideMenu ();
+
 		startPlaying ();
-		totalDistance = UserData.getLastDistance ();
-		while (!currentDroppingRoadPoint.isActiveAndEnabled) {
-			currentDroppingRoadPoint = currentDroppingRoadPoint.nextRoadPoint;
-		}
-//		currentDroppingRoadPoint.stopDropped = false;
-		currentDroppingRoadPoint.drop ();
-
-		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
-	}
-
-	void doPlayNewGame()
-	{
-		gameState = GameState.tutorial;
-		notifyStateListener ();
-		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
-	}
-
-	void doResume()
-	{
-		Time.timeScale = 1.0f;
 	}
 
 	public void HandleShowResult(ShowResult result)
@@ -246,11 +200,11 @@ public class GameManager : MonoBehaviour {
 			break;
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was skipped before reaching the end.");
-			GameGUI.Instance.skipRevive ();
+			excuateInSeconds (enterGameOverMode, 1f);
 			break;
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");
-			GameGUI.Instance.skipRevive ();
+			excuateInSeconds (enterGameOverMode, 1f);
 			break;
 		}
 	}
@@ -277,13 +231,16 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void levelFinished()
-	{
-	}
-
 	void startPlaying()
 	{
 		gameState = GameState.playing;
 		notifyStateListener ();
+
+		while (!currentDroppingRoadPoint.isActiveAndEnabled) {
+			currentDroppingRoadPoint = currentDroppingRoadPoint.nextRoadPoint;
+		}
+		currentDroppingRoadPoint.drop ();
+
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
 	}
 }

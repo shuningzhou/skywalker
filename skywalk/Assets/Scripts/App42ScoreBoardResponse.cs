@@ -35,7 +35,7 @@ namespace AssemblyCSharp
 				}
 			}
 
-			GameGUI.Instance.refreshGUI ();
+
 		}
 
 		public void OnException (Exception e)
@@ -60,7 +60,7 @@ namespace AssemblyCSharp
 //			Debug.Log("gameName is " + game.GetName());   
 //			Debug.Log("gameDescription is " + game.GetDescription());   
 
-			GameGUI.Instance.refreshGUI ();
+
 		}  
 
 		public void OnException(Exception e)  
@@ -83,8 +83,6 @@ namespace AssemblyCSharp
 
 				App42Helper.Instance.userRanking = game.GetScoreList () [i].GetRank ().ToString ();
 			}
-
-			GameGUI.Instance.refreshGUI ();
 		}
 		public void OnException (Exception e)
 		{
@@ -114,8 +112,6 @@ namespace AssemblyCSharp
 			}  
 
 			App42Helper.Instance.rankDatas = rankDatas;
-
-			GameGUI.Instance.refreshGUI ();
 		}  
 		public void OnException(Exception e)  
 		{  

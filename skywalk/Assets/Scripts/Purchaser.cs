@@ -238,8 +238,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 			GameGUI.Instance.showAlert ("Thank you for purchasing Stack of Tokens!");
-			UserData.addRedsCount (1000);
-			GameGUI.Instance.refreshGUI ();
+			UserData.addCoinsCount (1000);
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
 			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
 		}
@@ -247,8 +246,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 			GameGUI.Instance.showAlert ("Thank you for purchasing Chest of Tokens!");
-			UserData.addRedsCount (6000);
-			GameGUI.Instance.refreshGUI ();
+			UserData.addCoinsCount (6000);
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
 			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
 		}

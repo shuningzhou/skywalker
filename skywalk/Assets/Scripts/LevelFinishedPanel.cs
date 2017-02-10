@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
-public class LevelFinishedPanel : MonoBehaviour {
+public class LevelFinishedPanel : SOPanel {
 
 	public int starRating;
 	public int reward;
@@ -107,14 +108,37 @@ public class LevelFinishedPanel : MonoBehaviour {
 		animateReward ();
 	}
 
-	public void excuateInSeconds(Action action, float seconds)
+	public void replayed()
 	{
-		StartCoroutine (delayStart(seconds, action));
+		excuateInSeconds (doReplayed, 1f);
 	}
 
-	IEnumerator delayStart(float delay, Action action)
+	public void homed()
 	{
-		yield return new WaitForSeconds(delay);
-		action ();
+		excuateInSeconds (doHomed, 1f);
+	}
+
+	public void continued()
+	{
+		excuateInSeconds (doContinued, 1f);
+	}
+
+	public void doReplayed()
+	{
+		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
+		LevelManager.sharedManager.playCurrentLevel ();
+	}
+
+	public void doHomed()
+	{
+		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
+		LevelManager.sharedManager.playCurrentLevel ();
+		SceneManager.LoadScene ("Home", LoadSceneMode.Single);
+	}
+
+	public void doContinued()
+	{
+		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
+		LevelManager.sharedManager.playNextLevel ();
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
 	public static LevelManager sharedManager = null;
 	public List<Level> levels = new List<Level> ();
+	public Level currentLevel;
 
 	void Awake()
 	{
@@ -36,6 +38,31 @@ public class LevelManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public Level getCurrentLevel()
+	{
+		return currentLevel;
+	}
+
+	public void setCurrentLevel(Level cl)
+	{
+		currentLevel = cl;
+	}
+
+	public void playNextLevel()
+	{
+		int index = levels.IndexOf (currentLevel);
+		index = index + 1;
+		if (index <= levels.Count) {
+			currentLevel = levels [index];
+			playCurrentLevel ();
+		}
+	}
+
+	public void playCurrentLevel()
+	{
+		SceneManager.LoadScene ("main", LoadSceneMode.Single);
 	}
 
 	public void levelData()

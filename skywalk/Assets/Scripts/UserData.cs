@@ -5,7 +5,7 @@ using System;
 
 public class UserData : MonoBehaviour {
 	
-	public static string PREF_COLLECTED = "collected";
+	public static string PREF_COIN_COLLECTED = "collected";
 	public static string PREF_LAST_DISTANCE = "last_distance";
 	public static string PREF_DISTANCE = "distance";
 	public static string PREF_DATE = "date";
@@ -32,9 +32,9 @@ public class UserData : MonoBehaviour {
 		return PlayerPrefs.GetString(PREF_USER_NAME, "");
 	}
 
-	public static int getRedsCount()
+	public static int getCoinsCount()
 	{
-		return PlayerPrefs.GetInt(PREF_COLLECTED, 0);
+		return PlayerPrefs.GetInt(PREF_COIN_COLLECTED, 0);
 	}
 
 	public static int getTutorialDone()
@@ -66,9 +66,9 @@ public class UserData : MonoBehaviour {
 		PlayerPrefs.Save();
 	}
 
-	public static void saveRedsCount(int value)
+	public static void saveCoinsCount(int value)
 	{
-		PlayerPrefs.SetInt (PREF_COLLECTED, value);
+		PlayerPrefs.SetInt (PREF_COIN_COLLECTED, value);
 		PlayerPrefs.Save();
 	}
 
@@ -78,11 +78,11 @@ public class UserData : MonoBehaviour {
 		PlayerPrefs.Save();
 	}
 
-	public static void addRedsCount(int value)
+	public static void addCoinsCount(int value)
 	{
-		int count = getRedsCount ();
+		int count = getCoinsCount();
 		count = count + value;
-		saveRedsCount (count);
+		saveCoinsCount (count);
 	}
 
 	public static void updateBestDistance(float distance)

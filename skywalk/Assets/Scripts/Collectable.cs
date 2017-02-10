@@ -42,7 +42,7 @@ public class Collectable : MonoBehaviour {
 	public virtual void onCollision(Vector3 position)
 	{
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
-		GameManager.sharedManager.collectedRed ();
+		GameManager.sharedManager.collectedGem ();
 	}
 
 	public virtual void doParticle(Vector3 position)

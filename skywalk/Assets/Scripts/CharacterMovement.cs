@@ -144,7 +144,6 @@ public class CharacterMovement : MonoBehaviour {
 		lastPosition = gameObject.transform.position;
 		lastRotation = gameObject.transform.rotation;
 
-		GameManager.sharedManager.playerMoved (movedDistance);
 		if (OnPlayerMoved != null)
 		{
 			OnPlayerMoved (getFootPosition());
@@ -181,7 +180,7 @@ public class CharacterMovement : MonoBehaviour {
 		}
 		body.AddForce (Vector3.down * 100);
 
-		GameManager.sharedManager.playerFailed (false);
+		GameManager.sharedManager.playerFailed ();
 	}
 
 	void checkFailed()

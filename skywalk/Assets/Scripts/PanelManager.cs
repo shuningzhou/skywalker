@@ -46,12 +46,12 @@ public class PanelManager : MonoBehaviour {
 
 	public void showPanel(SOPanel panel)
 	{
-		panel.show ();
+		panel.show (true);
 		currentPanel = panel;
 	}
 
 	public void dismissPanel(SOPanel panel)
 	{
-		panel.dismiss ();
+		panel.dismiss (true);
 	}
 }
