@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using UnityEngine.SceneManagement;
 
 public class LevelFinishedPanel : SOPanel {
 
@@ -132,8 +130,7 @@ public class LevelFinishedPanel : SOPanel {
 	public void doHomed()
 	{
 		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
-		LevelManager.sharedManager.playCurrentLevel ();
-		SceneManager.LoadScene ("Home", LoadSceneMode.Single);
+		LevelManager.sharedManager.currentLevelFinishedAndRetured ();
 	}
 
 	public void doContinued()

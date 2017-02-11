@@ -65,6 +65,16 @@ public class LevelManager : MonoBehaviour {
 		SceneManager.LoadScene ("main", LoadSceneMode.Single);
 	}
 
+	public void currentLevelFinishedAndRetured()
+	{
+		SceneManager.LoadScene ("Home", LoadSceneMode.Single);
+	}
+
+	public void currentLevelFailed()
+	{
+		SceneManager.LoadScene ("Home", LoadSceneMode.Single);
+	}
+
 	public void levelData()
 	{
 		Level level1 = new Level (1, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);

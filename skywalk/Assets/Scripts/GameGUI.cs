@@ -14,6 +14,7 @@ public class GameGUI : MonoBehaviour {
 	public TutorialPanel tutorialPanel;
 	public LevelFinishedPanel winPanel;
 	public ReadyPanel readyPanel;
+	public GameOverPanel gameOverPanel;
 
 	// Use this for initialization
 	void Awake () {
@@ -73,7 +74,7 @@ public class GameGUI : MonoBehaviour {
 
 	public void GameManager_onGameOver ()
 	{
-
+		gameOverPanel.show (false);
 	}
 
 	public void showRevive()
@@ -100,28 +101,16 @@ public class GameGUI : MonoBehaviour {
 
 	public void showTutorial()
 	{
-		if (LevelManager.sharedManager.currentLevel.level == 1) {
-			tutorialPanel.gameObject.SetActive (true);
+		if (true) {
+			tutorialPanel.show(false);
 		} else {
-			readyPanel.gameObject.SetActive (true);
-		}
-	}
-
-	public void hideTutorial()
-	{
-		if (LevelManager.sharedManager.currentLevel.level == 1) {
-			tutorialPanel.gameObject.SetActive (false);
-			GameManager.sharedManager.tutorialUserTapped ();
-		} else {
-			readyPanel.gameObject.SetActive (false);
-			GameManager.sharedManager.isOnLastTutorialTrigger = true;
-			GameManager.sharedManager.tutorialUserTapped ();
+			readyPanel.show(false);
 		}
 	}
 
 	public void showWinPanel(int starRating, int reward, int level)
 	{
-		winPanel.gameObject.SetActive (true);
+		winPanel.show(false);
 		winPanel.starRating = starRating;
 		winPanel.reward = reward;
 		winPanel.level = level;

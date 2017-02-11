@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class TutorialPanel : MonoBehaviour {
+public class TutorialPanel : SOPanel {
 
 	// Use this for initialization
 	void Start () {
+		dismissDelay = 0.3f;
 	}
 	
 	// Update is called once per frame
@@ -13,4 +14,9 @@ public class TutorialPanel : MonoBehaviour {
 
 	}
 
+	public void hide()
+	{
+		GameManager.sharedManager.tutorialUserTapped ();
+		this.dismiss (false);
+	}
 }

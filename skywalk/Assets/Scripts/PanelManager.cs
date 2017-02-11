@@ -22,12 +22,6 @@ public class PanelManager : MonoBehaviour {
 			Destroy(gameObject);
 			return;
 		}
-
-		this.transform.parent = null;
-
-		DontDestroyOnLoad(gameObject);
-
-
 		Debug.Log ("Panel manager awake");
 	}
 

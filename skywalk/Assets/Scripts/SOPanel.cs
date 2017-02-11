@@ -5,6 +5,8 @@ using System;
 
 public class SOPanel : MonoBehaviour {
 
+	public float dismissDelay = 1f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -34,7 +36,7 @@ public class SOPanel : MonoBehaviour {
 
 		Animator a = GetComponent<Animator> ();
 		a.Play ("close");
-		excuateInSeconds (doDeactive, 1f);
+		excuateInSeconds (doDeactive, dismissDelay);
 	}
 
 	public void doDeactive()

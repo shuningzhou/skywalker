@@ -136,11 +136,11 @@ public class GameManager : MonoBehaviour {
 
 		if (alreadyRevived)
 		{
-			excuateInSeconds (enterGameOverMode, 4f);
+			excuateInSeconds (enterGameOverMode, 1.5f);
 		}
 		else 
 		{
-			excuateInSeconds (enterReviveMode, 2f);
+			excuateInSeconds (enterReviveMode, 1.5f);
 			alreadyRevived = true;
 		}
 	}
@@ -222,12 +222,17 @@ public class GameManager : MonoBehaviour {
 
 	public void tutorialUserTapped ()
 	{
+		excuateInSeconds (doTutorialUserTapped, 0.3f);
+	}
+
+	public void doTutorialUserTapped()
+	{
 		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
 		cm.inTutorial = false;
 		cm.doTurn ();
 
 		if (isOnLastTutorialTrigger) {
-			excuateInSeconds (startPlaying, 0.2f);
+			startPlaying();
 		}
 	}
 
