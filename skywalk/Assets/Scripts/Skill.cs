@@ -6,13 +6,17 @@ public class Skill : MonoBehaviour {
 	
 	public delegate void TimeIsUp(Skill skill);
 
-	public Hashtable duration_level_coin_table;
+	public struct coin_num {
+		public int coin, num;
+		public coin_num(int x, int y) 
+		{
+			this.coin = x;
+			this.num = y;
+		}
+	}
 
-	public Hashtable duration_level_time_table;
-
-	public Hashtable droplets_level_coin_table;
-
-	public Hashtable droplets_level_drops_table;
+	public List<coin_num> duration_coin_time_list;
+	public List<coin_num> droplets_coin_drops_list;
 
 	public enum skillID {
 		Haste = 0,
@@ -55,15 +59,6 @@ public class Skill : MonoBehaviour {
 	};
 
 	public skillInfo thisSkillInfo = new skillInfo();
-//	public static Skill Instance = null;
-
-//	void Awake () {
-//		if (Instance == null) {
-//			Instance = this;
-//		} else if (Instance != this) {
-//			Destroy(gameObject);
-//		}
-//	}
 
 	// Use this for initialization
 	void Start () {
@@ -91,8 +86,8 @@ public class Skill : MonoBehaviour {
 					// we don't upgrade it
 				} else {
 					thisSkillInfo.level.durationLevel++;
-					thisSkillInfo.timer.durationTime = (float)duration_level_time_table [thisSkillInfo.level.durationLevel];
-					thisSkillInfo.level.requiredConinsDurationLvl = (int)duration_level_coin_table [thisSkillInfo.level.durationLevel];
+					thisSkillInfo.timer.durationTime = (float)duration_coin_time_list [thisSkillInfo.level.durationLevel].num;
+					thisSkillInfo.level.requiredConinsDurationLvl = (int)duration_coin_time_list [thisSkillInfo.level.durationLevel].coin;
 				}
 				return thisSkillInfo.level.durationLevel;
 			} else {
@@ -106,8 +101,8 @@ public class Skill : MonoBehaviour {
 					// we don't upgrade it
 				} else {
 					thisSkillInfo.level.dropletsLevel++;
-					thisSkillInfo.requiredDroplets = (int)droplets_level_drops_table [thisSkillInfo.level.dropletsLevel];
-					thisSkillInfo.level.requiredConinsDurationLvl = (int)droplets_level_coin_table [thisSkillInfo.level.dropletsLevel];
+					thisSkillInfo.requiredDroplets = (int)droplets_coin_drops_list [thisSkillInfo.level.dropletsLevel].num;
+					thisSkillInfo.level.requiredConinsDurationLvl = (int)droplets_coin_drops_list [thisSkillInfo.level.dropletsLevel].coin;
 				}
 				return thisSkillInfo.level.dropletsLevel;
 			} else {
@@ -131,13 +126,13 @@ public class Skill : MonoBehaviour {
 		if (thisSkillInfo.id == id) {
 			if (thisSkillInfo.level.durationLevel == 0) {
 				thisSkillInfo.level.durationLevel++;
-				thisSkillInfo.timer.durationTime = (float)duration_level_time_table [thisSkillInfo.level.durationLevel];
-				thisSkillInfo.level.requiredConinsDurationLvl = (int)duration_level_coin_table [thisSkillInfo.level.durationLevel];
+				thisSkillInfo.timer.durationTime = (float)duration_coin_time_list [thisSkillInfo.level.durationLevel].num;
+				thisSkillInfo.level.requiredConinsDurationLvl = (int)duration_coin_time_list [thisSkillInfo.level.durationLevel].coin;
 			}
 			if (thisSkillInfo.level.dropletsLevel == 0) {
 				thisSkillInfo.level.dropletsLevel++;
-				thisSkillInfo.requiredDroplets = (int)droplets_level_drops_table [thisSkillInfo.level.dropletsLevel];
-				thisSkillInfo.level.requiredConinsDurationLvl = (int)droplets_level_coin_table [thisSkillInfo.level.dropletsLevel];
+				thisSkillInfo.requiredDroplets = (int)droplets_coin_drops_list [thisSkillInfo.level.dropletsLevel].num;
+				thisSkillInfo.level.requiredConinsDurationLvl = (int)droplets_coin_drops_list [thisSkillInfo.level.dropletsLevel].coin;
 			}
 			return true;
 		} else {

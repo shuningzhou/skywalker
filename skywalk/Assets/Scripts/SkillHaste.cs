@@ -7,53 +7,29 @@ public class SkillHaste : Skill {
 	public static event TimeIsUp OnTimeIsUp;
 	public static event TimeIsUp ThreeSecBeforeTimeIsUp;
 
-	new public Hashtable duration_level_coin_table = new Hashtable()
-	{// {current level, coins required to next level}
-		{0, 26},
-		{1, 26},
-		{2, 26},
-		{3, 26},
-		{4, 26},
-		{5, 26},
-		{6, 26},
-		{7, 26},
-		{8, 26},
-		{9, 26}
+	new public List<coin_num> duration_coin_time_list = new List<coin_num> {
+		// (coins required to next level, duration time)
+		{new coin_num(26,0)},
+		{new coin_num(26,6)},
+		{new coin_num(26,7)},
+		{new coin_num(26,8)},
+		{new coin_num(26,9)},
+		{new coin_num(26,10)},
+		{new coin_num(26,11)},
+		{new coin_num(26,12)},
+		{new coin_num(26,13)},
+		{new coin_num(26,14)},
+		{new coin_num(26,15)},
 	};
 
-	new public Hashtable duration_level_time_table = new Hashtable()
-	{// {current level, duration time}
-		{0, 0},
-		{1, 6},
-		{2, 7},
-		{3, 8},
-		{4, 9},
-		{5, 10},
-		{6, 11},
-		{7, 12},
-		{8, 13},
-		{9, 14},
-		{10, 15}
-	};
-
-	new public Hashtable droplets_level_coin_table = new Hashtable()
-	{// {current level, coins required to next level}
-		{0, 26},
-		{1, 26},
-		{2, 26},
-		{3, 26},
-		{4, 26},
-		{5, 26}
-	};
-
-	new public Hashtable droplets_level_drops_table = new Hashtable()
-	{// {current level, droplets to collect}
-		{0, 10000},
-		{1, 5},
-		{2, 4},
-		{3, 3},
-		{4, 2},
-		{5, 1}
+	new public List<coin_num> droplets_coin_drops_list = new List<coin_num> {
+		// (coins required to next level, drops player need to get)
+		{new coin_num(26,10000)},
+		{new coin_num(26,5)},
+		{new coin_num(26,4)},
+		{new coin_num(26,3)},
+		{new coin_num(26,2)},
+		{new coin_num(26,1)},
 	};
 
 	// Use this for initialization
@@ -64,8 +40,8 @@ public class SkillHaste : Skill {
 		thisSkillInfo.description = "Allowing you to sprint wildly.";
 		thisSkillInfo.playerOrGame = true;
 		thisSkillInfo.isActivate = false;
-		thisSkillInfo.timer.durationTime = (float)duration_level_time_table [thisSkillInfo.level.durationLevel];
-		thisSkillInfo.requiredDroplets = (int)droplets_level_drops_table [thisSkillInfo.level.dropletsLevel];
+		thisSkillInfo.timer.durationTime = (float)duration_coin_time_list [thisSkillInfo.level.durationLevel].num;
+		thisSkillInfo.requiredDroplets = (int)droplets_coin_drops_list [thisSkillInfo.level.dropletsLevel].num;
 	}
 	
 	// Update is called once per frame
