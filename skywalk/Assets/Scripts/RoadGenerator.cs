@@ -14,15 +14,15 @@ public class RoadGenerator : MonoBehaviour {
 	public float minRad = Mathf.PI / 10;
 	public int maxRadius = 3;
 	public int minRadius = 2;
-	public float maxWidth;
-	public float minWidth;
-
-
+	float maxWidth;
+	float minWidth;
+	float widthDegradeRate;
 
 	public float thickness;
-	public int initalRoadSectionCount;
+	int initalRoadSectionCount;
 
-	public bool turnRight = true;
+	bool turnRight;
+	public int minConnectedPoints = 3;
 
 	public RoadPoint RoadPoint; 
 
@@ -49,8 +49,15 @@ public class RoadGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		float startz = 0f - 80 * stepLength;
+		maxWidth = LevelManager.sharedManager.currentLevel.startWidth;
+		minWidth = LevelManager.sharedManager.currentLevel.endWidth;
+		widthDegradeRate = LevelManager.sharedManager.currentLevel.degradeRate;
+		initalRoadSectionCount = LevelManager.sharedManager.currentLevel.length;
+		turnRight = LevelManager.sharedManager.currentLevel.turnRight;
+		maxRad = maxRad * LevelManager.sharedManager.currentLevel.curvature;
 
+
+		float startz = 0f - 80 * stepLength;
 		Vector3 previousPoint = new Vector3 (0f, 69.5f, startz);
 
 		for (int i = 1; i < 81; i++) 
@@ -84,8 +91,48 @@ public class RoadGenerator : MonoBehaviour {
 		currentTurnRight = turnRight;
 
 		generateRoadSections (initalRoadSectionCount);
+
+		addGaps ();
 	}
+
+	void addGaps()
+	{
+		float gapFrequency = LevelManager.sharedManager.currentLevel.gapFrequency;
+
+		RoadPoint rp = firstRoadPoint;
 	
+		int currentPointCount = 0;
+
+		while (rp.nextRoadPoint.nextRoadPoint.nextRoadPoint.nextRoadPoint != null) 
+		{
+
+			currentPointCount = currentPointCount + 1;
+
+			if (currentPointCount == minConnectedPoints) 
+			{
+
+				if (randomGap (gapFrequency)) 
+				{
+					rp.forceNextRoadPointToDrop ();
+				}
+
+				currentPointCount = 0;
+			}
+
+			rp = rp.nextRoadPoint;
+		}
+	}
+
+	bool randomGap(float gapFrequency)
+	{
+		float randomFloat = Random.Range (0, 1f);
+		if (randomFloat <= gapFrequency) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 	}
@@ -104,7 +151,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	void generateRoadSections(int count)
 	{
-		float widthChange = ((maxWidth - minWidth) / count ) / 3;
+		float widthChange = ((maxWidth - minWidth) / count ) * widthDegradeRate;
 		currentWidth = maxWidth;
 
 		for (int i = 0; i < count; i++) 
@@ -121,7 +168,7 @@ public class RoadGenerator : MonoBehaviour {
 
 			currentWidth = currentWidth - widthChange;
 
-			if (currentWidth <= 1f) 
+			if (currentWidth <= minWidth) 
 			{
 				widthChange = 0f;
 			}

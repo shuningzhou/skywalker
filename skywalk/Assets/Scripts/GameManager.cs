@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
 	public delegate void PlayerPowerUp();
 	public static event PlayerPowerUp onPowerUp;
 
-	public RoadPoint currentDroppingRoadPoint;
+	public int totalGemThisRound = 0;
 
 	private int gemCollectedThisRound = 0;
 	private int coinsCollectedThisRound = 0;
@@ -115,10 +115,6 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log ("Player WON!");
 
-		if (currentDroppingRoadPoint != null) {
-			currentDroppingRoadPoint.stopDropping ();
-		}
-
 		excuateInSeconds (enterWinMode, 1f);
 	}
 
@@ -126,10 +122,6 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log ("player failed");
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
-
-		if (currentDroppingRoadPoint != null) {
-			currentDroppingRoadPoint.stopDropping ();
-		}
 
 		gameState = GameState.gamefinished;
 		notifyStateListener ();
@@ -222,7 +214,7 @@ public class GameManager : MonoBehaviour {
 
 	public void tutorialUserTapped ()
 	{
-		excuateInSeconds (doTutorialUserTapped, 0.3f);
+		excuateInSeconds (doTutorialUserTapped, 0.1f);
 	}
 
 	public void doTutorialUserTapped()
@@ -241,11 +233,14 @@ public class GameManager : MonoBehaviour {
 		gameState = GameState.playing;
 		notifyStateListener ();
 
-		while (!currentDroppingRoadPoint.isActiveAndEnabled) {
-			currentDroppingRoadPoint = currentDroppingRoadPoint.nextRoadPoint;
-		}
-		currentDroppingRoadPoint.drop ();
-
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gameStarted);
+	}
+
+	public float percentGem()
+	{
+		Debug.Log (gemCollectedThisRound.ToString ());
+		Debug.Log (totalGemThisRound.ToString());
+
+		return (float)gemCollectedThisRound / (float)totalGemThisRound;
 	}
 }

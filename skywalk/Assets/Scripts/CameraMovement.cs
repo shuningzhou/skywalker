@@ -11,12 +11,14 @@ public class CameraMovement : MonoBehaviour {
 	public float riseDelay;
 
 	private float currentMaxHeight;
+	float levelRotateSpeed;
 
 	// Use this for initialization
 	void Start () 
 	{
 		float randomness = Random.Range (0f, 20f);
 		currentMaxHeight = maxHeight + randomness;
+		float levelRotateSpeed = LevelManager.sharedManager.currentLevel.cameraSpeed;
 	}
 
 	// Update is called once per frame
@@ -40,6 +42,8 @@ public class CameraMovement : MonoBehaviour {
 
 				transform.position = Vector3.Lerp (transform.position,
 					position, Time.deltaTime * moveSpeed);
+
+				transform.Rotate(Vector3.down, levelRotateSpeed * Time.deltaTime);
 			}
 		}
 	}

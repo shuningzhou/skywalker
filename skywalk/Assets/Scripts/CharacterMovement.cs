@@ -3,12 +3,15 @@ using System.Collections;
 using System;
 
 public class CharacterMovement : MonoBehaviour {
-	public float rotateSpeed = 250.0f;
+	float rotateSpeed;
+	float rotateSpeedChange;
+	float maxRotateSpeed;
+
 	public GameObject leftFoot;
 	public GameObject rightFoot;
 
 	bool rightInFront = false;
-	float rayReach = 2.0f;
+	public float rayReach = 2.0f;
 	public bool inTutorial = false;
 
 	public delegate void playerMoved(Vector3 position);
@@ -17,6 +20,7 @@ public class CharacterMovement : MonoBehaviour {
 	private Vector3 lastPosition;
 	private Quaternion lastRotation;
 
+
 	void Awake () {
 		GameManager.onPowerUp += onPowerUp;
 	}
@@ -24,6 +28,13 @@ public class CharacterMovement : MonoBehaviour {
 	void OnDestroy()
 	{
 		GameManager.onPowerUp -= onPowerUp;
+	}
+
+	void Start()
+	{
+		this.rotateSpeed = LevelManager.sharedManager.currentLevel.initialRotateSpeed;
+		this.rotateSpeedChange = LevelManager.sharedManager.currentLevel.rotateSpeedChange;
+		this.maxRotateSpeed = LevelManager.sharedManager.currentLevel.maxRotateSpeed;
 	}
 
 	public Vector3 getFootPosition()
@@ -50,10 +61,6 @@ public class CharacterMovement : MonoBehaviour {
 		} else {
 			return Vector3.zero;
 		}
-	}
-
-	// Use this for initialization
-	void Start () {
 	}
 
 	// Update is called once per frame
@@ -139,7 +146,6 @@ public class CharacterMovement : MonoBehaviour {
 	public void doTurn() {
 		rightInFront = !rightInFront;
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.moved);
-		float movedDistance = calculateDistance ();
 
 		lastPosition = gameObject.transform.position;
 		lastRotation = gameObject.transform.rotation;
@@ -149,11 +155,10 @@ public class CharacterMovement : MonoBehaviour {
 			OnPlayerMoved (getFootPosition());
 		}
 
-		if (rotateSpeed < 375.0f) 
+		if (rotateSpeed < maxRotateSpeed) 
 		{
-			rotateSpeed = rotateSpeed + 2.0f;
+			rotateSpeed = rotateSpeed + rotateSpeedChange;
 		}
-
 	}
 
 	public void revive()

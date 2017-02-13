@@ -16,7 +16,13 @@ public class GameGUI : MonoBehaviour {
 	public ReadyPanel readyPanel;
 	public GameOverPanel gameOverPanel;
 
+	public Image gemProgress;
+	public Text progressText;
+
+	private float gemProgressMaxWidth;
+
 	// Use this for initialization
+
 	void Awake () {
 
 		if (Instance == null) {
@@ -32,11 +38,18 @@ public class GameGUI : MonoBehaviour {
 
 		GameManager.coinCountChanged += GameManager_coinCountChanged;
 		GameManager.percentageChanged += GameManager_percentageChanged;
+
+		gemProgressMaxWidth = gemProgress.rectTransform.localScale.x;
 	}
 
 	void GameManager_onGamePlay ()
 	{
 		
+	}
+
+	void Start()
+	{
+		gemProgress.rectTransform.localScale = new Vector2 (0 , gemProgress.rectTransform.localScale.y);
 	}
 
 	void OnDestroy()
@@ -63,13 +76,24 @@ public class GameGUI : MonoBehaviour {
 
 	void GameManager_onGameWon()
 	{
-		showWinPanel (0,0,0);
+		float percentage = GameManager.sharedManager.percentGem();
+		showWinPanel (percentage, LevelManager.sharedManager.currentLevel.level);
 	}
 		
 	void GameManager_percentageChanged()
 	{
 //		float distance = GameManager.sharedManager.totalDistance;
 //		distanceCount.text = distance.ToString("0.00");
+		float percentage = GameManager.sharedManager.percentGem();
+		gemProgress.rectTransform.localScale = new Vector2 (gemProgressMaxWidth * percentage , gemProgress.rectTransform.localScale.y);
+		string message = (percentage * 100).ToString ("0") + "%";
+		Debug.Log (message);
+		if (progressText == null) {
+			Debug.Log ("wtf");
+		} else {
+			progressText.text = message;
+		}
+
 	}
 
 	public void GameManager_onGameOver ()
@@ -101,27 +125,39 @@ public class GameGUI : MonoBehaviour {
 
 	public void showTutorial()
 	{
-		if (true) {
+		if (LevelManager.sharedManager.currentLevel.level == 1) {
 			tutorialPanel.show(false);
 		} else {
 			readyPanel.show(false);
 		}
 	}
 
-	public void showWinPanel(int starRating, int reward, int level)
+	public void showWinPanel(float percentage, int level)
 	{
 		winPanel.show(false);
+
+		int starRating = 0;
+		int reward = 0;
+
+		Debug.Log (percentage);
+
+		if (percentage > 0.33f) 
+		{
+			starRating = 2;
+			reward = 10;
+		}
+
+		if (percentage > 0.66f) 
+		{
+			starRating = 3;
+			reward = 15;
+		}
+
 		winPanel.starRating = starRating;
+		winPanel.scoreString = (percentage * 100).ToString ("0") + "%";
 		winPanel.reward = reward;
 		winPanel.level = level;
 		winPanel.updateUI ();
-	}
-
-	public void hideWinPanel()
-	{
-		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
-		winPanel.gameObject.SetActive (false);
-		winPanel.resetAll ();
 	}
 
 	public void excuateInSeconds(Action action, float seconds)

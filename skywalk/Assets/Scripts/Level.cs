@@ -5,20 +5,48 @@ using UnityEngine;
 public class Level{
 
 	public int level;
+
+	//road
 	public float startWidth;
 	public float endWidth;
 	public float degradeRate;
-	public float length;
-	public float initialRotateSpeed;
-	public float gapFrequency;
+
+	public int length;
 	public float curvature;
-	public float cameraSpeed;
+	public float gapFrequency;
 	public float dropDelay;
+
+	public bool turnRight;
+
+	//character
+	public float initialRotateSpeed;
+	public float rotateSpeedChange;
+	public float maxRotateSpeed;
+
+	//camera
+	public float cameraSpeed;
+
+	//collectable
 	public float gemScatterness;
 	public float dropletScatterness;
 	public float coinScatterness;
 
-	public Level(int level, float startWidth, float endWidth, float degradeRate, float length, float initialRotateSpeed, float gapFrequency, float curvature, float cameraSpeed, float dropDelay, float gemScatterness, float dropletScatterness, float coinScatterness)
+	public Level(	int level, 
+					float startWidth, 
+					float endWidth, 
+					float degradeRate, 
+					int length, 
+					float initialRotateSpeed, 
+					float rotateSpeedChange, 
+					float maxRotateSpeed, 
+					float gapFrequency, 
+					float curvature, 
+					float cameraSpeed, 
+					float dropDelay, 
+					bool turnRight,
+					float gemScatterness, 
+					float dropletScatterness, 
+					float coinScatterness)
 	{
 		this.level = level;
 		this.startWidth = startWidth;
@@ -26,6 +54,8 @@ public class Level{
 		this.degradeRate = degradeRate;
 		this.length = length;
 		this.initialRotateSpeed = initialRotateSpeed;
+		this.rotateSpeedChange = rotateSpeedChange;
+		this.maxRotateSpeed = maxRotateSpeed;
 		this.gapFrequency = gapFrequency;
 		this.curvature = curvature;
 		this.cameraSpeed = cameraSpeed;
@@ -33,6 +63,7 @@ public class Level{
 		this.gemScatterness = gemScatterness;
 		this.dropletScatterness = dropletScatterness;
 		this.coinScatterness = coinScatterness;
+		this.turnRight = turnRight;
 	}
 
 	string levelIdString()

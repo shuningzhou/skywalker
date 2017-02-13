@@ -6,7 +6,7 @@ public class TutorialPanel : SOPanel {
 
 	// Use this for initialization
 	void Start () {
-		dismissDelay = 0.3f;
+		dismissDelay = 0.1f;
 	}
 	
 	// Update is called once per frame

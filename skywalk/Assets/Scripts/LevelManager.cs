@@ -63,6 +63,9 @@ public class LevelManager : MonoBehaviour {
 	public void playCurrentLevel()
 	{
 		SceneManager.LoadScene ("main", LoadSceneMode.Single);
+
+
+
 	}
 
 	public void currentLevelFinishedAndRetured()
@@ -75,76 +78,96 @@ public class LevelManager : MonoBehaviour {
 		SceneManager.LoadScene ("Home", LoadSceneMode.Single);
 	}
 
+
+//	public Level(	int level, 
+//		float startWidth, 
+//		float endWidth, 
+//		float degradeRate, 
+//		int length, 
+//		float initialRotateSpeed, 
+//		float rotateSpeedChange, 
+//		float maxRotateSpeed, 
+//		float gapFrequency, 
+//		float curvature, 
+//		float cameraSpeed, 
+//		float dropDelay, 
+//		bool turnRight,
+//		float gemScatterness, 
+//		float dropletScatterness, 
+//		float coinScatterness)
+
 	public void levelData()
 	{
-		Level level1 = new Level (1, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level2 = new Level (2, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level3 = new Level (3, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level4 = new Level (4, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level5 = new Level (5, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level6 = new Level (6, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level7 = new Level (7, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level8 = new Level (8, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level9 = new Level (9, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level10 = new Level (10, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		float dropDelaySeed = 0.9f;
 
-		Level level11 = new Level (11, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level12 = new Level (12, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level13 = new Level (13, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level14 = new Level (14, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level15 = new Level (15, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level16 = new Level (16, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level17 = new Level (17, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level18 = new Level (18, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level19 = new Level (19, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level20 = new Level (20, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level1 = new Level (1, 6f, 4f, 1f, 3, 150f, 5f, 250f, 0f, 0.1f, 0, 1f, true, 0, 0, 0);
+		Level level2 = new Level (2, 6f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.2f, 0, Mathf.Pow(dropDelaySeed, 1), true, 0, 0, 0);
+		Level level3 = new Level (3, 5.5f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.3f, 0, Mathf.Pow(dropDelaySeed, 2), false, 0, 0, 0);
+		Level level4 = new Level (4, 5.5f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 3), true, 0, 0, 0);
+		Level level5 = new Level (5, 5f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 4), false, 0, 0, 0);
+		Level level6 = new Level (6, 5f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 5), true, 0, 0, 0);
+		Level level7 = new Level (7, 5f, 4f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 6), false, 0, 0, 0);
+		Level level8 = new Level (8, 4.5f, 3.5f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 7), true, 0, 0, 0);
+		Level level9 = new Level (9, 4.4f, 3.5f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 8), false, 0, 0, 0);
+		Level level10 = new Level (10, 4.3f, 3.5f, 1f, 16, 150f, 5f, 250f, 0, 0.4f, 0, Mathf.Pow(dropDelaySeed, 9), true, 0, 0, 0);
 
-		Level level21 = new Level (21, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level22 = new Level (22, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level23 = new Level (23, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level24 = new Level (24, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level25 = new Level (25, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level26 = new Level (26, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level27 = new Level (27, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level28 = new Level (28, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level29 = new Level (29, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level30 = new Level (30, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level11 = new Level (11, 4.2f, 3.5f, 1f, 20, 160f, 5f, 270f, 0.05f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 10), true, 0, 0, 0);
+		Level level12 = new Level (12, 4.0f, 3.5f, 2f, 20, 160f, 5f, 270f, 0.06f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 11), false, 0, 0, 0);
+		Level level13 = new Level (13, 3.9f, 3.5f, 2f, 20, 160f, 5f, 270f, 0.07f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 12), true, 0, 0, 0);
+		Level level14 = new Level (14, 3.8f, 3.5f, 2f, 20, 160f, 5f, 270f, 0.07f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 13), false, 0, 0, 0);
+		Level level15 = new Level (15, 3.7f, 3.4f, 2f, 20, 160f, 5f, 270f, 0.09f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 14), true, 0, 0, 0);
+		Level level16 = new Level (16, 3.6f, 3.3f, 2f, 20, 160f, 5f, 270f, 0.1f, 0.5f, 0.1f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level17 = new Level (17, 3.5f, 3.0f, 2f, 20, 160f, 5f, 270f, 0.1f, 0.5f, 0, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level18 = new Level (18, 3f, 3f, 2f, 20, 160f, 5f, 270f, 0.1f, 0.6f, 0, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level19 = new Level (19, 3f, 3f, 2f, 20, 160f, 5f, 270f, 0.1f, 0.6f, 0, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level20 = new Level (20, 3f, 3f, 2f, 20, 160f, 5f, 270f, 0.1f, 0.6f, 0, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
 
-		Level level31 = new Level (31, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level32 = new Level (32, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level33 = new Level (33, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level34 = new Level (34, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level35 = new Level (35, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level36 = new Level (36, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level37 = new Level (37, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level38 = new Level (38, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level39 = new Level (39, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level40 = new Level (40, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level21 = new Level (21, 3f, 3f, 1f, 20, 170f, 10f, 280f, 0.1f, 0.6f, 0.2f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level22 = new Level (22, 3f, 3f, 1f, 20, 170f, 10f, 280f, 0.1f, 0.7f, 0.2f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level23 = new Level (23, 3f, 3f, 1f, 20, 170f, 10f, 280f, 0.1f, 0.7f, 0.2f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level24 = new Level (24, 3f, 3f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0.2f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level25 = new Level (25, 3f, 3f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level26 = new Level (26, 3f, 2.9f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level27 = new Level (27, 3f, 2.9f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0.3f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level28 = new Level (28, 3f, 2.9f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0.3f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level29 = new Level (29, 3f, 2.9f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0.3f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level30 = new Level (30, 3f, 2.9f, 1f, 23, 170f, 10f, 280f, 0.1f, 0.7f, 0.3f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
 
-		Level level41 = new Level (41, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level42 = new Level (42, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level43 = new Level (43, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level44 = new Level (44, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level45 = new Level (45, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level46 = new Level (46, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level47 = new Level (47, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level48 = new Level (48, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level49 = new Level (49, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level50 = new Level (50, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level31 = new Level (31, 3f, 2.9f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.4f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level32 = new Level (32, 3f, 2.9f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.4f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level33 = new Level (33, 3f, 2.9f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.4f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level34 = new Level (34, 3f, 2.9f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.5f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level35 = new Level (35, 3f, 2.8f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.5f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level36 = new Level (36, 3f, 2.8f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.5f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level37 = new Level (37, 3f, 2.7f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.8f, 0.6f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level38 = new Level (38, 3f, 2.6f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.9f, 0.6f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
+		Level level39 = new Level (39, 3f, 2.5f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.9f, 0.6f, Mathf.Pow(dropDelaySeed, 15), false, 0, 0, 0);
+		Level level40 = new Level (40, 2.9f, 2.5f, 1f, 25, 180f, 15f, 290f, 0.2f, 0.9f, 0.6f, Mathf.Pow(dropDelaySeed, 15), true, 0, 0, 0);
 
-		Level level51 = new Level (51, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level52 = new Level (52, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level53 = new Level (53, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level54 = new Level (54, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level55 = new Level (55, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level56 = new Level (56, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level57 = new Level (57, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level58 = new Level (58, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level59 = new Level (59, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level60 = new Level (60, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level41 = new Level (41, 2.8f, 2.5f, 1f, 28, 200f, 15f, 290f, 0.2f, 0.9f, 0.7f, Mathf.Pow(dropDelaySeed, 16), true, 0, 0, 0);
+		Level level42 = new Level (42, 2.7f, 2.5f, 1f, 28, 200f, 15f, 290f, 0.2f, 0.9f, 0.7f, Mathf.Pow(dropDelaySeed, 16), false, 0, 0, 0);
+		Level level43 = new Level (43, 2.6f, 2.5f, 1f, 28, 200f, 15f, 290f, 0.2f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), true, 0, 0, 0);
+		Level level44 = new Level (44, 2.5f, 2.5f, 1f, 28, 200f, 15f, 290f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), true, 0, 0, 0);
+		Level level45 = new Level (45, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), false, 0, 0, 0);
+		Level level46 = new Level (46, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), false, 0, 0, 0);
+		Level level47 = new Level (47, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), false, 0, 0, 0);
+		Level level48 = new Level (48, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), true, 0, 0, 0);
+		Level level49 = new Level (49, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), true, 0, 0, 0);
+		Level level50 = new Level (50, 2.5f, 2.5f, 1f, 28, 200f, 15f, 300f, 0.3f, 1f, 0.7f, Mathf.Pow(dropDelaySeed, 16), false, 0, 0, 0);
 
-		Level level61 = new Level (61, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
-		Level level62 = new Level (62, 5f, 4f, 0.5f, 6f, 150f, 0, 1, 0, 0, 0, 0, 0);
+		Level level51 = new Level (51, 2.5f, 2.5f, 2f, 30, 200f, 15f, 300f, 0.4f, 1.1f, 0.8f, Mathf.Pow(dropDelaySeed, 17), true, 0, 0, 0);
+		Level level52 = new Level (52, 2.5f, 2.5f, 2f, 30, 200f, 15f, 300f, 0.4f, 1.1f, 0.8f, Mathf.Pow(dropDelaySeed, 17), true, 0, 0, 0);
+		Level level53 = new Level (53, 2.5f, 2.5f, 2f, 30, 200f, 15f, 300f, 0.4f, 1.1f, 0.9f, Mathf.Pow(dropDelaySeed, 17), false, 0, 0, 0);
+		Level level54 = new Level (54, 2.5f, 2.5f, 2f, 30, 200f, 15f, 300f, 0.4f, 1.1f, 0.9f, Mathf.Pow(dropDelaySeed, 17), true, 0, 0, 0);
+		Level level55 = new Level (55, 2.5f, 2.5f, 3f, 30, 200f, 15f, 300f, 0.4f, 1.1f, 1f, Mathf.Pow(dropDelaySeed, 18), false, 0, 0, 0);
+		Level level56 = new Level (56, 2.5f, 2.5f, 3f, 30, 200f, 15f, 310f, 0.4f, 1.1f, 1f, Mathf.Pow(dropDelaySeed, 18), true, 0, 0, 0);
+		Level level57 = new Level (57, 2.5f, 2.5f, 3f, 30, 200f, 15f, 310f, 0.5f, 1.1f, 1.1f, Mathf.Pow(dropDelaySeed, 18), false, 0, 0, 0);
+		Level level58 = new Level (58, 2.5f, 2.5f, 3f, 30, 200f, 20f, 320f, 0.5f, 1.2f, 1.2f, Mathf.Pow(dropDelaySeed, 18), true, 0, 0, 0);
+		Level level59 = new Level (59, 2.5f, 2.4f, 4f, 30, 200f, 20f, 320f, 0.5f, 1.2f, 1.3f, Mathf.Pow(dropDelaySeed, 19), true, 0, 0, 0);
+		Level level60 = new Level (60, 2.5f, 2.3f, 4f, 30, 200f, 20f, 320f, 0.6f, 1.2f, 1.3f, Mathf.Pow(dropDelaySeed, 19), false, 0, 0, 0);
+
+		Level level61 = new Level (61, 2.5f, 2.2f, 4f, 32, 230f, 25f, 330f, 0.6f, 1.2f, 1.3f, Mathf.Pow(dropDelaySeed, 19), true, 0, 0, 0);
+		Level level62 = new Level (62, 2.5f, 2.0f, 4f, 36, 230f, 25f, 340f, 0.7f, 1.2f, 1.3f, Mathf.Pow(dropDelaySeed, 20), false, 0, 0, 0);
 
 		this.levels.Add (level1);
 		this.levels.Add (level2);

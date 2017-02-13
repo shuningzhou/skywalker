@@ -11,8 +11,8 @@ public class RoadPoint : MonoBehaviour {
 	public float thickness;
 
 	public float dropDelay;
-	public bool stopDropped = false;
 
+	private bool isCurrentDroppingRoadPoint = false;
 	public RoadPoint nextRoadPoint;
 
 	private Mesh mesh;
@@ -46,25 +46,57 @@ public class RoadPoint : MonoBehaviour {
 		mesh.RecalculateNormals ();
 
 		collier.sharedMesh = mesh;
+
+		GameManager.onGamePlay += GameManager_onGamePlay;
+	}
+		
+	void OnDestroy()
+	{
+		GameManager.onGamePlay -= GameManager_onGamePlay;
+	}
+
+	void GameManager_onGamePlay()
+	{
+		if (this.isCurrentDroppingRoadPoint) 
+		{
+			StartCoroutine (doDrop ());
+		}
 	}
 
 	public void drop()
 	{
-		GameManager.sharedManager.currentDroppingRoadPoint = this;
+		this.isCurrentDroppingRoadPoint = true;
 		StartCoroutine (doDrop ());
-
 	}
-		
-	public void stopDropping()
+
+	public void forceDrop()
 	{
-		stopDropped = true;
+		StartCoroutine (doForcedDrop());
+	}
+
+	IEnumerator doForcedDrop()
+	{
+		yield return new WaitForSeconds(dropDelay);
+		Rigidbody body = GetComponent<Rigidbody> ();
+		body.useGravity = true;
+		body.isKinematic = false;
+		StartCoroutine (doDestroy ());
+	}
+
+	public void forceNextRoadPointToDrop()
+	{
+		RoadPoint nextRP = this.nextRoadPoint;
+		RoadPoint nextNextRP = this.nextRoadPoint.nextRoadPoint;
+
+		this.nextRoadPoint = nextNextRP;
+		nextRP.forceDrop ();
 	}
 		
 	IEnumerator doDrop()
 	{
-		yield return new WaitForSeconds(dropDelay);
+		yield return new WaitForSeconds(LevelManager.sharedManager.currentLevel.dropDelay);
 
-		if (!stopDropped) 
+		if (GameManager.sharedManager.gameState == GameManager.GameState.playing) 
 		{
 			Rigidbody body = GetComponent<Rigidbody> ();
 			body.useGravity = true;
@@ -75,14 +107,14 @@ public class RoadPoint : MonoBehaviour {
 				nextRoadPoint.drop ();
 				StartCoroutine (doDestroy ());
 			}
-		}
 
-		stopDropped = false;
+			isCurrentDroppingRoadPoint = false;
+		}
 	}
 
 	IEnumerator doDestroy()
 	{
-		yield return new WaitForSeconds(6);
+		yield return new WaitForSeconds(3);
 		gameObject.SetActive (false);
 	}
 

@@ -2,19 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelFinished : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	void OnCollisionEnter(Collision collision) {
+public class LevelFinished : Collectable 
+{
+	public override void onCollision(Vector3 position)
+	{
 		GameManager.sharedManager.playWon ();
 	}
 }

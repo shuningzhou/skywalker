@@ -8,11 +8,11 @@ public class CollectableManager : MonoBehaviour {
 	public GameManager gameManager;
 	public GameObject chest;
 
-	private int collectableDistance;
-	private int coinDistance;
+	private float collectableDistance;
+	private float coinDistance;
 
-	public int collectableSpace = 3;
-	public int coinSpace = 10;
+	public float collectableSpace = 3;
+	public float coinSpace = 10;
 	public float floatDistance = 1.5f;
 	public int poolSize = 100;
 
@@ -57,8 +57,8 @@ public class CollectableManager : MonoBehaviour {
 
 	public void moved(float step, Vector3 position, float width)
 	{
-		collectableDistance = collectableDistance + (int)(step);
-		coinDistance = coinDistance + (int)step;
+		collectableDistance = collectableDistance + (step);
+		coinDistance = coinDistance + step;
 
 		float w = width / 2;
 
@@ -70,6 +70,7 @@ public class CollectableManager : MonoBehaviour {
 			collectableRowCount = collectableRowCount - 1;
 			collectableSpace = 2;
 
+			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
 
 			if (collectableRowCount <= 0) 
 			{
@@ -100,9 +101,7 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateCoin()
 	{
-		int reminder = coinDistance % coinSpace;
-
-		if (reminder == 0 ) {
+		if (coinDistance > coinSpace ) {
 			return true;
 		} else {
 			return false;
@@ -111,9 +110,7 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateCollectable()
 	{
-		int reminder = collectableDistance % collectableSpace;
-
-		if (reminder == 0 ) {
+		if ( collectableDistance > collectableSpace ) {
 			return true;
 		} else {
 			return false;

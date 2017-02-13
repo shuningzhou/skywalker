@@ -7,16 +7,20 @@ public class LevelFinishedPanel : SOPanel {
 
 	public int starRating;
 	public int reward;
+	public Text scoreText;
 	public Text rewardText;
 	public int level;
 	public int currentRating;
 	public int currentReward;
 	public float rewardDelay = 0.2f;
 	public float ratingDealy = 0.7f;
+	public string scoreString;
 
 	public Image star1;
 	public Image star2;
 	public Image star3;
+
+	public Text levelText;
 
 	public int skipEffect = 5;
 
@@ -41,6 +45,8 @@ public class LevelFinishedPanel : SOPanel {
 		currentRating = 0;
 		currentReward = 0;
 		rewardText.text = "0";
+		levelText.text = "";
+		scoreString = "";
 		star1.gameObject.SetActive (true);
 		star2.gameObject.SetActive (true);
 		star3.gameObject.SetActive (true);
@@ -48,6 +54,8 @@ public class LevelFinishedPanel : SOPanel {
 
 	public void updateUI()
 	{
+		levelText.text = "Level " + level.ToString ();
+		scoreText.text = scoreString;
 		excuateInSeconds(animateRating, 1.1f);
 	}
 

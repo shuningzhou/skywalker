@@ -16,8 +16,9 @@ public class ReadyPanel : SOPanel {
 
 	public void hide()
 	{
+		this.dismiss (false);
+
 		GameManager.sharedManager.isOnLastTutorialTrigger = true;
 		GameManager.sharedManager.tutorialUserTapped ();
-		this.dismiss (false);
 	}
 }
