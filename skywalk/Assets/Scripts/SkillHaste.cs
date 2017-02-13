@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SkillHaste : Skill {
 
+	public delegate void TimeIsUp();
+	public static event TimeIsUp OnTimeIsUp;
+
 	new public skillInfo thisSkillInfo = new skillInfo();
 
 	new public Hashtable duration_level_coin_table = new Hashtable()
@@ -69,6 +72,21 @@ public class SkillHaste : Skill {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (thisSkillInfo.timer.endTime > Time.time && thisSkillInfo.isActivate == true) {
+			thisSkillInfo.isActivate = false;
+			OnTimeIsUp ();
+		}
+	}
+
+	public void Activate(CharacterMovement player){
+
+		// Set activate flag and timer
+		thisSkillInfo.isActivate = true;
+		thisSkillInfo.timer.startTime = Time.time;
+		thisSkillInfo.timer.endTime = thisSkillInfo.timer.startTime + thisSkillInfo.timer.durationTime;
+
+		// Change the gameobject property
+		//myobject = FindObjectOfType<CharacterMovement> ();
+		player.rotateSpeed += 50f;
 	}
 }
