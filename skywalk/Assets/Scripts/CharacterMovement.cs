@@ -3,6 +3,13 @@ using System.Collections;
 using System;
 
 public class CharacterMovement : MonoBehaviour {
+
+	// skill flags
+	public bool hasteIsActive = false;
+	public bool LeviationIsActive = false;
+	public bool GrowthIsActive = false;
+	public bool MagnetIsActive = false;
+
 	float rotateSpeed;
 	float rotateSpeedChange;
 	float maxRotateSpeed;

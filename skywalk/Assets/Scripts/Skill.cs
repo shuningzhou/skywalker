@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Skill : MonoBehaviour {
+	
+	public delegate void TimeIsUp(Skill skill);
 
 	public Hashtable duration_level_coin_table;
 
@@ -47,6 +49,7 @@ public class Skill : MonoBehaviour {
 		public string description;
 		public bool playerOrGame;
 		public bool isActivate;
+		public bool alertIsSent;
 		public skillTimer timer;
 		public int requiredDroplets;
 	};
