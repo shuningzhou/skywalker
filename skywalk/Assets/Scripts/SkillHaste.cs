@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SkillHaste : Skill {
 
-	public static event TimeIsUp OnTimeIsUp;
-	public static event TimeIsUp ThreeSecBeforeTimeIsUp;
-
 	new public List<coin_num> duration_coin_time_list = new List<coin_num> {
 		// (coins required to next level, duration time)
 		{new coin_num(26,0)},
@@ -45,31 +42,16 @@ public class SkillHaste : Skill {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		// send event 3s before time is up
-		if ((thisSkillInfo.timer.endTime - 3f) > Time.time && thisSkillInfo.alertIsSent == false) {
-			thisSkillInfo.alertIsSent = true;
-			ThreeSecBeforeTimeIsUp (this);
-		}
-		// send event when time is up
-		if (thisSkillInfo.timer.endTime > Time.time && thisSkillInfo.isActivate == true) {
-			thisSkillInfo.isActivate = false;
-			OnTimeIsUp (this);
-		}
+//	void Update () {
+//	}
+
+	public override void SetGameObjectFlag (GameObject myobject) {
+		CharacterMovement player = myobject.GetComponent<CharacterMovement>();
+
+		// Change the gameobject property
+		player.hasteIsActive = true;
 	}
 
 	public override void Activate(GameObject myobject){
-
-		CharacterMovement player = myobject.GetComponent<CharacterMovement>();
-
-		// Set activate flag and timer
-		thisSkillInfo.isActivate = true;
-		thisSkillInfo.alertIsSent = false;
-		thisSkillInfo.timer.startTime = Time.time;
-		thisSkillInfo.timer.endTime = thisSkillInfo.timer.startTime + thisSkillInfo.timer.durationTime;
-
-		// Change the gameobject property
-		//myobject = FindObjectOfType<CharacterMovement> ();
-		player.hasteIsActive = true;
 	}
 }

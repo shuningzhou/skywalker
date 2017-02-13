@@ -5,6 +5,8 @@ using UnityEngine;
 public class Skill : MonoBehaviour {
 	
 	public delegate void TimeIsUp(Skill skill);
+	public static event TimeIsUp OnTimeIsUp;
+	public static event TimeIsUp ThreeSecBeforeTimeIsUp;
 
 	public struct coin_num {
 		public int coin, num;
@@ -66,12 +68,31 @@ public class Skill : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	public virtual void Update () {
+		// send event 3s before time is up
+		if ((thisSkillInfo.timer.endTime - 3f) > Time.time && thisSkillInfo.alertIsSent == false) {
+			thisSkillInfo.alertIsSent = true;
+			ThreeSecBeforeTimeIsUp (this);
+		}
+		// send event when time is up
+		if (thisSkillInfo.timer.endTime > Time.time && thisSkillInfo.isActivate == true) {
+			thisSkillInfo.isActivate = false;
+			OnTimeIsUp (this);
+		}
+	}
+
+	public virtual void SetGameObjectFlag (GameObject myobject){
 	}
 
 	public virtual void Activate(GameObject myobject){
-		
+
+		// Set activate flag and timer
+		thisSkillInfo.isActivate = true;
+		thisSkillInfo.alertIsSent = false;
+		thisSkillInfo.timer.startTime = Time.time;
+		thisSkillInfo.timer.endTime = thisSkillInfo.timer.startTime + thisSkillInfo.timer.durationTime;
+
+		SetGameObjectFlag (myobject);
 	}
 
 	public virtual skillInfo GetSkillInfo(){
