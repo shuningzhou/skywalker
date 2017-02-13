@@ -84,6 +84,9 @@ public class Skill : MonoBehaviour {
 	public virtual void SetGameObjectFlag (GameObject myobject){
 	}
 
+	public virtual void ClearGameObjectFlag(GameObject myobject){
+	}
+
 	public virtual void Activate(GameObject myobject){
 
 		// Set activate flag and timer
@@ -93,6 +96,10 @@ public class Skill : MonoBehaviour {
 		thisSkillInfo.timer.endTime = thisSkillInfo.timer.startTime + thisSkillInfo.timer.durationTime;
 
 		SetGameObjectFlag (myobject);
+	}
+
+	public virtual void Deactivate(GameObject myobject){
+		ClearGameObjectFlag (myobject);
 	}
 
 	public virtual skillInfo GetSkillInfo(){

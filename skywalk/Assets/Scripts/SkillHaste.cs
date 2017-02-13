@@ -52,6 +52,10 @@ public class SkillHaste : Skill {
 		player.hasteIsActive = true;
 	}
 
-	public override void Activate(GameObject myobject){
+	public override void ClearGameObjectFlag(GameObject myobject){
+		CharacterMovement player = myobject.GetComponent<CharacterMovement>();
+
+		// Change the gameobject property
+		player.hasteIsActive = false;
 	}
 }
