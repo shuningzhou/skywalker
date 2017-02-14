@@ -6,7 +6,7 @@ public class SkillHaste : Skill {
 
 	new public List<coin_num> duration_coin_time_list = new List<coin_num> {
 		// (coins required to next level, duration time)
-		{new coin_num(26,0)},
+		{new coin_num(26,6)},
 		{new coin_num(26,6)},
 		{new coin_num(26,7)},
 		{new coin_num(26,8)},
@@ -21,7 +21,7 @@ public class SkillHaste : Skill {
 
 	new public List<coin_num> droplets_coin_drops_list = new List<coin_num> {
 		// (coins required to next level, drops player need to get)
-		{new coin_num(26,10000)},
+		{new coin_num(26,6)},
 		{new coin_num(26,5)},
 		{new coin_num(26,4)},
 		{new coin_num(26,3)},

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectableManager : MonoBehaviour {
-	public GameObject collectable;
+	public GameObject gem;
 	public GameObject coin;
+
+	public GameObject haste;
+
 	public GameManager gameManager;
 	public GameObject chest;
 
@@ -20,8 +23,12 @@ public class CollectableManager : MonoBehaviour {
 	public float collectableX = 0;
 	public float collectableZ = 0;
 
-	private List<GameObject> collectables = new List<GameObject> ();
+	private List<GameObject> gems = new List<GameObject> ();
 	private List<GameObject> coins = new List<GameObject> ();
+	private List<GameObject> hastes = new List<GameObject> ();
+
+	float hasteDropRate = 0.05f;
+
 
 	void Awake()
 	{
@@ -32,9 +39,9 @@ public class CollectableManager : MonoBehaviour {
 
 		for (int i = 0; i < poolSize; i++)
 		{
-			GameObject c = Instantiate (collectable, startPosition, Quaternion.identity);
+			GameObject c = Instantiate (gem, startPosition, Quaternion.identity);
 			c.SetActive(false);
-			collectables.Add(c);
+			gems.Add(c);
 		}
 
 		for (int i = 0; i < poolSize; i++)
@@ -42,6 +49,13 @@ public class CollectableManager : MonoBehaviour {
 			GameObject c = Instantiate (coin, startPosition, coin.transform.rotation);
 			c.SetActive(false);
 			coins.Add(c);
+		}
+
+		for (int i = 0; i < poolSize; i++)
+		{
+			GameObject c = Instantiate (haste, startPosition, coin.transform.rotation);
+			c.SetActive(false);
+			hastes.Add(c);
 		}
 	}
 
@@ -62,35 +76,56 @@ public class CollectableManager : MonoBehaviour {
 
 		float w = width / 2;
 
-		if (shouldCreateCollectable()) 
-		{
-			Vector3 collectablePosition = new Vector3 (position.x + collectableX, position.y + floatDistance, position.z + collectableZ);
-			createCollectableAt (collectablePosition);
-			collectableDistance = 0;
-			collectableRowCount = collectableRowCount - 1;
-			collectableSpace = 2;
+//		if (shouldCreateGem()) 
+//		{
+//			Vector3 collectablePosition = new Vector3 (position.x + collectableX, position.y + floatDistance, position.z + collectableZ);
+//			createCollectableAt (collectablePosition);
+//			collectableDistance = 0;
+//			collectableRowCount = collectableRowCount - 1;
+//			collectableSpace = 2;
+//
+//			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
+//
+//			if (collectableRowCount <= 0) 
+//			{
+//				collectableX = Random.Range (0, 3f+w);
+//				collectableZ = Random.Range (0, 3f+w);
+//				collectableRowCount = Random.Range (1, 10);
+//				collectableSpace = 5;
+//			}
+//		} 
+//
+//		if (shouldCreateCoin ()) 
+//		{
+//			float randX = Random.Range (-3f-w, 3f+w);
+//			float randZ = Random.Range (-3f-w, 3f+w);
+//
+//			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
+//			createCoinAt (collectablePosition);
+//			coinDistance = 0;
+//			coinSpace = Random.Range (50, 60);
+//		} 
 
-			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
-
-			if (collectableRowCount <= 0) 
-			{
-				collectableX = Random.Range (0, 3f+w);
-				collectableZ = Random.Range (0, 3f+w);
-				collectableRowCount = Random.Range (1, 10);
-				collectableSpace = 5;
-			}
-		} 
-
-		if (shouldCreateCoin ()) 
+		if (shouldCreateHaste ())
 		{
 			float randX = Random.Range (-3f-w, 3f+w);
 			float randZ = Random.Range (-3f-w, 3f+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
-			createCoinAt (collectablePosition);
-			coinDistance = 0;
-			coinSpace = Random.Range (50, 60);
-		} 
+			createHasteAt (collectablePosition);
+		}
+	}
+
+	public bool shouldCreateHaste ()
+	{
+		float r = Random.Range (0f, 1f);
+
+		if (r < hasteDropRate)
+		{
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void createChest(Vector3 position)
@@ -108,7 +143,7 @@ public class CollectableManager : MonoBehaviour {
 		}
 	}
 
-	public bool shouldCreateCollectable()
+	public bool shouldCreateGem()
 	{
 		if ( collectableDistance > collectableSpace ) {
 			return true;
@@ -121,7 +156,7 @@ public class CollectableManager : MonoBehaviour {
 	{
 		for (int i = 0; i < poolSize; i++) 
 		{
-			GameObject c = collectables [i];
+			GameObject c = gems [i];
 
 			if (c.activeSelf == false) 
 			{
@@ -138,6 +173,21 @@ public class CollectableManager : MonoBehaviour {
 		for (int i = 0; i < poolSize; i++) 
 		{
 			GameObject c = coins [i];
+
+			if (c.activeSelf == false) 
+			{
+				c.SetActive(true);
+				c.transform.position = position;
+				break;
+			}
+		}
+	}
+
+	public void createHasteAt(Vector3 position)
+	{
+		for (int i = 0; i < poolSize; i++) 
+		{
+			GameObject c = hastes [i];
 
 			if (c.activeSelf == false) 
 			{

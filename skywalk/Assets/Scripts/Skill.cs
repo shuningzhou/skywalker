@@ -68,14 +68,14 @@ public class Skill : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	public virtual void Update () {
+	void Update () {
 		// send event 3s before time is up
-		if ((thisSkillInfo.timer.endTime - 3f) > Time.time && thisSkillInfo.alertIsSent == false) {
+		if ((thisSkillInfo.timer.endTime - 3f) < Time.time && thisSkillInfo.alertIsSent == false) {
 			thisSkillInfo.alertIsSent = true;
 			ThreeSecBeforeTimeIsUp (this);
 		}
 		// send event when time is up
-		if (thisSkillInfo.timer.endTime > Time.time && thisSkillInfo.isActivate == true) {
+		if (thisSkillInfo.timer.endTime < Time.time && thisSkillInfo.isActivate == true) {
 			thisSkillInfo.isActivate = false;
 			OnTimeIsUp (this);
 		}

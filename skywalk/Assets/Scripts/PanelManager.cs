@@ -11,8 +11,6 @@ public class PanelManager : MonoBehaviour {
 	public PotionPanel potionPanel;
 	public QuestPanel questPanel;
 
-	private SOPanel currentPanel;
-
 	void Awake()
 	{
 		if (sharedManager == null) 
@@ -41,7 +39,6 @@ public class PanelManager : MonoBehaviour {
 	public void showPanel(SOPanel panel)
 	{
 		panel.show (true);
-		currentPanel = panel;
 	}
 
 	public void dismissPanel(SOPanel panel)

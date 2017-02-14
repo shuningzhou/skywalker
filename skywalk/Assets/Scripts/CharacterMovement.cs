@@ -14,6 +14,8 @@ public class CharacterMovement : MonoBehaviour {
 	float rotateSpeedChange;
 	float maxRotateSpeed;
 
+	float hasteRotateSpeed = 400f;
+
 	public GameObject leftFoot;
 	public GameObject rightFoot;
 
@@ -128,16 +130,25 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 
+	float getCurrentRotateSpeed()
+	{
+		if (hasteIsActive) {
+			return hasteRotateSpeed;
+		} else {
+			return rotateSpeed;
+		}
+	}
+
 	void keepRotating()
 	{
 		if (rightInFront) {
 			//rotate around the right foot
-			transform.RotateAround (rightFoot.transform.position, Vector3.down, rotateSpeed * Time.deltaTime);
+			transform.RotateAround (rightFoot.transform.position, Vector3.down, getCurrentRotateSpeed() * Time.deltaTime);
 
 		} else {
 
 			//rotate around the right foot
-			transform.RotateAround (leftFoot.transform.position, Vector3.up, rotateSpeed * Time.deltaTime);
+			transform.RotateAround (leftFoot.transform.position, Vector3.up, getCurrentRotateSpeed() * Time.deltaTime);
 
 		}
 	}

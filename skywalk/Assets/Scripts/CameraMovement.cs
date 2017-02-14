@@ -18,7 +18,7 @@ public class CameraMovement : MonoBehaviour {
 	{
 		float randomness = Random.Range (0f, 20f);
 		currentMaxHeight = maxHeight + randomness;
-		float levelRotateSpeed = LevelManager.sharedManager.currentLevel.cameraSpeed;
+		levelRotateSpeed = LevelManager.sharedManager.currentLevel.cameraSpeed;
 	}
 
 	// Update is called once per frame

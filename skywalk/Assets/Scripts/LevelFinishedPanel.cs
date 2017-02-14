@@ -22,7 +22,7 @@ public class LevelFinishedPanel : SOPanel {
 
 	public Text levelText;
 
-	public int skipEffect = 5;
+	public int skipEffect = 0;
 
 	private int skip = 0;
 
@@ -103,7 +103,10 @@ public class LevelFinishedPanel : SOPanel {
 
 		rewardText.text = currentReward.ToString ();
 
-		if (true){//skip == skipEffect) {
+		SoundManager.Instance.PlayOneShot (SoundManager.Instance.count);
+
+		if (skip == skipEffect) 
+		{
 			SoundManager.Instance.PlayOneShot (SoundManager.Instance.count);
 			skip = 0;
 		} else {
