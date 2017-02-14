@@ -76,35 +76,35 @@ public class CollectableManager : MonoBehaviour {
 
 		float w = width / 2;
 
-//		if (shouldCreateGem()) 
-//		{
-//			Vector3 collectablePosition = new Vector3 (position.x + collectableX, position.y + floatDistance, position.z + collectableZ);
-//			createCollectableAt (collectablePosition);
-//			collectableDistance = 0;
-//			collectableRowCount = collectableRowCount - 1;
-//			collectableSpace = 2;
-//
-//			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
-//
-//			if (collectableRowCount <= 0) 
-//			{
-//				collectableX = Random.Range (0, 3f+w);
-//				collectableZ = Random.Range (0, 3f+w);
-//				collectableRowCount = Random.Range (1, 10);
-//				collectableSpace = 5;
-//			}
-//		} 
-//
-//		if (shouldCreateCoin ()) 
-//		{
-//			float randX = Random.Range (-3f-w, 3f+w);
-//			float randZ = Random.Range (-3f-w, 3f+w);
-//
-//			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
-//			createCoinAt (collectablePosition);
-//			coinDistance = 0;
-//			coinSpace = Random.Range (50, 60);
-//		} 
+		if (shouldCreateGem()) 
+		{
+			Vector3 collectablePosition = new Vector3 (position.x + collectableX, position.y + floatDistance, position.z + collectableZ);
+			createCollectableAt (collectablePosition);
+			collectableDistance = 0;
+			collectableRowCount = collectableRowCount - 1;
+			collectableSpace = 2;
+
+			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
+
+			if (collectableRowCount <= 0) 
+			{
+				collectableX = Random.Range (0, 3f+w);
+				collectableZ = Random.Range (0, 3f+w);
+				collectableRowCount = Random.Range (1, 10);
+				collectableSpace = 5;
+			}
+		} 
+
+		if (shouldCreateCoin ()) 
+		{
+			float randX = Random.Range (-3f-w, 3f+w);
+			float randZ = Random.Range (-3f-w, 3f+w);
+
+			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
+			createCoinAt (collectablePosition);
+			coinDistance = 0;
+			coinSpace = Random.Range (50, 60);
+		} 
 
 		if (shouldCreateHaste ())
 		{
