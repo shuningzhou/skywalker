@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoadGenerator : MonoBehaviour {
 
-	public bool MagnetIsActive = false;
+	public bool ConjureIsActive = false;
 
 	public RoadSection roadSection;
 	public GameObject player;

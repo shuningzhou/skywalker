@@ -52,13 +52,13 @@ public class SkillConjure : Skill {
 		RoadGenerator road = myobject.GetComponent<RoadGenerator>();
 
 		// Change the gameobject property
-		road.MagnetIsActive = true;
+		road.ConjureIsActive = true;
 	}
 
 	public override void ClearGameObjectFlag(GameObject myobject){
 		RoadGenerator road = myobject.GetComponent<RoadGenerator>();
 
 		// Change the gameobject property
-		road.MagnetIsActive = false;
+		road.ConjureIsActive = false;
 	}
 }
