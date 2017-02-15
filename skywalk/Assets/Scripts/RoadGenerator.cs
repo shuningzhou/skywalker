@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RoadGenerator : MonoBehaviour {
+
+	public bool ConjureIsActive = false;
+
 	public RoadSection roadSection;
 	public GameObject player;
 	public CollectableManager collectableManager;
