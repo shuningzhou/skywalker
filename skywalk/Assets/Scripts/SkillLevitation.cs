@@ -44,9 +44,9 @@ public class SkillLevitation : Skill {
 	}
 
 	// Update is called once per frame
-//	void Update () {
-//
-	//	}
+	void Update () {
+
+		}
 
 	public override void SetGameObjectFlag (GameObject myobject) {
 		CharacterMovement player = myobject.GetComponent<CharacterMovement>();

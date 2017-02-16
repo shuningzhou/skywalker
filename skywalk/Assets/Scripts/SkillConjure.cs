@@ -44,9 +44,9 @@ public class SkillConjure : Skill {
 	}
 
 	// Update is called once per frame
-//	void Update () {
-//
-	//	}
+	void Update () {
+
+		}
 
 	public override void SetGameObjectFlag (GameObject myobject) {
 		RoadGenerator road = myobject.GetComponent<RoadGenerator>();

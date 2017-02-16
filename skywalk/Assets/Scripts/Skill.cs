@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Skill : MonoBehaviour {
-	
-	public delegate void TimeIsUp(Skill skill);
-	public static event TimeIsUp OnTimeIsUp;
-	public static event TimeIsUp ThreeSecBeforeTimeIsUp;
+
+//commented out because timer caculation is done by Peter
+//	public delegate void TimeIsUp(Skill skill);
+//	public static event TimeIsUp OnTimeIsUp;
+//	public static event TimeIsUp ThreeSecBeforeTimeIsUp;
 
 	public struct coin_num {
 		public int coin, num;
@@ -69,16 +70,17 @@ public class Skill : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// send event 3s before time is up
-		if ((thisSkillInfo.timer.endTime - 3f) < Time.time && thisSkillInfo.alertIsSent == false) {
-			thisSkillInfo.alertIsSent = true;
-			ThreeSecBeforeTimeIsUp (this);
-		}
-		// send event when time is up
-		if (thisSkillInfo.timer.endTime < Time.time && thisSkillInfo.isActivate == true) {
-			thisSkillInfo.isActivate = false;
-			OnTimeIsUp (this);
-		}
+//commented out because timer caculation is done by Peter
+//		// send event 3s before time is up
+//		if ((thisSkillInfo.timer.endTime - 3f) < Time.time && thisSkillInfo.alertIsSent == false) {
+//			thisSkillInfo.alertIsSent = true;
+//			ThreeSecBeforeTimeIsUp (this);
+//		}
+//		// send event when time is up
+//		if (thisSkillInfo.timer.endTime < Time.time && thisSkillInfo.isActivate == true) {
+//			thisSkillInfo.isActivate = false;
+//			OnTimeIsUp (this);
+//		}
 	}
 
 	public virtual void SetGameObjectFlag (GameObject myobject){
