@@ -238,9 +238,6 @@ public class GameManager : MonoBehaviour {
 
 	public float percentGem()
 	{
-		Debug.Log (gemCollectedThisRound.ToString ());
-		Debug.Log (totalGemThisRound.ToString());
-
 		return (float)gemCollectedThisRound / (float)totalGemThisRound;
 	}
 }

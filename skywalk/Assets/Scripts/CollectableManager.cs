@@ -134,7 +134,7 @@ public class CollectableManager : MonoBehaviour {
 				collectableX = Random.Range (0, 3f+w);
 				collectableZ = Random.Range (0, 3f+w);
 				collectableRowCount = Random.Range (1, 10);
-				collectableSpace = 5;
+				collectableSpace = 3;
 			}
 		} 
 

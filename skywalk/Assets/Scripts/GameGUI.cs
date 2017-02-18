@@ -19,6 +19,11 @@ public class GameGUI : MonoBehaviour {
 	public Image gemProgress;
 	public Text progressText;
 
+	public GameObject hastSkillStatus;
+	public GameObject growthSkillStatus;
+	public GameObject levitationSkillStatus;
+	public GameObject magnetSkillStatus;
+
 	private float gemProgressMaxWidth;
 
 	// Use this for initialization
@@ -84,12 +89,17 @@ public class GameGUI : MonoBehaviour {
 	{
 		float percentage = GameManager.sharedManager.percentGem();
 		gemProgress.rectTransform.localScale = new Vector2 (gemProgressMaxWidth * percentage , gemProgress.rectTransform.localScale.y);
-		string message = (percentage * 100).ToString ("0") + "%";
 	}
 
 	public void GameManager_onGameOver ()
 	{
+		gameOverPanel.resetUI ();
+
 		gameOverPanel.show (false);
+		float percentage = GameManager.sharedManager.percentGem();
+		gameOverPanel.scoreString = (percentage * 100).ToString ("0") + "%";
+
+		gameOverPanel.updateUI ();
 	}
 
 	public void showRevive()
@@ -130,8 +140,6 @@ public class GameGUI : MonoBehaviour {
 		int starRating = 0;
 		int reward = 0;
 
-		Debug.Log (percentage);
-
 		if (percentage > 0.33f) 
 		{
 			starRating = 2;
@@ -145,7 +153,9 @@ public class GameGUI : MonoBehaviour {
 		}
 
 		winPanel.starRating = starRating;
-		winPanel.scoreString = (percentage * 100).ToString ("0") + "%";
+		winPanel.gemProgressMaxWidth = gemProgressMaxWidth;
+		winPanel.percentageScore = (int)(percentage * 100);
+		winPanel.scoreString = "0%";
 		winPanel.reward = reward;
 		winPanel.level = level;
 		winPanel.updateUI ();

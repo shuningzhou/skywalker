@@ -38,7 +38,7 @@ public class SkillStatus : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		int dropletsRequired = skill.thisSkillInfo.requiredDroplets;
+		int dropletsRequired = skill.dropletRequired();
 		Debug.Log ("Haste skill required droplets = " + dropletsRequired.ToString ());
 
 		if (dropletsRequired <= 6) 
@@ -67,21 +67,14 @@ public class SkillStatus : MonoBehaviour {
 	{
 		if (skillIsActive) 
 		{
-			float hastFillRate = (float)(skillEndTime - Time.time) / (float)skill.thisSkillInfo.timer.durationTime;
+			float hastFillRate = (float)(skillEndTime - Time.time) / skill.duration();
 			progressImage.fillAmount = hastFillRate;
 
 			if (skillEndTime < Time.time) 
 			{
 				skillIsActive = false;
 
-				if (skill.thisSkillInfo.playerOrGame) 
-				{
-					skill.Deactivate (player);
-				} 
-				else 
-				{
-					skill.Deactivate (roadGenenrator);
-				}
+				skill.Deactivate (player);
 			}
 		}
 	}
@@ -90,22 +83,15 @@ public class SkillStatus : MonoBehaviour {
 	{
 		currentDropletsCount = currentDropletsCount + 1;
 
-		if (currentDropletsCount >= skill.thisSkillInfo.requiredDroplets) 
+		if (currentDropletsCount >= skill.dropletRequired()) 
 		{
 			skillIsActive = true;
 
-			if (skill.thisSkillInfo.playerOrGame) 
-			{
-				skill.Activate (player);
-			} 
-			else 
-			{
-				skill.Activate (roadGenenrator);
-			}
-				
+			skill.Activate (player);
+
 			currentDropletsCount = 0;
 			skillStartedTime = Time.time;
-			skillEndTime = skillStartedTime + skill.thisSkillInfo.timer.durationTime;
+			skillEndTime = skillStartedTime + skill.duration();
 		}
 
 		updateGUI ();
@@ -113,7 +99,6 @@ public class SkillStatus : MonoBehaviour {
 
 	public void updateGUI()
 	{
-		Debug.Log ("Current hast droplets count = " + currentDropletsCount.ToString ());
 		if (currentDropletsCount == 0) {
 			droplet1.gameObject.SetActive (false);
 			droplet2.gameObject.SetActive (false);

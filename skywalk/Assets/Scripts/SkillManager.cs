@@ -47,19 +47,15 @@ public class SkillManager : MonoBehaviour {
 		switch (droplet.type)
 		{
 		case Droplet.DropletType.Haste:
-			Debug.Log ("haste collected!");
 			hastStatus.addDroplet ();
 		break;
 		case Droplet.DropletType.Growth:
-			Debug.Log ("haste collected!");
 			growthStatus.addDroplet ();
 			break;
 		case Droplet.DropletType.Levitation:
-			Debug.Log ("haste collected!");
 			levitationStatus.addDroplet ();
 			break;
 		case Droplet.DropletType.Magnet:
-			Debug.Log ("haste collected!");
 			magnetStatus.addDroplet ();
 			break;
 		default:
