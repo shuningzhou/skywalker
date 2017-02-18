@@ -4,20 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SkillManager : MonoBehaviour {
-	
-	public SkillHaste skillHaste;
 
 	public GameObject player;
 
 	public static SkillManager sharedManager = null;
 
-	private int hasteDropletCount = 0;
-//	private int growthDropletCount = 0;
-//	private int levitationDropletCount = 0;
-//	private int conjureDropletCount = 0;
-//	private int MagnetDropletCount = 0;
-
-	public Image hastImage;
+	public SkillStatus hastStatus;
+	public SkillStatus levitationStatus;
+	public SkillStatus growthStatus;
+	public SkillStatus magnetStatus;
 
 	void Awake()
 	{
@@ -30,28 +25,11 @@ public class SkillManager : MonoBehaviour {
 			return;
 		}
 
-		Skill.OnTimeIsUp += Skill_OnTimeIsUp;
-		Skill.ThreeSecBeforeTimeIsUp += Skill_ThreeSecBeforeTimeIsUp;
-	}
-
-	void Skill_ThreeSecBeforeTimeIsUp (Skill skill)
-	{
-		
-	}
-
-	void Skill_OnTimeIsUp (Skill skill)
-	{
-		if (skill.thisSkillInfo.playerOrGame) {
-			skill.Deactivate (player);
-		} else {
-			
-		}
 	}
 
 	void OnDestroy()
 	{
-		Skill.OnTimeIsUp -= Skill_OnTimeIsUp;
-		Skill.ThreeSecBeforeTimeIsUp -= Skill_ThreeSecBeforeTimeIsUp;
+
 	}
 
 	// Use this for initialization
@@ -64,41 +42,29 @@ public class SkillManager : MonoBehaviour {
 		
 	}
 
-	public void useHaste()
-	{
-		if (hasteDropletCount >= skillHaste.thisSkillInfo.requiredDroplets) 
-		{
-			skillHaste.Activate (player);
-			hasteDropletCount = 0;
-			Update ();
-		}
-	}
-
 	public void collected (Droplet droplet)
 	{
 		switch (droplet.type)
 		{
 		case Droplet.DropletType.Haste:
-			
-			if (hasteDropletCount < skillHaste.thisSkillInfo.requiredDroplets) 
-			{
-				hasteDropletCount = hasteDropletCount + 1;
-				updateGUI ();
-			}
-
+			Debug.Log ("haste collected!");
+			hastStatus.addDroplet ();
+		break;
+		case Droplet.DropletType.Growth:
+			Debug.Log ("haste collected!");
+			growthStatus.addDroplet ();
+			break;
+		case Droplet.DropletType.Levitation:
+			Debug.Log ("haste collected!");
+			levitationStatus.addDroplet ();
+			break;
+		case Droplet.DropletType.Magnet:
+			Debug.Log ("haste collected!");
+			magnetStatus.addDroplet ();
 			break;
 		default:
 
-			break;
+		break;
 		}
-
-
-	}
-		
-	public void updateGUI()
-	{
-		int dropletsRequiredForHaste = skillHaste.thisSkillInfo.requiredDroplets;
-		float hastFillRate = (float) hasteDropletCount / (float)dropletsRequiredForHaste;
-		hastImage.fillAmount = hastFillRate;
 	}
 }

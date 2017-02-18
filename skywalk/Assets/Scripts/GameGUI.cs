@@ -82,18 +82,9 @@ public class GameGUI : MonoBehaviour {
 		
 	void GameManager_percentageChanged()
 	{
-//		float distance = GameManager.sharedManager.totalDistance;
-//		distanceCount.text = distance.ToString("0.00");
 		float percentage = GameManager.sharedManager.percentGem();
 		gemProgress.rectTransform.localScale = new Vector2 (gemProgressMaxWidth * percentage , gemProgress.rectTransform.localScale.y);
 		string message = (percentage * 100).ToString ("0") + "%";
-		Debug.Log (message);
-		if (progressText == null) {
-			Debug.Log ("wtf");
-		} else {
-			progressText.text = message;
-		}
-
 	}
 
 	public void GameManager_onGameOver ()

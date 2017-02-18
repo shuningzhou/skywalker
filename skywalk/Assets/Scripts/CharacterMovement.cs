@@ -105,7 +105,7 @@ public class CharacterMovement : MonoBehaviour {
 	void checkRoadCollapsed()
 	{
 		RaycastHit footHit;
-		if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road")))
+		if (!(Physics.Raycast (getFootPosition(), Vector3.down, out footHit, rayReach) && (footHit.transform.tag == "road")) && !LeviationIsActive)
 		{
 			doFailed ();
 		}
@@ -184,6 +184,19 @@ public class CharacterMovement : MonoBehaviour {
 		Rigidbody body = GetComponent<Rigidbody> ();
 		body.useGravity = false;
 		body.isKinematic = true;
+
+
+		Vector3 scale = gameObject.transform.localScale;
+
+		scale.x = 0.5f;
+		scale.z = 2f;
+		scale.y = 2f;
+
+		gameObject.transform.localScale = scale;
+
+		lastPosition.y = 70.7f;
+
+		gameObject.transform.localScale = scale;
 		gameObject.transform.position = lastPosition;
 		gameObject.transform.rotation = lastRotation;
 	}
@@ -211,7 +224,7 @@ public class CharacterMovement : MonoBehaviour {
 		RaycastHit movingHit;
 		Debug.DrawRay (getFootPosition (), Vector3.down, Color.red);
 
-		if (Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road"))
+		if ((Physics.Raycast (getMovingPosition(), Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road")) || LeviationIsActive)
 		{
 			doTurn ();
 		} 

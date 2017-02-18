@@ -40,6 +40,10 @@ public class CameraMovement : MonoBehaviour {
 				position.y = position.y + 0;
 				position.z = position.z + 0;
 
+				if (moveScript.hasteIsActive || moveScript.GrowthIsActive) {
+					position.y = position.y + 4f;
+				}
+
 				transform.position = Vector3.Lerp (transform.position,
 					position, Time.deltaTime * moveSpeed);
 
