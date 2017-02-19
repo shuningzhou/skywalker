@@ -35,10 +35,10 @@ public class CollectableManager : MonoBehaviour {
 	private List<GameObject> magnets = new List<GameObject> ();
 	private List<GameObject> levitations = new List<GameObject> ();
 
-	float hasteDropRate = 0.2f;
-	float growthDropRate = 0.2f;
-	float magnetDropRate = 0.2f;
-	float levitationDropRate = 0.2f;
+	float hasteDropRate = 0.1f;
+	float growthDropRate = 0.1f;
+	float magnetDropRate = 0.1f;
+	float levitationDropRate = 0.4f;
 
 	void Awake()
 	{

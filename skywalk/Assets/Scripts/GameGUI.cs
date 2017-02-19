@@ -14,6 +14,7 @@ public class GameGUI : MonoBehaviour {
 	public TutorialPanel tutorialPanel;
 	public LevelFinishedPanel winPanel;
 	public ReadyPanel readyPanel;
+	public UnlockPanel unlockLevitationPanel;
 	public GameOverPanel gameOverPanel;
 
 	public Image gemProgress;
@@ -129,7 +130,8 @@ public class GameGUI : MonoBehaviour {
 		if (LevelManager.sharedManager.currentLevel.level == 1) {
 			tutorialPanel.show(false);
 		} else {
-			readyPanel.show(false);
+			unlockLevitationPanel.show (false);
+			//readyPanel.show(false);
 		}
 	}
 

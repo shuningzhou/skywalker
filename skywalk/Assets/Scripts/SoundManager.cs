@@ -15,6 +15,7 @@ public class SoundManager : MonoBehaviour {
 	public AudioClip gameStarted;
 	public AudioClip count;
 	public AudioClip rating;
+	public AudioClip unlock;
 
 	// Use this for initialization
 	void Start () {

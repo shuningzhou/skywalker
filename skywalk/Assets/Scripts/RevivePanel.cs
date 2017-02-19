@@ -8,12 +8,25 @@ public class RevivePanel : SOPanel {
 
 	// Use this for initialization
 	void Start () {
-		
+		int coins = UserData.getCoinsCount ();
+
+		Debug.Log ("Coins = " + coins.ToString ());
+
+		if (coins < reviveCost) 
+		{
+			excuateInSeconds (notEnoughCoin, 0.7f);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void notEnoughCoin()
+	{
+		Animator a = GetComponent<Animator> ();
+		a.Play ("ReviveNotEnoughCoin");
 	}
 
 	public void skipped()

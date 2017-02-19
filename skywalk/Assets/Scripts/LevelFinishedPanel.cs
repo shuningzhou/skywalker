@@ -60,6 +60,7 @@ public class LevelFinishedPanel : SOPanel {
 
 	public void updateUI()
 	{
+		UserData.addCoinsCount (reward);
 		levelText.text = "Level " + level.ToString ();
 		scoreText.text = scoreString;
 		excuateInSeconds(animateRating, 1.1f);
