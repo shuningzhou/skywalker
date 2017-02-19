@@ -7,7 +7,7 @@ public class UnlockPanel  : SOPanel {
 	// Use this for initialization
 	void Start () {
 		dismissDelay = 0.3f;
-		excuateInSeconds (playSound, 1.95f);
+		excuateInSeconds (playSound, 1.8f);
 	}
 
 	// Update is called once per frame

@@ -35,10 +35,15 @@ public class CollectableManager : MonoBehaviour {
 	private List<GameObject> magnets = new List<GameObject> ();
 	private List<GameObject> levitations = new List<GameObject> ();
 
-	float hasteDropRate = 0.1f;
-	float growthDropRate = 0.1f;
-	float magnetDropRate = 0.1f;
-	float levitationDropRate = 0.4f;
+	float hasteDropRate = 0.5f;
+	float growthDropRate = 0.5f;
+	float magnetDropRate = 0.5f;
+	float levitationDropRate = 0.5f;
+
+	public Skill magnetSkill;
+	public Skill levitationSkill;
+	public Skill growthSkill;
+	public Skill hasteSkill;
 
 	void Awake()
 	{
@@ -188,6 +193,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateHaste ()
 	{
+		if (hasteSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 12) {
+			return false;
+		}
+
 		float r = Random.Range (0f, 1f);
 
 		if (r < hasteDropRate)
@@ -200,6 +209,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateGrowth ()
 	{
+		if (growthSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 9) {
+			return false;
+		}
+
 		float r = Random.Range (0f, 1f);
 
 		if (r < growthDropRate)
@@ -212,6 +225,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateMagnet ()
 	{
+		if (magnetSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 3) {
+			return false;
+		}
+
 		float r = Random.Range (0f, 1f);
 
 		if (r < magnetDropRate)
@@ -224,6 +241,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateLevitation ()
 	{
+		if (levitationSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 9) {
+			return false;
+		}
+
 		float r = Random.Range (0f, 1f);
 
 		if (r < levitationDropRate)

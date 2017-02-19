@@ -14,16 +14,26 @@ public class GameGUI : MonoBehaviour {
 	public TutorialPanel tutorialPanel;
 	public LevelFinishedPanel winPanel;
 	public ReadyPanel readyPanel;
+
 	public UnlockPanel unlockLevitationPanel;
+	public UnlockPanel unlockHastePanel;
+	public UnlockPanel unlockGrowthPanel;
+	public UnlockPanel unlockMagnetPanel;
+
 	public GameOverPanel gameOverPanel;
 
 	public Image gemProgress;
 	public Text progressText;
 
-	public GameObject hastSkillStatus;
-	public GameObject growthSkillStatus;
-	public GameObject levitationSkillStatus;
-	public GameObject magnetSkillStatus;
+	public SkillStatus hastSkillStatus;
+	public SkillStatus growthSkillStatus;
+	public SkillStatus levitationSkillStatus;
+	public SkillStatus magnetSkillStatus;
+
+	public Skill magnet;
+	public Skill levitation;
+	public Skill growth;
+	public Skill haste;
 
 	private float gemProgressMaxWidth;
 
@@ -127,11 +137,53 @@ public class GameGUI : MonoBehaviour {
 
 	public void showTutorial()
 	{
-		if (LevelManager.sharedManager.currentLevel.level == 1) {
+		if (LevelManager.sharedManager.currentLevel.level == 1) 
+		{
 			tutorialPanel.show(false);
-		} else {
+		} 
+		else if (LevelManager.sharedManager.currentLevel.level == 3 && magnet.info.isLocked == 1 )
+		{
+			unlockMagnetPanel.show (false);
+			magnetSkillStatus.skill.unlockSkill ();
+		}
+		else if (LevelManager.sharedManager.currentLevel.level == 6 && levitation.info.isLocked == 1 )
+		{
 			unlockLevitationPanel.show (false);
-			//readyPanel.show(false);
+			levitationSkillStatus.skill.unlockSkill ();
+		}
+		else if (LevelManager.sharedManager.currentLevel.level == 9 && growth.info.isLocked == 1 )
+		{
+			unlockGrowthPanel.show (false);
+			growthSkillStatus.skill.unlockSkill ();
+		}
+		else if (LevelManager.sharedManager.currentLevel.level == 12 && haste.info.isLocked == 1 )
+		{
+			unlockHastePanel.show (false);
+			hastSkillStatus.skill.unlockSkill ();
+		}
+		else
+		{
+			readyPanel.show(false);
+		}
+
+		if (magnet.info.isLocked == 0) 
+		{
+			magnetSkillStatus.gameObject.SetActive (true);
+		}
+
+		if (levitation.info.isLocked == 0) 
+		{
+			levitationSkillStatus.gameObject.SetActive (true);
+		}
+
+		if (growth.info.isLocked == 0) 
+		{
+			growthSkillStatus.gameObject.SetActive (true);
+		}
+
+		if (haste.info.isLocked == 0) 
+		{
+			hastSkillStatus.gameObject.SetActive (true);
 		}
 	}
 
