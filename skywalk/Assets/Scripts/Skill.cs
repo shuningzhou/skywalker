@@ -36,7 +36,7 @@ public class SkillInfo
 	{
 		this.durationlevel = PlayerPrefs.GetInt(prefDurationLevelID(), 0);
 		this.dropletLevel = PlayerPrefs.GetInt(prefDropletLevelID(), 0);
-		this.isLocked = PlayerPrefs.GetInt (prefIsLockedID(), 1);
+		this.isLocked = PlayerPrefs.GetInt (prefIsLockedID(), 0);
 	}
 
 	string prefDurationLevelID()
@@ -112,14 +112,32 @@ public class Skill : MonoBehaviour {
 		return (float)(getSkillDurationLevelData() [info.durationlevel].num);
 	}
 
+	public float nextDuration()
+	{
+		if (durationMaxed()) {
+			return duration ();
+		}
+
+		return (float)(getSkillDurationLevelData() [info.durationlevel + 1].num);
+	}
+
 	public int dropletRequired()
 	{
 		return getSkillDropletLevelData() [info.dropletLevel].num;
 	}
 
+	public int nextDropletRequired()
+	{
+		if (dropletMaxed ()) {
+			return dropletRequired ();
+		}
+
+		return getSkillDropletLevelData() [info.dropletLevel + 1].num;
+	}
+
 	public int durationUpgradeCost()
 	{
-		return getSkillDurationLevelData() [info.dropletLevel].coin;
+		return getSkillDurationLevelData() [info.durationlevel].coin;
 	}
 
 	public int dropletUpgradeCost()
@@ -143,5 +161,45 @@ public class Skill : MonoBehaviour {
 	{
 		info.isLocked = 0;
 		info.save ();
+	}
+
+	public string currentDropletDes()
+	{
+		return "Requires " + dropletRequired().ToString () + " Droplets";
+	}
+
+	public string nextDropletDes()
+	{
+		return "Requires " + nextDropletRequired().ToString () + " Droplets";
+	}
+
+	public string currentDurationDes()
+	{
+		return "Duration " + duration ().ToString ("0.0") + " seconds";
+	}
+
+	public string nextDurationDes()
+	{
+		return "Duration " + nextDuration ().ToString ("0.0") + " seconds";
+	}
+
+	public bool durationMaxed()
+	{
+		int levels = getSkillDurationLevelData ().Count - 1;
+		if (info.durationlevel == levels) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public bool dropletMaxed()
+	{
+		int levels = getSkillDropletLevelData ().Count - 1;
+		if (info.dropletLevel == levels) {
+			return true;
+		}
+
+		return false;
 	}
 }

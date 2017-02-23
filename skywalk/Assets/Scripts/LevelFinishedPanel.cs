@@ -62,12 +62,37 @@ public class LevelFinishedPanel : SOPanel {
 	{
 		UserData.addCoinsCount (reward);
 		levelText.text = "Level " + level.ToString ();
-		scoreText.text = scoreString;
+		scoreText.text = "0%";
 		excuateInSeconds(animateRating, 1.1f);
 	}
 
 	public void animateRating()
 	{
+		if (percentageScore == 0) {
+			float percentage = GameManager.sharedManager.percentGem();
+
+			if (percentage >= 0.25f) {
+				starRating = 1;
+				reward = 5;
+			}
+
+			if (percentage >= 0.50f) 
+			{
+				starRating = 2;
+				reward = 10;
+			}
+
+			if (percentage >= 0.75f) 
+			{
+				starRating = 3;
+				reward = 15;
+			}
+
+			LevelManager.sharedManager.currentLevel.saveLevelRating (starRating);
+			Level.setUserProgressLevel (level);
+
+			percentageScore = (int)(percentage * 100);
+		}
 		if (currentPercentage != percentageScore) 
 		{
 			excuateInSeconds (animatePercentageProgressImage, ratingDealy);

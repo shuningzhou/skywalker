@@ -92,8 +92,7 @@ public class GameGUI : MonoBehaviour {
 
 	void GameManager_onGameWon()
 	{
-		float percentage = GameManager.sharedManager.percentGem();
-		showWinPanel (percentage, LevelManager.sharedManager.currentLevel.level);
+		showWinPanel (LevelManager.sharedManager.currentLevel.level);
 	}
 		
 	void GameManager_percentageChanged()
@@ -187,38 +186,10 @@ public class GameGUI : MonoBehaviour {
 		}
 	}
 
-	public void showWinPanel(float percentage, int level)
+	public void showWinPanel(int level)
 	{
 		winPanel.show(false);
-
-		int starRating = 0;
-		int reward = 0;
-
-		if (percentage >= 0.25f) {
-			starRating = 1;
-			reward = 5;
-		}
-
-		if (percentage >= 0.50f) 
-		{
-			starRating = 2;
-			reward = 10;
-		}
-
-		if (percentage >= 0.75f) 
-		{
-			starRating = 3;
-			reward = 15;
-		}
-
-		LevelManager.sharedManager.currentLevel.saveLevelRating (starRating);
-		Level.setUserProgressLevel (level);
-
-		winPanel.starRating = starRating;
 		winPanel.gemProgressMaxWidth = gemProgressMaxWidth;
-		winPanel.percentageScore = (int)(percentage * 100);
-		winPanel.scoreString = "0%";
-		winPanel.reward = reward;
 		winPanel.level = level;
 		winPanel.updateUI ();
 	}

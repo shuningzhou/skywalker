@@ -10,6 +10,17 @@ public class HomePanel : SOPanel {
 	// Use this for initialization
 	void Start () {
 		coinsUpdated ();
+		UserData.CoinChanged += UserData_CoinChanged;
+	}
+
+	void OnDestroy()
+	{
+		UserData.CoinChanged -= UserData_CoinChanged;
+	}
+
+	void UserData_CoinChanged ()
+	{
+		coinsUpdated ();
 	}
 	
 	// Update is called once per frame

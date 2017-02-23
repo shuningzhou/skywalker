@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PotionPanel : SOPanel {
+
+
 
 	// Use this for initialization
 	void Start () {

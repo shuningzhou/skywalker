@@ -6,12 +6,11 @@ using UnityEngine.UI;
 public class SkillPanel : MonoBehaviour {
 
 	public Text durationText;
+	public Text nextDurationText;
+	public Text nextDropletText;
 	public Text dropletText;
 
 	public Skill skill;
-
-	public Text nextDurationText;
-	public Text nextDropletText;
 
 	public Text durationUpgradeCost;
 	public Text dropletUpgradeCost;
@@ -23,7 +22,7 @@ public class SkillPanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		updateUI ();
 	}
 	
 	// Update is called once per frame
@@ -31,13 +30,57 @@ public class SkillPanel : MonoBehaviour {
 		
 	}
 
+	void updateUI()
+	{
+		durationText.text = skill.currentDurationDes ();
+		dropletText.text = skill.currentDropletDes ();
+
+		nextDurationText.text = skill.nextDurationDes ();
+		nextDropletText.text = skill.nextDropletDes ();
+
+		durationUpgradeCost.text = skill.durationUpgradeCost ().ToString ();
+		dropletUpgradeCost.text = skill.dropletUpgradeCost ().ToString ();
+
+		if (skill.durationMaxed ()) {
+			durationButton.gameObject.SetActive (false);
+		} else {
+			durationButton.gameObject.SetActive (true);
+		}
+
+		if (skill.dropletMaxed ()) {
+			dropletButton.gameObject.SetActive (false);
+		} else {
+			dropletButton.gameObject.SetActive (true);
+		}
+
+		if (skill.info.isLocked == 1) {
+			lockedPanel.gameObject.SetActive (true);
+		} else {
+			lockedPanel.gameObject.SetActive (false);
+		}
+	}
+
 	public void durationButtonPressed()
 	{
-		
+		if (UserData.getCoinsCount () >= skill.durationUpgradeCost ()) {
+			skill.upgradeDuration ();
+			UserData.addCoinsCount (-skill.durationUpgradeCost ());
+		} else {
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
+		}
+
+		updateUI ();
 	}
 
 	public void dropletButtonPressed()
 	{
-		
+		if (UserData.getCoinsCount () >= skill.dropletUpgradeCost ()) {
+			skill.upgradeDroplets ();
+			UserData.addCoinsCount (-skill.dropletUpgradeCost ());
+		} else {
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
+		}
+
+		updateUI ();
 	}
 }

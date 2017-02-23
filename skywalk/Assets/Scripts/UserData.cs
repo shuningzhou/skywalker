@@ -12,6 +12,10 @@ public class UserData : MonoBehaviour {
 	public static string PREF_TUTORIAL_DONE = "tutorial_done";
 	public static string PREF_USER_NAME = "user_name";
 
+
+	public delegate void CoinChange();
+	public static event CoinChange CoinChanged;
+
 	public static float getLocalBestRecordValue()
 	{
 		return PlayerPrefs.GetFloat(PREF_DISTANCE, 0);
@@ -83,6 +87,10 @@ public class UserData : MonoBehaviour {
 		int count = getCoinsCount();
 		count = count + value;
 		saveCoinsCount (count);
+
+		if (CoinChanged != null) {
+			CoinChanged ();
+		}
 	}
 
 	public static void updateBestDistance(float distance)
