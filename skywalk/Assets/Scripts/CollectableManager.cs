@@ -241,7 +241,7 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateLevitation ()
 	{
-		if (levitationSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 9) {
+		if (levitationSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 6) {
 			return false;
 		}
 

@@ -126,7 +126,10 @@ public class GameManager : MonoBehaviour {
 		gameState = GameState.gamefinished;
 		notifyStateListener ();
 
-		if (alreadyRevived)
+		bool adsReady = SCAds.rewardedVideoReady();
+		bool hasEnoughCoins = UserData.getCoinsCount () >= 5;
+
+		if (alreadyRevived || ((!adsReady) && (!hasEnoughCoins)))
 		{
 			excuateInSeconds (enterGameOverMode, 1.5f);
 		}

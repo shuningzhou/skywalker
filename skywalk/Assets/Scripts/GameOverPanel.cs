@@ -41,13 +41,11 @@ public class GameOverPanel : SOPanel {
 
 	public void doReplayed()
 	{
-		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
 		LevelManager.sharedManager.playCurrentLevel ();
 	}
 
 	public void doHomed()
 	{
-		LevelManager.sharedManager.currentLevel.saveLevelRating (1);
 		LevelManager.sharedManager.currentLevelFinishedAndRetured ();
 	}
 }

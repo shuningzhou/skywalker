@@ -12,15 +12,22 @@ public class RevivePanel : SOPanel {
 
 		Debug.Log ("Coins = " + coins.ToString ());
 
-		if (coins < reviveCost) 
-		{
+		if (coins < reviveCost) {
 			excuateInSeconds (notEnoughCoin, 0.7f);
+		} else if (!SCAds.rewardedVideoReady ()) {
+			excuateInSeconds (adsNotReady, 0.7f);
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void adsNotReady()
+	{
+		Animator a = GetComponent<Animator> ();
+		a.Play ("ReviveAdsNotReady");
 	}
 
 	void notEnoughCoin()

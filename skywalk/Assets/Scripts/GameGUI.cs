@@ -194,17 +194,25 @@ public class GameGUI : MonoBehaviour {
 		int starRating = 0;
 		int reward = 0;
 
-		if (percentage > 0.33f) 
+		if (percentage >= 0.25f) {
+			starRating = 1;
+			reward = 5;
+		}
+
+		if (percentage >= 0.50f) 
 		{
 			starRating = 2;
 			reward = 10;
 		}
 
-		if (percentage > 0.66f) 
+		if (percentage >= 0.75f) 
 		{
 			starRating = 3;
 			reward = 15;
 		}
+
+		LevelManager.sharedManager.currentLevel.saveLevelRating (starRating);
+		Level.setUserProgressLevel (level);
 
 		winPanel.starRating = starRating;
 		winPanel.gemProgressMaxWidth = gemProgressMaxWidth;

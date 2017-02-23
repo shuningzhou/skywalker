@@ -26,7 +26,7 @@ public class SkillLevitation : Skill {
 
 	void Awake()
 	{
-		skillID = SkillID.Growth;
+		skillID = SkillID.Levitation;
 		load ();
 	}
 

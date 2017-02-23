@@ -74,23 +74,32 @@ public class Level{
 
 	public void saveLevelRating(int rating)
 	{
+		if (getLevelRating () > rating) {
+			return;
+		}
+
 		PlayerPrefs.SetInt (levelIdString(), rating);
 		PlayerPrefs.Save();
 	}
 
 	public int getLevelRating()
 	{
-		return PlayerPrefs.GetInt(levelIdString(), 3);
+		return PlayerPrefs.GetInt(levelIdString(), 0);
 	}
 
 	public static int getUerProgressLevel()
 	{
-		int progress = PlayerPrefs.GetInt("USERPROGRESS", 61);
+		int progress = PlayerPrefs.GetInt("USERPROGRESS", 0);
 		return progress;
 	}
 
 	public static void setUserProgressLevel(int value)
 	{
+		if (getUerProgressLevel () > value) 
+		{
+			return;
+		}
+
 		PlayerPrefs.SetInt ("USERPROGRESS", value);
 		PlayerPrefs.Save();
 	}
