@@ -17,10 +17,8 @@ public class CollectableManager : MonoBehaviour {
 	public CharacterMovement player;
 
 	private float collectableDistance;
-	private float coinDistance;
 
 	public float collectableSpace = 3;
-	public float coinSpace = 10;
 	public float floatDistance = 1.5f;
 	public int poolSize = 100;
 
@@ -39,6 +37,7 @@ public class CollectableManager : MonoBehaviour {
 	float growthDropRate = 0.1f;
 	float magnetDropRate = 0.1f;
 	float levitationDropRate = 0.1f;
+	float coinDropRate = 0.1f;
 
 	public Skill magnetSkill;
 	public Skill levitationSkill;
@@ -48,7 +47,6 @@ public class CollectableManager : MonoBehaviour {
 	void Awake()
 	{
 		collectableDistance = 0;
-		coinDistance = 0;
 
 		Vector3 startPosition = new Vector3 (0, -50, 0);
 
@@ -120,7 +118,6 @@ public class CollectableManager : MonoBehaviour {
 	public void moved(float step, Vector3 position, float width)
 	{
 		collectableDistance = collectableDistance + (step);
-		coinDistance = coinDistance + step;
 
 		float w = width / 2;
 
@@ -150,8 +147,6 @@ public class CollectableManager : MonoBehaviour {
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createCoinAt (collectablePosition);
-			coinDistance = 0;
-			coinSpace = Random.Range (50, 60);
 		} 
 
 		if (shouldCreateHaste ())
@@ -263,7 +258,10 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateCoin()
 	{
-		if (coinDistance > coinSpace ) {
+		float r = Random.Range (0f, 1f);
+
+		if (r < coinDropRate)
+		{
 			return true;
 		} else {
 			return false;

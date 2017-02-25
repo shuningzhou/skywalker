@@ -10,6 +10,7 @@ public class LevelFinishedPanel : SOPanel {
 	public int reward;
 	public Text scoreText;
 	public Text rewardText;
+	public Text bestText;
 	public int level;
 	public int currentPercentage;
 	public int currentRating;
@@ -63,7 +64,19 @@ public class LevelFinishedPanel : SOPanel {
 		UserData.addCoinsCount (reward);
 		levelText.text = "Level " + level.ToString ();
 		scoreText.text = "0%";
+
+		updateBestText ();
+
 		excuateInSeconds(animateRating, 1.1f);
+	}
+
+	void updateBestText()
+	{
+		int oldRating = LevelManager.sharedManager.currentLevel.getLevelRating ();
+		if (oldRating > 0) {
+			bestText.text = "Best: " + oldRating.ToString () + " stars";
+		}
+
 	}
 
 	public void animateRating()
@@ -71,24 +84,31 @@ public class LevelFinishedPanel : SOPanel {
 		if (percentageScore == 0) {
 			float percentage = GameManager.sharedManager.percentGem();
 
-			if (percentage >= 0.25f) {
-				starRating = 1;
-				reward = 5;
-			}
+			starRating = 1;
 
 			if (percentage >= 0.50f) 
 			{
 				starRating = 2;
-				reward = 10;
 			}
 
 			if (percentage >= 0.75f) 
 			{
 				starRating = 3;
-				reward = 15;
+				QuestManager.sharedManager.questStar.collectedCondition ();
 			}
 
-			LevelManager.sharedManager.currentLevel.saveLevelRating (starRating);
+			float rewardFloat = (float)(0.15 * (level) * Mathf.Sqrt((level)) + 2);
+			reward = 0;
+
+			int oldRating = LevelManager.sharedManager.currentLevel.getLevelRating ();
+
+			if (starRating > oldRating)
+			{
+				reward = (int)((starRating - oldRating) * rewardFloat);
+				LevelManager.sharedManager.currentLevel.saveLevelRating (starRating);
+			}
+
+			UserData.addCoinsCount (reward);
 			Level.setUserProgressLevel (level);
 
 			percentageScore = (int)(percentage * 100);
@@ -102,6 +122,7 @@ public class LevelFinishedPanel : SOPanel {
 			excuateInSeconds (updateStarRatingImage, ratingDealy);
 		} else 
 		{
+			updateBestText ();
 			excuateInSeconds (animateReward, ratingDealy);
 		}
 	}

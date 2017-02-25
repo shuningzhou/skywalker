@@ -115,6 +115,10 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log ("Player WON!");
 
+		if (!alreadyRevived) {
+			QuestManager.sharedManager.questOneShot.collectedCondition ();
+		}
+
 		excuateInSeconds (enterWinMode, 1f);
 	}
 
@@ -168,7 +172,7 @@ public class GameManager : MonoBehaviour {
 	public void collectedCoin ()
 	{
 		coinsCollectedThisRound = coinsCollectedThisRound + 1;
-
+		QuestManager.sharedManager.questCoin.collectedCondition ();
 		coinCountChanged ();
 	}
 

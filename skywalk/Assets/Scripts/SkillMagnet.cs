@@ -7,20 +7,20 @@ public class SkillMagnet : Skill {
 	static List<coin_num> dropletsData = new List<coin_num> {
 		// (coins required to next level, droplets player need to get)
 		{new coin_num(21,7)},
-		{new coin_num(42,6)},
-		{new coin_num(84,5)},
-		{new coin_num(168,4)},
+		{new coin_num(48,6)},
+		{new coin_num(96,5)},
+		{new coin_num(256,4)},
 		{new coin_num(336,3)}
 	};
 
 	static List<coin_num> durationData = new List<coin_num> {
 		// (coins required to next level, duration time)
-		{new coin_num(6,6)},
-		{new coin_num(12,7)},
-		{new coin_num(24,8)},
-		{new coin_num(48,9)},
-		{new coin_num(96,10)},
-		{new coin_num(192,11)},
+		{new coin_num(16,6)},
+		{new coin_num(28,7)},
+		{new coin_num(42,8)},
+		{new coin_num(86,9)},
+		{new coin_num(126,10)},
+		{new coin_num(248,11)},
 		{new coin_num(384,12)}
 	};
 
