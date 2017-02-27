@@ -16,6 +16,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	float hasteRotateSpeed = 400f;
 
+	public GameObject explosionPrefab;
 	public GameObject leftFoot;
 	public GameObject rightFoot;
 
@@ -23,12 +24,15 @@ public class CharacterMovement : MonoBehaviour {
 	public float rayReach = 2.0f;
 	public bool inTutorial = false;
 
+	bool waveIsVisiable = false;
+
 	public delegate void playerMoved(Vector3 position);
 	public static event playerMoved OnPlayerMoved;
 
 	private Vector3 lastPosition;
 	private Quaternion lastRotation;
 
+	GameObject wave;
 
 	void Awake () {
 		GameManager.onPowerUp += onPowerUp;
@@ -44,6 +48,7 @@ public class CharacterMovement : MonoBehaviour {
 		this.rotateSpeed = LevelManager.sharedManager.currentLevel.initialRotateSpeed;
 		this.rotateSpeedChange = LevelManager.sharedManager.currentLevel.rotateSpeedChange;
 		this.maxRotateSpeed = LevelManager.sharedManager.currentLevel.maxRotateSpeed;
+		wave = Instantiate(explosionPrefab, Vector3.zero, explosionPrefab.transform.rotation);
 	}
 
 	public Vector3 getFootPosition()
@@ -88,6 +93,12 @@ public class CharacterMovement : MonoBehaviour {
 			} else {
 				keepRotating ();
 			}
+		}
+
+		if (!LeviationIsActive && waveIsVisiable) 
+		{
+			wave.transform.position = Vector3.zero;
+			waveIsVisiable = false;
 		}
 	}
 
@@ -177,6 +188,12 @@ public class CharacterMovement : MonoBehaviour {
 		{
 			rotateSpeed = rotateSpeed + rotateSpeedChange;
 		}
+
+		if (LeviationIsActive) {
+			doParticle (getFootPosition ());
+		} else {
+			
+		}
 	}
 
 	public void revive()
@@ -243,5 +260,12 @@ public class CharacterMovement : MonoBehaviour {
 		float randomDistance = UnityEngine.Random.Range(0.3f, 0.7f);
 		randomDistance = 1f + randomDistance;
 		return randomDistance;
+	}
+
+	public void doParticle(Vector3 position)
+	{
+		position.y = position.y - 0.2f;
+		wave.transform.position = position;
+		waveIsVisiable = true;
 	}
 }

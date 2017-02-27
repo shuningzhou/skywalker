@@ -36,7 +36,7 @@ public class SkillInfo
 	{
 		this.durationlevel = PlayerPrefs.GetInt(prefDurationLevelID(), 0);
 		this.dropletLevel = PlayerPrefs.GetInt(prefDropletLevelID(), 0);
-		this.isLocked = PlayerPrefs.GetInt (prefIsLockedID(), 0);
+		this.isLocked = PlayerPrefs.GetInt (prefIsLockedID(), 1);
 	}
 
 	string prefDurationLevelID()
@@ -100,6 +100,7 @@ public class Skill : MonoBehaviour {
 
 	public void Activate(GameObject myobject)
 	{
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.haste);
 		SetGameObjectFlag (myobject);
 	}
 

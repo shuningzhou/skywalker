@@ -46,9 +46,11 @@ public class QuestView : MonoBehaviour {
 
 	public void claimReward()
 	{
+		UserData.addCoinsCount (getCurrentReword());
 		quest.upgradeLevel ();
 		updateGUI ();
 		QuestManager.sharedManager.checkQuestConditions ();
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.unlock);
 	}
 
 	public void updateGUI()

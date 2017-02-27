@@ -63,10 +63,11 @@ public class SkillPanel : MonoBehaviour {
 	public void durationButtonPressed()
 	{
 		if (UserData.getCoinsCount () >= skill.durationUpgradeCost ()) {
-			skill.upgradeDuration ();
 			UserData.addCoinsCount (-skill.durationUpgradeCost ());
+			skill.upgradeDuration ();
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.unlock);
 		} else {
-			SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.uiFailed);
 		}
 
 		updateUI ();
@@ -75,10 +76,11 @@ public class SkillPanel : MonoBehaviour {
 	public void dropletButtonPressed()
 	{
 		if (UserData.getCoinsCount () >= skill.dropletUpgradeCost ()) {
-			skill.upgradeDroplets ();
 			UserData.addCoinsCount (-skill.dropletUpgradeCost ());
+			skill.upgradeDroplets ();
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.unlock);
 		} else {
-			SoundManager.Instance.PlayOneShot(SoundManager.Instance.dropped);
+			SoundManager.Instance.PlayOneShot(SoundManager.Instance.uiFailed);
 		}
 
 		updateUI ();

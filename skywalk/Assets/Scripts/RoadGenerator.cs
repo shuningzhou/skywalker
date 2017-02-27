@@ -55,7 +55,7 @@ public class RoadGenerator : MonoBehaviour {
 		maxWidth = LevelManager.sharedManager.currentLevel.startWidth;
 		minWidth = LevelManager.sharedManager.currentLevel.endWidth;
 		widthDegradeRate = LevelManager.sharedManager.currentLevel.degradeRate;
-		initalRoadSectionCount = 1;//LevelManager.sharedManager.currentLevel.length;
+		initalRoadSectionCount = 5;//LevelManager.sharedManager.currentLevel.length;
 		turnRight = LevelManager.sharedManager.currentLevel.turnRight;
 		maxRad = maxRad * LevelManager.sharedManager.currentLevel.curvature;
 

@@ -36,7 +36,7 @@ public class CollectableManager : MonoBehaviour {
 	float hasteDropRate = 0.1f;
 	float growthDropRate = 0.1f;
 	float magnetDropRate = 0.1f;
-	float levitationDropRate = 0.1f;
+	float levitationDropRate = 0.3f;
 	float coinDropRate = 0.1f;
 
 	public Skill magnetSkill;
@@ -112,6 +112,7 @@ public class CollectableManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		
 	}
 

@@ -6,7 +6,7 @@ public class Gem : Collectable {
 
 	public override void onCollision(Vector3 position)
 	{
-		SoundManager.Instance.PlayOneShot(SoundManager.Instance.collected);
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.gemCollected);
 		GameManager.sharedManager.collectedGem ();
 	}
 }

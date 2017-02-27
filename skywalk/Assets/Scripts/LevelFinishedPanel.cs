@@ -195,7 +195,7 @@ public class LevelFinishedPanel : SOPanel {
 
 		if (skip == skipEffect) 
 		{
-			SoundManager.Instance.PlayOneShot (SoundManager.Instance.count);
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.rewards);
 			skip = 0;
 		} else {
 			skip++;

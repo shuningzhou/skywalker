@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour {
 		if (sharedManager == null) 
 		{
 			PlayerPrefs.DeleteAll ();
-			UserData.addCoinsCount (10000);
+			UserData.addCoinsCount (30);
 			sharedManager = this;
 
 			levelData ();
