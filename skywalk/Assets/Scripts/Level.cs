@@ -30,6 +30,11 @@ public class Level{
 	public float gemScatterness;
 	public float dropletScatterness;
 	public float coinScatterness;
+	public float hasteDropRate;
+	public float growthDropRate;
+	public float levitationDropRate;
+	public float magnetDropRate;
+	public float coinDropRate;
 
 	public Level(	int level, 
 					float startWidth, 
@@ -46,7 +51,13 @@ public class Level{
 					bool turnRight,
 					float gemScatterness, 
 					float dropletScatterness, 
-					float coinScatterness)
+					float coinScatterness,
+					float hasteDropRate,
+					float growthDropRate,
+					float levitationDropRate,
+					float magnetDropRate,
+		            float coinDropRate
+								)
 	{
 		this.level = level;
 		this.startWidth = startWidth;
@@ -64,6 +75,11 @@ public class Level{
 		this.dropletScatterness = dropletScatterness;
 		this.coinScatterness = coinScatterness;
 		this.turnRight = turnRight;
+		this.hasteDropRate = hasteDropRate;
+		this.growthDropRate = growthDropRate;
+		this.levitationDropRate = levitationDropRate;
+		this.magnetDropRate = magnetDropRate;
+		this.coinDropRate = coinDropRate;
 	}
 
 	string levelIdString()

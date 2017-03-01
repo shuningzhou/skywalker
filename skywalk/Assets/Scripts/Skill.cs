@@ -18,6 +18,7 @@ public class SkillInfo
 	public int dropletLevel;
 	public string description;
 	public int isLocked;
+	public int unlockShown;
 
 	public SkillInfo(SkillID skillID)
 	{
@@ -29,6 +30,7 @@ public class SkillInfo
 		PlayerPrefs.SetInt (prefDurationLevelID(), this.durationlevel);
 		PlayerPrefs.SetInt (prefDropletLevelID(), this.dropletLevel);
 		PlayerPrefs.SetInt (prefIsLockedID(), this.isLocked);
+		PlayerPrefs.SetInt (prefUnlockShownID(), this.unlockShown);
 		PlayerPrefs.Save();
 	}
 
@@ -37,6 +39,7 @@ public class SkillInfo
 		this.durationlevel = PlayerPrefs.GetInt(prefDurationLevelID(), 0);
 		this.dropletLevel = PlayerPrefs.GetInt(prefDropletLevelID(), 0);
 		this.isLocked = PlayerPrefs.GetInt (prefIsLockedID(), 1);
+		this.unlockShown = PlayerPrefs.GetInt (prefUnlockShownID (), 0);
 	}
 
 	string prefDurationLevelID()
@@ -54,6 +57,12 @@ public class SkillInfo
 	string prefIsLockedID()
 	{
 		string prefID = "skill-data-is-locked-" + this.skillID.ToString ();
+		return prefID;
+	}
+
+	string prefUnlockShownID()
+	{
+		string prefID = "skill-data-unlock-shown-" + this.skillID.ToString ();
 		return prefID;
 	}
 };
@@ -161,6 +170,12 @@ public class Skill : MonoBehaviour {
 	public void unlockSkill()
 	{
 		info.isLocked = 0;
+		info.save ();
+	}
+
+	public void showSkill()
+	{
+		info.unlockShown = 1;
 		info.save ();
 	}
 

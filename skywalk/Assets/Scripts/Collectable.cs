@@ -7,7 +7,7 @@ public class Collectable : MonoBehaviour {
 
 	public CharacterMovement player;
 
-	float magneticActiveRange = 6.0f;
+	float magneticActiveRange = 10.0f;
 
 	public bool rotateY = true;
 	public bool rotateX = true;

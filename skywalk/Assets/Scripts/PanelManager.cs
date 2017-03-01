@@ -10,6 +10,8 @@ public class PanelManager : MonoBehaviour {
 	public StorePanel storePanel;
 	public PotionPanel potionPanel;
 	public QuestPanel questPanel;
+	public AlertBad alertBad;
+	public AlertGood alertGood;
 
 	void Awake()
 	{
@@ -34,7 +36,17 @@ public class PanelManager : MonoBehaviour {
 		
 	}
 
+	public void showGood(string message)
+	{
+		alertGood.message.text = message;
+		alertGood.show(false);
+	}
 
+	public void showBad(string message)
+	{
+		alertBad.message.text = message;
+		alertBad.show(false);
+	}
 
 	public void showPanel(SOPanel panel)
 	{

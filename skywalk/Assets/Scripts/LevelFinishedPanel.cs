@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class LevelFinishedPanel : SOPanel {
 
@@ -15,9 +16,9 @@ public class LevelFinishedPanel : SOPanel {
 	public int currentPercentage;
 	public int currentRating;
 	public int currentReward;
-	public float percentageDelay;
-	public float rewardDelay;
-	public float ratingDealy;
+	float percentageDelay = 0.001f;
+	float rewardDelay= 0.001f;
+	float ratingDealy= 0.3f;
 	public float gemProgressMaxWidth = 0f;
 	public string scoreString;
 
@@ -29,12 +30,13 @@ public class LevelFinishedPanel : SOPanel {
 	public Text levelText;
 
 	public int skipEffect = 0;
+	public Button doubleButton;
+	public Button continueButton;
 
 	private int skip = 0;
 
 	// Use this for initialization
 	void Start () {
-		
 	}
 	
 	// Update is called once per frame
@@ -63,9 +65,37 @@ public class LevelFinishedPanel : SOPanel {
 	{
 		UserData.addCoinsCount (reward);
 		levelText.text = "Level " + level.ToString ();
+		if (level == 62) {
+			continueButton.gameObject.SetActive (false);
+		} else {
+			continueButton.gameObject.SetActive (true);
+		}
+
+		if (SCAds.rewardedVideoReady ()) {
+			doubleButton.gameObject.SetActive (true);
+		} else {
+			doubleButton.gameObject.SetActive (false);
+		}
+
 		scoreText.text = "0%";
 
 		updateBestText ();
+
+		if (LevelManager.sharedManager.currentLevel.level == 5) {
+			GameGUI.Instance.levitationSkillStatus.skill.unlockSkill ();
+		}
+
+		if (LevelManager.sharedManager.currentLevel.level == 2) {
+			GameGUI.Instance.magnetSkillStatus.skill.unlockSkill ();
+		}
+
+		if (LevelManager.sharedManager.currentLevel.level == 14) {
+			GameGUI.Instance.growthSkillStatus.skill.unlockSkill ();
+		}
+
+		if (LevelManager.sharedManager.currentLevel.level == 39) {
+			GameGUI.Instance.hastSkillStatus.skill.unlockSkill ();
+		}
 
 		excuateInSeconds(animateRating, 1.1f);
 	}
@@ -138,7 +168,13 @@ public class LevelFinishedPanel : SOPanel {
 		
 	void updatePercentageProgressImage()
 	{
-		currentPercentage = currentPercentage + 1;
+		int increment = 3;
+
+		if (percentageScore - currentPercentage < increment) {
+			increment = 1;
+		}
+
+		currentPercentage = currentPercentage + increment;
 
 		scoreText.text = currentPercentage.ToString () + "%";
 
@@ -187,7 +223,13 @@ public class LevelFinishedPanel : SOPanel {
 
 	void updateReward()
 	{
-		currentReward = currentReward + 1;
+		int increment = 3;
+
+		if (percentageScore - currentPercentage < increment) {
+			increment = 1;
+		}
+
+		currentReward = currentReward + increment;
 
 		rewardText.text = currentReward.ToString ();
 
@@ -232,5 +274,31 @@ public class LevelFinishedPanel : SOPanel {
 	public void doContinued()
 	{
 		LevelManager.sharedManager.playNextLevel ();
+	}
+
+	public void HandleShowResult(ShowResult result)
+	{
+		switch (result)
+		{
+		case ShowResult.Finished:
+			Debug.Log ("The ad was successfully shown.");
+			UserData.addCoinsCount (reward);
+			reward = reward * 2;
+			animateReward ();
+			break;
+		case ShowResult.Skipped:
+			Debug.Log ("The ad was skipped before reaching the end.");
+			break;
+		case ShowResult.Failed:
+			Debug.LogError("The ad failed to be shown.");
+			break;
+		}
+	}
+
+	public void doDoubleReward()
+	{
+		doubleButton.gameObject.SetActive (false);
+		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
+		SCAds.showDoubleReward (this);
 	}
 }

@@ -140,25 +140,25 @@ public class GameGUI : MonoBehaviour {
 		{
 			tutorialPanel.show(false);
 		} 
-		else if (LevelManager.sharedManager.currentLevel.level == 3 && magnet.info.isLocked == 1 )
+		else if (LevelManager.sharedManager.currentLevel.level == 3 && magnet.info.unlockShown == 0 )
 		{
 			unlockMagnetPanel.show (false);
-			magnetSkillStatus.skill.unlockSkill ();
+			magnet.showSkill ();
 		}
-		else if (LevelManager.sharedManager.currentLevel.level == 6 && levitation.info.isLocked == 1 )
+		else if (LevelManager.sharedManager.currentLevel.level == 6 && levitation.info.unlockShown == 0 )
 		{
 			unlockLevitationPanel.show (false);
-			levitationSkillStatus.skill.unlockSkill ();
+			levitation.showSkill ();
 		}
-		else if (LevelManager.sharedManager.currentLevel.level == 9 && growth.info.isLocked == 1 )
+		else if (LevelManager.sharedManager.currentLevel.level == 15 && growth.info.unlockShown == 0 )
 		{
 			unlockGrowthPanel.show (false);
-			growthSkillStatus.skill.unlockSkill ();
+			growth.showSkill ();
 		}
-		else if (LevelManager.sharedManager.currentLevel.level == 12 && haste.info.isLocked == 1 )
+		else if (LevelManager.sharedManager.currentLevel.level == 40 && haste.info.unlockShown == 0 )
 		{
 			unlockHastePanel.show (false);
-			hastSkillStatus.skill.unlockSkill ();
+			haste.showSkill ();
 		}
 		else
 		{

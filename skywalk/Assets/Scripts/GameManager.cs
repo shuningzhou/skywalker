@@ -132,14 +132,16 @@ public class GameManager : MonoBehaviour {
 
 		bool adsReady = SCAds.rewardedVideoReady();
 		bool hasEnoughCoins = UserData.getCoinsCount () >= 5;
-
-		if (alreadyRevived || ((!adsReady) && (!hasEnoughCoins)))
+		CharacterMovement cm = FindObjectOfType<CharacterMovement> ();
+		bool canRevive = cm.canRevive ();
+			
+		if (alreadyRevived || ((!adsReady) && (!hasEnoughCoins))||(!canRevive))
 		{
-			excuateInSeconds (enterGameOverMode, 1.5f);
+			excuateInSeconds (enterGameOverMode, 0.5f);
 		}
 		else 
 		{
-			excuateInSeconds (enterReviveMode, 1.5f);
+			excuateInSeconds (enterReviveMode, 0.5f);
 			alreadyRevived = true;
 		}
 	}

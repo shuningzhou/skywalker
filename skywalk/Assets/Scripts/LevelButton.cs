@@ -59,6 +59,12 @@ public class LevelButton : MonoBehaviour {
 
 	public void pressed()
 	{
+		int userProgressLevel = Level.getUerProgressLevel ();
+		if (userProgressLevel < levelIndex) 
+		{
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.uiFailed);
+			//return;
+		} 
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		LevelManager.sharedManager.setCurrentLevel (this.level);
 		LevelManager.sharedManager.playCurrentLevel ();

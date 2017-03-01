@@ -196,6 +196,22 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 
+	public bool canRevive()
+	{
+		RaycastHit movingHit;
+		Vector3 lastP = lastPosition;
+		lastP.y = 70.7f;
+		Debug.DrawRay (lastP, Vector3.down, Color.red);
+
+		if ((Physics.Raycast (lastP, Vector3.down, out movingHit, rayReach) && (movingHit.transform.tag == "road")))
+		{
+			return true;
+		} 
+		else {
+			return false;
+		}
+	}
+
 	public void revive()
 	{
 		Rigidbody body = GetComponent<Rigidbody> ();

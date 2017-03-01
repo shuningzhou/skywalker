@@ -23,15 +23,10 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	public static string kProductIDNonConsumable = "nonconsumable";
 	public static string kProductIDSubscription =  "subscription"; 
 
-	public string stackOfTokenID = "pivota.tokens";
-	public string chestOfTokenID = "pivota.chestoftokens";
-
-
-	// Apple App Store-specific product identifier for the subscription product.
-	private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
-
-	// Google Play Store-specific product identifier subscription product.
-	private static string kProductNameGooglePlaySubscription =  "com.unity3d.subscription.original"; 
+	string stackOfTokenID = "pivota.tokens";
+	string chestOfTokenID = "pivota.chestoftokens";
+	string twoHundredsTokenID = "pivota.token";
+	string bagOfTokenID = "pivota.bagoftokens";
 
 	void Start()
 	{
@@ -55,23 +50,11 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		// Create a builder, first passing in a suite of Unity provided stores.
 		var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-		// Add a product to sell / restore by way of its identifier, associating the general identifier
-		// with its store-specific identifiers.
-		builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
 
+		builder.AddProduct(twoHundredsTokenID, ProductType.Consumable);
 		builder.AddProduct(stackOfTokenID, ProductType.Consumable);
+		builder.AddProduct(bagOfTokenID, ProductType.Consumable);
 		builder.AddProduct(chestOfTokenID, ProductType.Consumable);
-
-		// Continue adding the non-consumable product.
-		builder.AddProduct(kProductIDNonConsumable, ProductType.NonConsumable);
-		// And finish adding the subscription product. Notice this uses store-specific IDs, illustrating
-		// if the Product ID was configured differently between Apple and Google stores. Also note that
-		// one uses the general kProductIDSubscription handle inside the game - the store-specific IDs 
-		// must only be referenced here. 
-		builder.AddProduct(kProductIDSubscription, ProductType.Subscription, new IDs(){
-			{ kProductNameAppleSubscription, AppleAppStore.Name },
-			{ kProductNameGooglePlaySubscription, GooglePlay.Name },
-		});
 
 		// Kick off the remainder of the set-up with an asynchrounous call, passing the configuration 
 		// and this class' instance. Expect a response either in OnInitialized or OnInitializeFailed.
@@ -83,14 +66,6 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	{
 		// Only say we are initialized if both the Purchasing references are set.
 		return m_StoreController != null && m_StoreExtensionProvider != null;
-	}
-
-
-	public void BuyConsumable()
-	{
-		// Buy the consumable product using its general identifier. Expect a response either 
-		// through ProcessPurchase or OnPurchaseFailed asynchronously.
-		BuyProductID(kProductIDConsumable);
 	}
 
 	public void BuyChestOfTokens()
@@ -117,24 +92,29 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		return m_StoreController.products.WithID (stackOfTokenID).metadata.localizedPriceString;
 	}
 
-
-	public void BuyNonConsumable()
+	public void BuyTwoHundredsToken()
 	{
-		// Buy the non-consumable product using its general identifier. Expect a response either 
+		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
-		BuyProductID(kProductIDNonConsumable);
+		BuyProductID(twoHundredsTokenID);
 	}
 
-
-	public void BuySubscription()
+	public string getPriceForTwoHundredsToken()
 	{
-		// Buy the subscription product using its the general identifier. Expect a response either 
-		// through ProcessPurchase or OnPurchaseFailed asynchronously.
-		// Notice how we use the general product identifier in spite of this ID being mapped to
-		// custom store-specific identifiers above.
-		BuyProductID(kProductIDSubscription);
+		return m_StoreController.products.WithID (twoHundredsTokenID).metadata.localizedPriceString;
 	}
 
+	public void BuyBagOfTokens()
+	{
+		// Buy the consumable product using its general identifier. Expect a response either 
+		// through ProcessPurchase or OnPurchaseFailed asynchronously.
+		BuyProductID(bagOfTokenID);
+	}
+
+	public string getPriceForBagOfTokens()
+	{
+		return m_StoreController.products.WithID (bagOfTokenID).metadata.localizedPriceString;
+	}
 
 	void BuyProductID(string productId)
 	{
@@ -233,45 +213,36 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
 	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 	{
+
 		// A consumable product has been purchased by this user.
-		if (String.Equals(args.purchasedProduct.definition.id, stackOfTokenID, StringComparison.Ordinal))
-		{
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			GameGUI.Instance.showAlert ("Thank you for purchasing Stack of Tokens!");
-			UserData.addCoinsCount (1000);
-			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
+		if (String.Equals (args.purchasedProduct.definition.id, stackOfTokenID, StringComparison.Ordinal)) {
+			Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			PanelManager.sharedManager.showGood ("Thank you for purchasing!");
+			UserData.addCoinsCount (840);
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.purchased);
 			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
-		}
-		else if (String.Equals(args.purchasedProduct.definition.id, chestOfTokenID, StringComparison.Ordinal))
-		{
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			GameGUI.Instance.showAlert ("Thank you for purchasing Chest of Tokens!");
-			UserData.addCoinsCount (6000);
-			SoundManager.Instance.PlayOneShot(SoundManager.Instance.purchased);
+		} else if (String.Equals (args.purchasedProduct.definition.id, chestOfTokenID, StringComparison.Ordinal)) {
+			Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			PanelManager.sharedManager.showGood ("Thank you for purchasing!");
+			UserData.addCoinsCount (5200);
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.purchased);
 			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
-		}
-		else if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
-		{
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
-		}
-		// Or ... a non-consumable product has been purchased by this user.
-		else if (String.Equals(args.purchasedProduct.definition.id, kProductIDNonConsumable, StringComparison.Ordinal))
-		{
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
-		}
-		// Or ... a subscription product has been purchased by this user.
-		else if (String.Equals(args.purchasedProduct.definition.id, kProductIDSubscription, StringComparison.Ordinal))
-		{
-			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			// TODO: The subscription item has been successfully purchased, grant this to the player.
+		} else if (String.Equals (args.purchasedProduct.definition.id, twoHundredsTokenID, StringComparison.Ordinal)) {
+			Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			PanelManager.sharedManager.showGood ("Thank you for purchasing!");
+			UserData.addCoinsCount (400);
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.purchased);
+		}else if (String.Equals (args.purchasedProduct.definition.id, bagOfTokenID, StringComparison.Ordinal)) {
+			Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+			PanelManager.sharedManager.showGood ("Thank you for purchasing!");
+			UserData.addCoinsCount (2512);
+			SoundManager.Instance.PlayOneShot (SoundManager.Instance.purchased);
 		}
 		// Or ... an unknown product has been purchased by this user. Fill in additional products here....
 		else 
 		{
 			Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
-			GameGUI.Instance.showAlert ("Unable to purchase the item, Unrecognized product.");
+			PanelManager.sharedManager.showBad ("Unable to purchase the item, Unrecognized product.");
 		}
 
 		// Return a flag indicating whether this product has completely been received, or if the application needs 
@@ -287,20 +258,21 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		// this reason with the user to guide their troubleshooting actions.
 		Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
 		if (failureReason == PurchaseFailureReason.PaymentDeclined) {
-			GameGUI.Instance.showAlert ("There was a problem with the payment. Please try again.");
+
+			PanelManager.sharedManager.showBad ("There was a problem with the payment. Please try again.");
 		}
 		else if (failureReason == PurchaseFailureReason.ExistingPurchasePending) {
-			GameGUI.Instance.showAlert ("A purchase was already in progress when a new purchase was requested. Please wait.");
+			PanelManager.sharedManager.showBad ("A purchase was already in progress when a new purchase was requested. Please wait.");
 		}
 		else if (failureReason == PurchaseFailureReason.ProductUnavailable) {
-			GameGUI.Instance.showAlert ("The product is not available to purchase on the store.");
+			PanelManager.sharedManager.showBad ("The product is not available to purchase on the store.");
 		}
 		else if (failureReason == PurchaseFailureReason.PurchasingUnavailable) {
-			GameGUI.Instance.showAlert ("The system purchasing feature is unavailable.");
+			PanelManager.sharedManager.showBad ("The system purchasing feature is unavailable.");
 		}
 		else
 		{
-			GameGUI.Instance.showAlert ("There was a problem with the payment. Please try again.");
+			PanelManager.sharedManager.showBad ("There was a problem with the payment. Please try again.");
 		}
 	}
 }

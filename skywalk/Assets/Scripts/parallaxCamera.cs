@@ -6,11 +6,15 @@ using UnityEngine.UI;
 public class parallaxCamera : MonoBehaviour {
 
 	public float parallaxSpeed = 10f;
+	public ScrollRect scrollRect;
 
 	Vector3 initialPosition;
 	// Use this for initialization
+
 	void Start () {
 		initialPosition = transform.position;
+		scrollRect.horizontalNormalizedPosition = PlayerPrefs.GetFloat ("level-scroll");
+		scrolled (scrollRect);
 	}
 	
 	// Update is called once per frame
@@ -26,5 +30,8 @@ public class parallaxCamera : MonoBehaviour {
 		nextPosition.x = nextX;
 
 		transform.position = nextPosition;
+
+		PlayerPrefs.SetFloat ("level-scroll", scrollPosition);
+		PlayerPrefs.Save ();
 	}
 }

@@ -36,4 +36,13 @@ public class SCAds : MonoBehaviour {
 			Advertisement.Show("rewardedVideo", options);
 		}
 	}
+
+	public static void showDoubleReward(LevelFinishedPanel panel)
+	{
+		if (Advertisement.IsReady("rewardedVideo"))
+		{
+			var options = new ShowOptions { resultCallback = panel.HandleShowResult };
+			Advertisement.Show("rewardedVideo", options);
+		}
+	}
 }

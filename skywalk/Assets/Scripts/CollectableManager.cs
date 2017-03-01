@@ -16,7 +16,7 @@ public class CollectableManager : MonoBehaviour {
 
 	public CharacterMovement player;
 
-	private float collectableDistance;
+	private float collectableDistance = 0;
 
 	public float collectableSpace = 3;
 	public float floatDistance = 1.5f;
@@ -26,85 +26,12 @@ public class CollectableManager : MonoBehaviour {
 	public float collectableX = 0;
 	public float collectableZ = 0;
 
-	private List<GameObject> gems = new List<GameObject> ();
-	private List<GameObject> coins = new List<GameObject> ();
-	private List<GameObject> hastes = new List<GameObject> ();
-	private List<GameObject> growths = new List<GameObject> ();
-	private List<GameObject> magnets = new List<GameObject> ();
-	private List<GameObject> levitations = new List<GameObject> ();
-
-	float hasteDropRate = 0.1f;
-	float growthDropRate = 0.1f;
-	float magnetDropRate = 0.1f;
-	float levitationDropRate = 0.3f;
-	float coinDropRate = 0.1f;
-
 	public Skill magnetSkill;
 	public Skill levitationSkill;
 	public Skill growthSkill;
 	public Skill hasteSkill;
 
-	void Awake()
-	{
-		collectableDistance = 0;
-
-		Vector3 startPosition = new Vector3 (0, -50, 0);
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (gem, startPosition, Quaternion.identity);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			gems.Add(c);
-		}
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (coin, startPosition, coin.transform.rotation);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			coins.Add(c);
-		}
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (haste, startPosition, coin.transform.rotation);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			hastes.Add(c);
-		}
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (growth, startPosition, coin.transform.rotation);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			growths.Add(c);
-		}
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (magnet, startPosition, coin.transform.rotation);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			magnets.Add(c);
-		}
-
-		for (int i = 0; i < poolSize; i++)
-		{
-			GameObject c = Instantiate (levitation, startPosition, coin.transform.rotation);
-			Collectable collectable = c.GetComponent<Collectable> ();
-			collectable.player = player;
-			c.SetActive(false);
-			levitations.Add(c);
-		}
-	}
-
+	public float scatternessSeed = 5f;
 	// Use this for initialization
 	void Start () {
 
@@ -116,6 +43,21 @@ public class CollectableManager : MonoBehaviour {
 		
 	}
 
+	float gemScatterness()
+	{
+		return 3f * LevelManager.sharedManager.currentLevel.gemScatterness;
+	}
+
+	float coinScatterness()
+	{
+		return 3f * LevelManager.sharedManager.currentLevel.coinScatterness;
+	}
+
+	float dropletScatterness()
+	{
+		return 3f * LevelManager.sharedManager.currentLevel.dropletScatterness;
+	}
+		
 	public void moved(float step, Vector3 position, float width)
 	{
 		collectableDistance = collectableDistance + (step);
@@ -128,14 +70,14 @@ public class CollectableManager : MonoBehaviour {
 			createCollectableAt (collectablePosition);
 			collectableDistance = 0;
 			collectableRowCount = collectableRowCount - 1;
-			collectableSpace = 2;
+			collectableSpace = 1;
 
 			GameManager.sharedManager.totalGemThisRound = GameManager.sharedManager.totalGemThisRound + 1;
 
 			if (collectableRowCount <= 0) 
 			{
-				collectableX = Random.Range (0, 3f+w);
-				collectableZ = Random.Range (0, 3f+w);
+				collectableX = gemScatterness() * Random.Range ((-scatternessSeed)-w, gemScatterness()+w);
+				collectableZ = gemScatterness() * Random.Range ((-scatternessSeed)-w, gemScatterness()+w);
 				collectableRowCount = Random.Range (1, 10);
 				collectableSpace = 3;
 			}
@@ -143,8 +85,8 @@ public class CollectableManager : MonoBehaviour {
 
 		if (shouldCreateCoin ()) 
 		{
-			float randX = Random.Range (-3f-w, 3f+w);
-			float randZ = Random.Range (-3f-w, 3f+w);
+			float randX = coinScatterness() * Random.Range ((-scatternessSeed)-w, coinScatterness()+w);
+			float randZ = coinScatterness() * Random.Range ((-scatternessSeed)-w, coinScatterness()+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createCoinAt (collectablePosition);
@@ -152,8 +94,8 @@ public class CollectableManager : MonoBehaviour {
 
 		if (shouldCreateHaste ())
 		{
-			float randX = Random.Range (-3f-w, 3f+w);
-			float randZ = Random.Range (-3f-w, 3f+w);
+			float randX = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
+			float randZ = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createHasteAt (collectablePosition);
@@ -161,8 +103,8 @@ public class CollectableManager : MonoBehaviour {
 
 		if (shouldCreateGrowth ())
 		{
-			float randX = Random.Range (-3f-w, 3f+w);
-			float randZ = Random.Range (-3f-w, 3f+w);
+			float randX = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
+			float randZ = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createGrowthAt (collectablePosition);
@@ -170,8 +112,8 @@ public class CollectableManager : MonoBehaviour {
 
 		if (shouldCreateMagnet ())
 		{
-			float randX = Random.Range (-3f-w, 3f+w);
-			float randZ = Random.Range (-3f-w, 3f+w);
+			float randX = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
+			float randZ = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createMagnetAt (collectablePosition);
@@ -179,8 +121,8 @@ public class CollectableManager : MonoBehaviour {
 
 		if (shouldCreateLevitation ())
 		{
-			float randX = Random.Range (-3f-w, 3f+w);
-			float randZ = Random.Range (-3f-w, 3f+w);
+			float randX = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
+			float randZ = dropletScatterness() * Random.Range ((-scatternessSeed)-w, dropletScatterness()+w);
 
 			Vector3 collectablePosition = new Vector3 (position.x + randX, position.y + floatDistance, position.z + randZ);
 			createLevitationAt (collectablePosition);
@@ -189,13 +131,14 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateHaste ()
 	{
-		if (hasteSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 12) {
+		if (hasteSkill.info.isLocked == 1)
+		{
 			return false;
 		}
 
 		float r = Random.Range (0f, 1f);
 
-		if (r < hasteDropRate)
+		if (r < LevelManager.sharedManager.currentLevel.hasteDropRate)
 		{
 			return true;
 		} else {
@@ -205,13 +148,14 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateGrowth ()
 	{
-		if (growthSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 9) {
+		if (growthSkill.info.isLocked == 1)
+		{
 			return false;
 		}
 
 		float r = Random.Range (0f, 1f);
 
-		if (r < growthDropRate)
+		if (r < LevelManager.sharedManager.currentLevel.growthDropRate)
 		{
 			return true;
 		} else {
@@ -221,13 +165,14 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateMagnet ()
 	{
-		if (magnetSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 3) {
+		if (magnetSkill.info.isLocked == 1)
+		{
 			return false;
 		}
 
 		float r = Random.Range (0f, 1f);
 
-		if (r < magnetDropRate)
+		if (r < LevelManager.sharedManager.currentLevel.magnetDropRate)
 		{
 			return true;
 		} else {
@@ -237,13 +182,14 @@ public class CollectableManager : MonoBehaviour {
 
 	public bool shouldCreateLevitation ()
 	{
-		if (levitationSkill.info.isLocked == 1 && LevelManager.sharedManager.currentLevel.level < 6) {
+		if (levitationSkill.info.isLocked == 1)
+		{
 			return false;
 		}
 
 		float r = Random.Range (0f, 1f);
 
-		if (r < levitationDropRate)
+		if (r < LevelManager.sharedManager.currentLevel.levitationDropRate)
 		{
 			return true;
 		} else {
@@ -261,7 +207,7 @@ public class CollectableManager : MonoBehaviour {
 	{
 		float r = Random.Range (0f, 1f);
 
-		if (r < coinDropRate)
+		if (r < LevelManager.sharedManager.currentLevel.coinDropRate)
 		{
 			return true;
 		} else {
@@ -280,92 +226,43 @@ public class CollectableManager : MonoBehaviour {
 
 	public void createCollectableAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = gems [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-
-		}
+		GameObject c = Instantiate (gem, position, Quaternion.identity);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 
 	public void createCoinAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = coins [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-		}
+		GameObject c = Instantiate (coin, position, coin.transform.rotation);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 
 	public void createHasteAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = hastes [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-		}
+		GameObject c = Instantiate (haste, position, coin.transform.rotation);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 
 	public void createGrowthAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = growths [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-		}
+		GameObject c = Instantiate (growth, position, coin.transform.rotation);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 
 	public void createMagnetAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = magnets [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-		}
+		GameObject c = Instantiate (magnet, position, coin.transform.rotation);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 
 	public void createLevitationAt(Vector3 position)
 	{
-		for (int i = 0; i < poolSize; i++) 
-		{
-			GameObject c = levitations [i];
-
-			if (c.activeSelf == false) 
-			{
-				c.SetActive(true);
-				c.transform.position = position;
-				break;
-			}
-		}
+		GameObject c = Instantiate (levitation, position, coin.transform.rotation);
+		Collectable collectable = c.GetComponent<Collectable> ();
+		collectable.player = player;
 	}
 }
