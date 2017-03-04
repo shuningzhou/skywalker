@@ -11,7 +11,7 @@ public class UserData : MonoBehaviour {
 	public static string PREF_DATE = "date";
 	public static string PREF_TUTORIAL_DONE = "tutorial_done";
 	public static string PREF_USER_NAME = "user_name";
-
+	public static string PREF_FIRST_LAUNCH = "first_launch";
 
 	public delegate void CoinChange();
 	public static event CoinChange CoinChanged;
@@ -34,6 +34,11 @@ public class UserData : MonoBehaviour {
 	public static string getUserName()
 	{
 		return PlayerPrefs.GetString(PREF_USER_NAME, "");
+	}
+
+	public static int getFirstLaunch()
+	{
+		return PlayerPrefs.GetInt(PREF_FIRST_LAUNCH, 0);
 	}
 
 	public static int getCoinsCount()
@@ -73,6 +78,12 @@ public class UserData : MonoBehaviour {
 	public static void saveCoinsCount(int value)
 	{
 		PlayerPrefs.SetInt (PREF_COIN_COLLECTED, value);
+		PlayerPrefs.Save();
+	}
+
+	public static void saveFirstLaunch(int value)
+	{
+		PlayerPrefs.SetInt (PREF_FIRST_LAUNCH, value);
 		PlayerPrefs.Save();
 	}
 

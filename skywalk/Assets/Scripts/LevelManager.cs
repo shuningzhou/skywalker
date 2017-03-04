@@ -13,8 +13,13 @@ public class LevelManager : MonoBehaviour {
 	{
 		if (sharedManager == null) 
 		{
-			PlayerPrefs.DeleteAll ();
-			UserData.addCoinsCount (30);
+			int firstLaunch = UserData.getFirstLaunch ();
+
+			if (firstLaunch == 0) {
+				UserData.addCoinsCount (30);
+				UserData.saveFirstLaunch (1);
+			}
+
 			sharedManager = this;
 			Application.targetFrameRate = 60;
 			levelData ();
@@ -99,12 +104,12 @@ public class LevelManager : MonoBehaviour {
 	{
 		float dropDelaySeed = 0.9f;
 		//                       level sWidth eWidth dRate len   iRS   sc  maxRS  gap    curv cam    dropDelay                     turn   gem   drop      coin   haste    growth    levitation,       mag,     coinDrop
-		Level level1 =   new Level (1,   6f,    5.5f,  1f,  6,   150f, 5f,  250f, 0,     0.7f, 0,    1f,                           true,  0.0f,   0,      0,     0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
-		Level level2 =   new Level (2,   6f,    4.5f,  1f,  7,   150f, 5f,  250f, 0,     0.7f, 0,    Mathf.Pow(dropDelaySeed, 1),  true,  0.1f,   0,      0,     0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
+		Level level1 =   new Level (1,   6f,    5.5f,  1f,  6,   150f, 5f,  250f, 0,     0.7f, 0,    1f,                           true,  0.0f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
+		Level level2 =   new Level (2,   6f,    4.5f,  1f,  7,   150f, 5f,  250f, 0,     0.7f, 0,    Mathf.Pow(dropDelaySeed, 1),  true,  0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 		Level level3 =   new Level (3,   5.5f,  4f,    1f,  8,   150f, 5f,  250f, 0,     0.7f, 0,    Mathf.Pow(dropDelaySeed, 2),  false, 0.3f,   0.1f,   0.3f,  0,        0,         0,              0.2f,      0.01f);
 		Level level4 =   new Level (4,   5.5f,  4f,    1f,  8,   150f, 5f,  250f, 0,     0.7f, 0.4f, Mathf.Pow(dropDelaySeed, 3),  true,  0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 		Level level5 =   new Level (5,   5f,    4f,    1f,  8,   150f, 5f,  250f, 0,     0.7f, 0.5f, Mathf.Pow(dropDelaySeed, 4),  false, 0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
-		Level level6 =   new Level (6,   2.5f,  1f,    3f,  8,   150f, 5f,  250f, 0,     0.7f, 0.6f, Mathf.Pow(dropDelaySeed, 5),  true,  0f,   0.0f,   0.0f,  0,        0,         0.3f,          0f,        0.01f);
+		Level level6 =   new Level (6,   2.5f,  1f,    3f,  8,   150f, 5f,  250f, 0,     0.7f, 0.6f, Mathf.Pow(dropDelaySeed, 5),  true,  0.1f,   0.0f,   0.1f,  0,        0,         0.3f,           0f,        0.01f);
 		Level level7 =   new Level (7,   5f,    4f,    1f,  8,   150f, 5f,  250f, 0,     0.7f, 0.7f, Mathf.Pow(dropDelaySeed, 6),  false, 0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 		Level level8 =   new Level (8,   4.5f,  3.5f,  1f,  9,   150f, 5f,  250f, 0,     0.7f, 0.8f, Mathf.Pow(dropDelaySeed, 7),  true,  0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 		Level level9 =   new Level (9,   4.4f,  3.5f,  1f,  9,   150f, 5f,  250f, 0,     0.7f, 0.9f, Mathf.Pow(dropDelaySeed, 8),  false, 0.1f,   0.1f,   0.1f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
@@ -145,14 +150,14 @@ public class LevelManager : MonoBehaviour {
 
 		Level level41 =  new Level (41,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.2f,  1.0f, 4.0f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 		Level level42 =  new Level (42,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.2f,  1.0f, 4.0f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
-		Level level43 =  new Level (43,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.2f,  1.1f,   4.0f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
-		Level level44 =  new Level (44,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.3f,  1.1f,   4.0f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
-		Level level45 =  new Level (45,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.0f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
-		Level level46 =  new Level (46,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.0f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
-		Level level47 =  new Level (47,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.5f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
-		Level level48 =  new Level (48,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.5f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
-		Level level49 =  new Level (49,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.5f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
-		Level level50 =  new Level (50,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f,   4.5f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.35f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
+		Level level43 =  new Level (43,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.2f,  1.1f, 4.0f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
+		Level level44 =  new Level (44,  2.8f,  2.5f,  1f,  16,  200f, 15f, 290f, 0.3f,  1.1f, 4.0f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
+		Level level45 =  new Level (45,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.0f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
+		Level level46 =  new Level (46,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.0f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
+		Level level47 =  new Level (47,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.5f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
+		Level level48 =  new Level (48,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.5f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
+		Level level49 =  new Level (49,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.5f, Mathf.Pow(dropDelaySeed, 16), true,  0.3f,  0.1f,   0.30f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
+		Level level50 =  new Level (50,  2.8f,  2.5f,  1f,  16,  200f, 15f, 300f, 0.3f,  1.1f, 4.5f, Mathf.Pow(dropDelaySeed, 16), false, 0.3f,  0.1f,   0.35f,  0.05f,    0.05f,     0.05f,          0.05f,     0.01f);
 
 		Level level51 =  new Level (51,  2.8f,  2.5f,  2f,  17,  200f, 15f, 300f, 0.4f,  1.2f, 5.0f, Mathf.Pow(dropDelaySeed, 17), true,  0.35f,  0.1f,   0.35f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);
 		Level level52 =  new Level (52,  2.8f,  2.5f,  2f,  17,  200f, 15f, 300f, 0.4f,  1.2f, 5.0f, Mathf.Pow(dropDelaySeed, 17), true,  0.35f,  0.1f,   0.35f,  0.05f,    0.05f,     0.05f,          0.05f,     0.02f);

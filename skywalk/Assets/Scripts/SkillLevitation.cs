@@ -6,22 +6,22 @@ public class SkillLevitation : Skill {
 
 	static List<coin_num> dropletsData = new List<coin_num> {
 		// (coins required to next level, droplets player need to get)
-		{new coin_num(21,7)},
-		{new coin_num(48,6)},
-		{new coin_num(96,5)},
-		{new coin_num(256,4)},
-		{new coin_num(336,3)}
+		{new coin_num(32,7)},
+		{new coin_num(84,6)},
+		{new coin_num(228,5)},
+		{new coin_num(446,4)},
+		{new coin_num(436,3)}
 	};
 
 	static List<coin_num> durationData = new List<coin_num> {
 		// (coins required to next level, duration time)
-		{new coin_num(16,6)},
-		{new coin_num(28,7)},
-		{new coin_num(42,8)},
-		{new coin_num(86,9)},
-		{new coin_num(126,10)},
-		{new coin_num(248,11)},
-		{new coin_num(384,12)}
+		{new coin_num(26,6)},
+		{new coin_num(42,7)},
+		{new coin_num(88,8)},
+		{new coin_num(126,9)},
+		{new coin_num(186,10)},
+		{new coin_num(308,11)},
+		{new coin_num(484,12)}
 	};
 
 	void Awake()

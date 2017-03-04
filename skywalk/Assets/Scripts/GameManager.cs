@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour {
 	public void collectedCoin ()
 	{
 		coinsCollectedThisRound = coinsCollectedThisRound + 1;
+		UserData.addCoinsCount (1);
 		QuestManager.sharedManager.questCoin.collectedCondition ();
 		coinCountChanged ();
 	}

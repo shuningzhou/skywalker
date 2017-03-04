@@ -5,19 +5,19 @@ using UnityEngine;
 public class QuestOneShot : Quest {
 	
 	static List<int> rewardsData = new List<int> {
-		10,
-		20,
 		40,
-		80,
-		100
+		60,
+		90,
+		140,
+		180
 	};
 
 	static List<int> conditionData = new List<int> {
 		5,
-		8,
-		12,
+		10,
 		15,
-		20
+		20,
+		25
 	};
 
 	void Awake()
