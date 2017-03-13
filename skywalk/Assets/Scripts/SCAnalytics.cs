@@ -20,18 +20,37 @@ public class SCAnalytics : MonoBehaviour {
 		
 	}
 
-	public static void logGameOverEvent(float distance, int collected)
+	public static void logGameFinishedEvent(float score, int level, bool failed)
 	{
-		Analytics.CustomEvent("GameOver", new Dictionary<string, object>
+		if (failed) {
+			Analytics.CustomEvent("Player Failed", new Dictionary<string, object>
+				{
+					{ "Score", score.ToString("0.00") },
+					{ "Level", level.ToString() }
+				});
+		} else {
+			Analytics.CustomEvent("Player Won", new Dictionary<string, object>
+				{
+					{ "Score", score.ToString("0.00") },
+					{ "Level", level.ToString() }
+				});
+		}
+	}
+
+	public static void logDyeEvent(int level, string type, string kind)
+	{
+		Analytics.CustomEvent("Dye upgrade", new Dictionary<string, object>
 			{
-				{ "Distance", distance.ToString("0.0") },
-				{ "Collected", collected.ToString() }
+				{ "Type", type },
+				{ "Level", level.ToString() },
+				{ "kind", kind}
 			});
 	}
 
-	public static void logTransaction()
+
+	public static void logChestTransaction()
 	{
-		Analytics.Transaction("12345abcde", 0.99m, "USD", null, null);
+		Analytics.Transaction("chest", 10.0m, "USD", null, null);
 	}
 
 	public static void logUserAttributes()

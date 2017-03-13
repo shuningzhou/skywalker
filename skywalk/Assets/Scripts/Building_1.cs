@@ -26,7 +26,7 @@ public class Building_1 : MonoBehaviour {
 			distance = Mathf.Sqrt (Mathf.Pow (newPosition.x - transform.position.x, 2f) - Mathf.Pow (newPosition.z - transform.position.z, 2f));
 
 			if (distance >= (tileScript.initTileSize / 2)) {
-				Debug.Log ("Building_1 is destroyed because it is too far away from player");
+				//Debug.Log ("Building_1 is destroyed because it is too far away from player");
 				Destroy (gameObject);
 			}
 		}
@@ -34,7 +34,7 @@ public class Building_1 : MonoBehaviour {
 
 	public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log ("building_1 is overlapping");
+		//Debug.Log ("building_1 is overlapping");
 		isOverlap = true;
 	}
 }

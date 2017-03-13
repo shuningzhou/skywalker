@@ -66,6 +66,7 @@ public class SkillPanel : MonoBehaviour {
 			UserData.addCoinsCount (-skill.durationUpgradeCost ());
 			skill.upgradeDuration ();
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.unlock);
+			SCAnalytics.logDyeEvent (skill.info.durationlevel, skill.skillID.ToString (), "duration");
 		} else {
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.uiFailed);
 		}
@@ -79,6 +80,7 @@ public class SkillPanel : MonoBehaviour {
 			UserData.addCoinsCount (-skill.dropletUpgradeCost ());
 			skill.upgradeDroplets ();
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.unlock);
+			SCAnalytics.logDyeEvent (skill.info.dropletLevel, skill.skillID.ToString (), "droplet");
 		} else {
 			SoundManager.Instance.PlayOneShot(SoundManager.Instance.uiFailed);
 		}

@@ -28,7 +28,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	string twoHundredsTokenID = "pivota.token";
 	string bagOfTokenID = "pivota.bagoftokens";
 
-	void Start()
+	void Awake()
 	{
 		// If we haven't set up the Unity Purchasing reference
 		if (m_StoreController == null)
@@ -36,6 +36,10 @@ public class Purchaser : MonoBehaviour, IStoreListener
 			// Begin to configure our connection to Purchasing
 			InitializePurchasing();
 		}
+
+		this.transform.parent = null;
+
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public void InitializePurchasing() 
@@ -61,7 +65,6 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		UnityPurchasing.Initialize(this, builder);
 	}
 
-
 	private bool IsInitialized()
 	{
 		// Only say we are initialized if both the Purchasing references are set.
@@ -70,13 +73,25 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
 	public void BuyChestOfTokens()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return;
+		}
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(chestOfTokenID);
 	}
 
 	public string getPriceForChestOfToken()
-	{
+	{		
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return "n/a";
+		}
 		return m_StoreController.products.WithID (chestOfTokenID).metadata.localizedPriceString;
 	}
 
@@ -84,16 +99,34 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	{
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return;
+		}
 		BuyProductID(stackOfTokenID);
 	}
 
 	public string getPriceForStackOfToken()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return "n/a";
+		}
 		return m_StoreController.products.WithID (stackOfTokenID).metadata.localizedPriceString;
 	}
 
 	public void BuyTwoHundredsToken()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return;
+		}
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(twoHundredsTokenID);
@@ -101,11 +134,23 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
 	public string getPriceForTwoHundredsToken()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return "n/a";
+		}
 		return m_StoreController.products.WithID (twoHundredsTokenID).metadata.localizedPriceString;
 	}
 
 	public void BuyBagOfTokens()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return;
+		}
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(bagOfTokenID);
@@ -113,6 +158,12 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
 	public string getPriceForBagOfTokens()
 	{
+		if (!IsInitialized())
+		{
+			// ... we are done here.
+			PanelManager.sharedManager.showBad ("Connecting In-app-purchase server...");
+			return "n/a";
+		}
 		return m_StoreController.products.WithID (bagOfTokenID).metadata.localizedPriceString;
 	}
 

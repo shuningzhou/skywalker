@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour {
 			int firstLaunch = UserData.getFirstLaunch ();
 
 			if (firstLaunch == 0) {
-				UserData.addCoinsCount (30);
+				UserData.addCoinsCount (20);
 				UserData.saveFirstLaunch (1);
 			}
 

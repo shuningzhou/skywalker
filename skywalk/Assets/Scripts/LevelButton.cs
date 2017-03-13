@@ -20,7 +20,7 @@ public class LevelButton : MonoBehaviour {
 	void Start () {
 		this.level = LevelManager.sharedManager.levels [levelIndex];
 		int userProgressLevel = Level.getUerProgressLevel ();
-		Debug.Log ("LevelButton for level " + level.level.ToString () + ", User progress is " + userProgressLevel.ToString ());
+		//Debug.Log ("LevelButton for level " + level.level.ToString () + ", User progress is " + userProgressLevel.ToString ());
 
 		if (userProgressLevel < levelIndex) 
 		{

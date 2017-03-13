@@ -148,6 +148,7 @@ public class GameManager : MonoBehaviour {
 
 	void enterWinMode()
 	{
+		SCAnalytics.logGameFinishedEvent (percentGem(), LevelManager.sharedManager.currentLevel.level, false);
 		gameState = GameState.gamewon;
 		notifyStateListener ();
 	}
@@ -160,6 +161,7 @@ public class GameManager : MonoBehaviour {
 
 	void enterGameOverMode()
 	{
+		SCAnalytics.logGameFinishedEvent (percentGem(), LevelManager.sharedManager.currentLevel.level, true);
 		gameState = GameState.gameover;
 		notifyStateListener ();
 	}

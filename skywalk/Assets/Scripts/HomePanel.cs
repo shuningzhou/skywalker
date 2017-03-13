@@ -72,5 +72,6 @@ public class HomePanel : SOPanel {
 		Debug.Log ("Store button Pressed");
 		SoundManager.Instance.PlayOneShot(SoundManager.Instance.buttonClicked);
 		PanelManager.sharedManager.showPanel (PanelManager.sharedManager.storePanel);
+		PanelManager.sharedManager.storePanel.refreshUI ();
 	}
 }

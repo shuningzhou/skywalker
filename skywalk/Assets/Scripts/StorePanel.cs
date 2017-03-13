@@ -10,19 +10,25 @@ public class StorePanel : SOPanel {
 	public Button Button3;
 	public Button Button4;
 
-	public Purchaser purchaser;
+	Purchaser purchaser;
 
 	// Use this for initialization
 	void Start () {
-		Button1.GetComponentInChildren<Text>().text = purchaser.getPriceForTwoHundredsToken ();
-		Button2.GetComponentInChildren<Text>().text = purchaser.getPriceForStackOfToken ();
-		Button3.GetComponentInChildren<Text>().text = purchaser.getPriceForBagOfTokens ();
-		Button4.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
+		purchaser = FindObjectOfType<Purchaser> ();
+		refreshUI ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void refreshUI()
+	{
+		Button1.GetComponentInChildren<Text>().text = purchaser.getPriceForTwoHundredsToken ();
+		Button2.GetComponentInChildren<Text>().text = purchaser.getPriceForStackOfToken ();
+		Button3.GetComponentInChildren<Text>().text = purchaser.getPriceForBagOfTokens ();
+		Button4.GetComponentInChildren<Text>().text = purchaser.getPriceForChestOfToken ();
 	}
 
 	public void purchaseStackOfTokens()
