@@ -8,8 +8,8 @@ public class GenerateBuilding : MonoBehaviour {
 	public GameObject plane;
 
 	int buildingDistance = 12;
-	int halfBlockX = 3;
-	int halfBlockZ = 5;
+	int halfBlockX = 4;
+	int halfBlockZ = 4;
 
 	Vector3 startPos;
 
@@ -65,9 +65,5 @@ public class GenerateBuilding : MonoBehaviour {
 				c.transform.SetParent (this.gameObject.transform);
 			}
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
 	}
 }

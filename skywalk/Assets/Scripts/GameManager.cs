@@ -137,6 +137,7 @@ public class GameManager : MonoBehaviour {
 			
 		if (alreadyRevived || ((!adsReady) && (!hasEnoughCoins))||(!canRevive))
 		{
+			SCAds.ShowAd ();
 			excuateInSeconds (enterGameOverMode, 0.5f);
 		}
 		else 
@@ -204,7 +205,7 @@ public class GameManager : MonoBehaviour {
 			break;
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was skipped before reaching the end.");
-			excuateInSeconds (enterGameOverMode, 1f);
+			revivePlayer ();
 			break;
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");

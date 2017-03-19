@@ -25,6 +25,7 @@ public class StorePanel : SOPanel {
 
 	public void refreshUI()
 	{
+		purchaser = FindObjectOfType<Purchaser> ();
 		Button1.GetComponentInChildren<Text>().text = purchaser.getPriceForTwoHundredsToken ();
 		Button2.GetComponentInChildren<Text>().text = purchaser.getPriceForStackOfToken ();
 		Button3.GetComponentInChildren<Text>().text = purchaser.getPriceForBagOfTokens ();

@@ -25,7 +25,7 @@ public class RoadGenerator : MonoBehaviour {
 	int initalRoadSectionCount;
 
 	bool turnRight;
-	public int minConnectedPoints = 3;
+	int minConnectedPoints = 8;
 
 	public RoadPoint RoadPoint; 
 
@@ -40,6 +40,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float currentWidth;
 	private RoadPoint firstRoadPoint;
 	private RoadPoint previousRoadPoint;
+	private RoadPoint gapFirstRoadPoint;
 
 	void Awake() {
 		GameManager.onGamePlay += onGamePlay;
@@ -87,6 +88,7 @@ public class RoadGenerator : MonoBehaviour {
 			}
 
 			previousRoadPoint = rd;
+			gapFirstRoadPoint = previousRoadPoint;
 		}
 			
 		currentStartPostion = startPostion;
@@ -102,7 +104,7 @@ public class RoadGenerator : MonoBehaviour {
 	{
 		float gapFrequency = LevelManager.sharedManager.currentLevel.gapFrequency;
 
-		RoadPoint rp = firstRoadPoint;
+		RoadPoint rp = gapFirstRoadPoint;
 	
 		int currentPointCount = 0;
 
@@ -129,7 +131,8 @@ public class RoadGenerator : MonoBehaviour {
 	bool randomGap(float gapFrequency)
 	{
 		float randomFloat = Random.Range (0, 1f);
-		if (randomFloat <= gapFrequency) {
+		if (randomFloat <= gapFrequency) 
+		{
 			return true;
 		} else {
 			return false;

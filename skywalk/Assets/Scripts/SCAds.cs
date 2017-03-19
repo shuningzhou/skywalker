@@ -15,13 +15,19 @@ public class SCAds : MonoBehaviour {
 		
 	}
 
-//	public static void ShowAd()
-//	{
-//		if (Advertisement.IsReady())
-//		{
-//			Advertisement.Show();
-//		}
-//	}
+	public static void ShowAd()
+	{
+		float randomFloat = Random.Range (0, 1f);
+		if (randomFloat > 0.5f) 
+		{
+			return;
+		}
+
+		if (Advertisement.IsReady())
+		{
+			Advertisement.Show();
+		}
+	}
 
 	public static bool rewardedVideoReady()
 	{

@@ -288,6 +288,9 @@ public class LevelFinishedPanel : SOPanel {
 			break;
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was skipped before reaching the end.");
+			UserData.addCoinsCount (reward);
+			reward = reward * 2;
+			animateReward ();
 			break;
 		case ShowResult.Failed:
 			Debug.LogError("The ad failed to be shown.");
