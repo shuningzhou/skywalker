@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AppAdvisory.VSRATE;
 
 public class HomePanel : SOPanel {
 
@@ -16,6 +17,13 @@ public class HomePanel : SOPanel {
 		QuestManager.sharedManager.checkQuestConditions ();
 
 		badgeUpdated ();
+
+		if (Level.getUerProgressLevel () > 15 && PlayerPrefs.GetInt ("USERRATING", 0) == 0) 
+		{
+			PlayerPrefs.SetInt ("USERRATING", 1);
+			PlayerPrefs.Save ();
+			RateUsManager.ShowRateUs(!RateUsManager.RateUsIsVisible());
+		}
 	}
 
 	void QuestManager_badgeChanged ()
